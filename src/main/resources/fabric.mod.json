@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "ragnarsmagicmod",
+	"version": "${version}",
+	"name": "Ragnars Magic Mod",
+	"description": "Ragnars Magic Mod is a simple vanilla like magic mod",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/ragnarsmagicmod/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.ragnar.ragnarsmagicmod.RagnarsMagicMod"
+		],
+		"fabric-datagen": [
+			"net.ragnar.ragnarsmagicmod.RagnarsMagicModDataGenerator"
+		],
+        "client": [
+            "net.ragnar.ragnarsmagicmod.RagnarsMagicMod"
+        ]
+	},
+	"mixins": [
+		"ragnarsmagicmod.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
