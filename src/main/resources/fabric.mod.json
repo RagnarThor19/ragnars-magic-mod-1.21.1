@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "ragnarsmagicmod",
-	"version": "${version}",
+	"version": "1.0.0",
 	"name": "Ragnars Magic Mod",
 	"description": "Ragnars Magic Mod is a simple vanilla like magic mod",
 	"authors": [
@@ -22,7 +22,7 @@
 			"net.ragnar.ragnarsmagicmod.RagnarsMagicModDataGenerator"
 		],
         "client": [
-            "net.ragnar.ragnarsmagicmod.RagnarsMagicMod"
+            "net.ragnar.ragnarsmagicmod.RagnarsMagicModClient"
         ]
 	},
 	"mixins": [
