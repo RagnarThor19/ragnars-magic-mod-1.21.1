@@ -14,5 +14,9 @@ public class RagnarsMagicMod implements ModInitializer {
 	public void onInitialize() {
         LOGGER.info("Initializing {}", MOD_ID);
         ModItems.registerModItems();
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+            net.ragnar.ragnarsmagicmod.item.spell.SpellId.FIREBALLS,
+            new net.ragnar.ragnarsmagicmod.item.spell.FireballSpell()
+        );
 	}
 }
