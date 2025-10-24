@@ -122,51 +122,21 @@ public class StaffItem extends Item {
             return TypedActionResult.pass(staff);
         }
 
-        if (id == SpellId.FIREBALLS) {
-            int xpCost = getXpCost(staff);
-            if (!spendXp(player, xpCost)) {
-                if (!world.isClient)
-                    player.sendMessage(Text.literal("Not enough XP."), true);
-                return TypedActionResult.fail(staff);
-            }
-
-            if (!world.isClient) {
-                var look = player.getRotationVec(1.0f);
-
-                // spawn a bit in front of the player's eyes
-                double sx = player.getX() + look.x * 1.5;
-                double sy = player.getEyeY();
-                double sz = player.getZ() + look.z * 1.5;
-
-                SmallFireballEntity fb = new SmallFireballEntity(
-                        net.minecraft.entity.EntityType.SMALL_FIREBALL,
-                        world
-                );
-                fb.setOwner(player);                 // attribute the projectile
-                fb.setPosition(sx, sy, sz);          // where to spawn
-                fb.setVelocity(look.x * 0.8, look.y * 0.8, look.z * 0.8); // give it speed
-
-                world.spawnEntity(fb);
-
-                // cooldown + durability + stat
-                player.getItemCooldownManager().set(this, 20);
-                EquipmentSlot slot = (hand == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-                staff.damage(1, player, slot);
-                player.incrementStat(Stats.USED.getOrCreateStat(this));
-                world.playSoundFromEntity(
-                        null,                               // send to all nearby players
-                        player,                             // source of the sound
-                        SoundEvents.ITEM_FIRECHARGE_USE,    // which sound
-                        SoundCategory.PLAYERS,              // category
-                        0.3f,                               // volume
-                        0.8f                                // pitch
-                );
-
-            }
-
+        
+        int xpCost = getXpCost(staff);
+        if (!spendXp(player, xpCost)) {
+            if (!world.isClient) player.sendMessage(Text.literal("Not enough XP."), true);
             return TypedActionResult.success(staff, world.isClient);
         }
-
+        net.ragnar.ragnarsmagicmod.item.spell.Spell spell = net.ragnar.ragnarsmagicmod.item.spell.Spells.get(id);
+        if (spell != null && spell.cast(world, player, staff)) {
+            player.incrementStat(Stats.USED.getOrCreateStat(this));
+            staff.damage(1, player, EquipmentSlot.MAINHAND);
+            player.getItemCooldownManager().set(this, 10);
+            return TypedActionResult.success(staff, world.isClient);
+        }
         return TypedActionResult.pass(staff);
+
+
     }
 }
