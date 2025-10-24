@@ -2,7 +2,9 @@ package net.ragnar.ragnarsmagicmod.item.custom;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -40,4 +42,34 @@ public class TomeItem extends Item {
         }
         return TypedActionResult.pass(tome);
     }
+    @Override
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context,
+                              java.util.List<Text> tooltip, TooltipType type) {
+        // Tier line (colored)
+        tooltip.add(Text.literal("Tier: " + tier.name())
+                .formatted(colorFor(tier)));
+
+        // XP cost
+        tooltip.add(Text.literal("XP Cost: " + xpCost)
+                .formatted(Formatting.GRAY));
+
+        // Which staffs can use it
+        String usable = switch (tier) {
+            case BEGINNER -> "Golden, Diamond, Netherite";
+            case ADVANCED -> "Diamond, Netherite";
+            case MASTER -> "Netherite";
+        };
+
+        tooltip.add(Text.literal("Usable with: " + usable)
+                .formatted(Formatting.DARK_GRAY));
+    }
+
+    private static Formatting colorFor(TomeTier t) {
+        return switch (t) {
+            case BEGINNER -> Formatting.GREEN;
+            case ADVANCED -> Formatting.AQUA;
+            case MASTER -> Formatting.LIGHT_PURPLE;
+        };
+    }
+
 }

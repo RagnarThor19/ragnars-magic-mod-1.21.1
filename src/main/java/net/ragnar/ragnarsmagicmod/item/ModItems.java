@@ -24,6 +24,11 @@ public class ModItems {
             "tome_of_fireballs",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), TomeTier.BEGINNER, SpellId.FIREBALLS, 8)
     );
+    public static final Item TOME_GHASTFIRE = registerItem("tome_ghastfire",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE),
+            TomeTier.ADVANCED, SpellId.GHAST_FIREBALL, 15
+            )
+    );
 
     // Staffs (use StaffItem now)
     public static final Item GOLDEN_STAFF = registerItem(
@@ -56,8 +61,9 @@ public class ModItems {
             entries.add(NETHERITE_STAFF);
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
-            entries.add(TOME_OF_FIREBALLS);
             entries.add(FALSE_TOME);
+            entries.add(TOME_OF_FIREBALLS);
+            entries.add(TOME_GHASTFIRE);
         });
     }
 }
