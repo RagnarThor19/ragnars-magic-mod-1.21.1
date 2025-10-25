@@ -100,18 +100,39 @@ public class StaffItem extends Item {
 
         // ---------- Shift-right-click: clear socket ----------
         if (player.isSneaking()) {
-            if (!world.isClient) {
-                if (getSocketed(staff) != null && !player.isCreative()) {
-                    player.giveItemStack(new ItemStack(ModItems.TOME_OF_FIREBALLS)); // MVP: only fireballs
-                }
-                NbtCompound nbt = readCustom(staff);
-                nbt.remove(NBT_ID);
-                nbt.remove(NBT_TIER);
-                nbt.remove(NBT_XP);
-                writeCustom(staff, nbt);
-                player.sendMessage(Text.literal("Staff socket cleared."), true);
+            // read socket
+            NbtCompound nbt = readCustom(staff);
+            if (!nbt.contains(NBT_ID)) {
+                if (!world.isClient) player.sendMessage(Text.literal("No tome socketed."), true);
+                return TypedActionResult.success(staff);
             }
+
+            // parse saved values
+            SpellId id = SpellId.valueOf(nbt.getString(NBT_ID));
+            TomeTier tier = TomeTier.valueOf(nbt.getString(NBT_TIER));
+
+            // find the correct TomeItem via ModItems registry
+            TomeItem tomeItem = ModItems.getTomeFor(id, tier);
+            if (tomeItem != null) {
+                ItemStack refund = new ItemStack(tomeItem);
+                if (!player.getInventory().insertStack(refund)) {
+                    player.dropItem(refund, false);
+                }
+            } else {
+                if (!world.isClient) {
+                    player.sendMessage(Text.literal("Unknown tome (" + id + ", " + tier + ") — please report"), true);
+                }
+            }
+
+            // wipe socket
+            nbt.remove(NBT_ID);
+            nbt.remove(NBT_TIER);
+            nbt.remove(NBT_XP);
+            writeCustom(staff, nbt);
+
+            if (!world.isClient) player.sendMessage(Text.literal("Socket cleared."), true);
             return TypedActionResult.success(staff);
+
         }
 
         // ---------- Cast ----------
@@ -121,13 +142,13 @@ public class StaffItem extends Item {
                 player.sendMessage(Text.literal("No tome socketed."), true);
             return TypedActionResult.pass(staff);
         }
-
         
         int xpCost = getXpCost(staff);
         if (!spendXp(player, xpCost)) {
             if (!world.isClient) player.sendMessage(Text.literal("Not enough XP."), true);
             return TypedActionResult.success(staff, world.isClient);
         }
+
         net.ragnar.ragnarsmagicmod.item.spell.Spell spell = net.ragnar.ragnarsmagicmod.item.spell.Spells.get(id);
         if (spell != null && spell.cast(world, player, staff)) {
             player.incrementStat(Stats.USED.getOrCreateStat(this));

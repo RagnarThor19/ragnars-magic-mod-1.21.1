@@ -13,10 +13,25 @@ import net.ragnar.ragnarsmagicmod.item.custom.TomeItem;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
 import java.util.EnumSet;
+import java.util.EnumMap;
+import java.util.Map;
 import static net.ragnar.ragnarsmagicmod.RagnarsMagicMod.LOGGER;
 
 
 public class ModItems {
+    // Map: SpellId -> (Tier -> TomeItem)
+    // Used for refunding the correct tome when unsocketing
+    public static final Map<SpellId, Map<TomeTier, TomeItem>> TOMES = new EnumMap<>(SpellId.class);
+
+    private static void putTome(SpellId id, TomeTier tier, TomeItem item) {
+        TOMES.computeIfAbsent(id, k -> new EnumMap<>(TomeTier.class)).put(tier, item);
+    }
+
+    public static TomeItem getTomeFor(SpellId id, TomeTier tier) {
+        Map<TomeTier, TomeItem> byTier = TOMES.get(id);
+        return (byTier == null) ? null : byTier.get(tier);
+    }
+
     public static final Item FALSE_TOME = registerItem("false_tome", new Item(new Item.Settings().maxCount(1)));
 
     // Tome(s)
@@ -29,6 +44,11 @@ public class ModItems {
             TomeTier.ADVANCED, SpellId.GHAST_FIREBALL, 15
             )
     );
+
+    static {
+        putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
+        putTome(SpellId.GHAST_FIREBALL, TomeTier.ADVANCED, (TomeItem) TOME_GHASTFIRE);
+    }
 
     // Staffs (use StaffItem now)
     public static final Item GOLDEN_STAFF = registerItem(
