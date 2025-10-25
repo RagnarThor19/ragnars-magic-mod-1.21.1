@@ -25,7 +25,7 @@ public final class IceShardsSpell implements Spell {
     private static void spawnShard(World world, PlayerEntity player, Vec3d dir) {
         IceShardEntity shard = new IceShardEntity(world, player);
         shard.setPosition(player.getX(), player.getEyeY() - 0.1, player.getZ());
-        shard.setVelocity(dir.multiply(0.8)); // a bit faster than snowball
+        shard.setVelocity(dir.multiply(1.0)); // a bit faster than snowball
         world.spawnEntity(shard);
     }
 

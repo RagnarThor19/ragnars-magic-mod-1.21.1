@@ -7,6 +7,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
@@ -34,24 +35,31 @@ public class IceShardEntity extends ThrownItemEntity {
     }
 
 
+
     @Override
     protected void onEntityHit(EntityHitResult hit) {
         super.onEntityHit(hit);
 
         if (!(hit.getEntity() instanceof LivingEntity target)) return;
 
-        // stacking slow: first hit amp=0, second amp=1, third hit -> freeze 1s
-        var cur = target.getStatusEffect(StatusEffects.SLOWNESS);
-        int amp = (cur == null) ? -1 : cur.getAmplifier();
+        // --- damage (2 hearts) ---
+        LivingEntity owner = (this.getOwner() instanceof LivingEntity le) ? le : null;
+        target.damage(this.getDamageSources().thrown(this, owner), 5.0F);
 
-        if (amp >= 1) {
-            // third hit: clear slow and apply freeze (20 ticks = 1s)
-            target.removeStatusEffect(StatusEffects.SLOWNESS);
-            target.setFrozenTicks(target.getFrozenTicks() + 20);
-        } else {
-            // apply/stack slow for 3 seconds
-            int nextAmp = amp + 1; // -1->0, 0->1
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, nextAmp, false, true));
-        }
+        // --- movement punish for 1s ---
+        // Slowness 100 for 20 ticks (1s)
+        target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 100, false, true));
+
+        // Freeze for 1s (stops them hard)
+        target.setFrozenTicks(target.getFrozenTicks() + 20);
+
+        // shard is done
+        this.discard();
     }
+    @Override
+    protected void onBlockHit(BlockHitResult hit) {
+        super.onBlockHit(hit);
+        this.discard();
+    }
+
 }
