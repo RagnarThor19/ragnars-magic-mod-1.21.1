@@ -3,6 +3,7 @@ package net.ragnar.ragnarsmagicmod.item;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -44,10 +45,19 @@ public class ModItems {
             TomeTier.ADVANCED, SpellId.GHAST_FIREBALL, 15
             )
     );
+    public static final Item TOME_ICE_SHARDS = registerItem("tome_ice_shards",
+            new TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON),
+                    TomeTier.BEGINNER,
+                    SpellId.ICE_SHARDS,
+                    6 // XP cost
+            )
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
         putTome(SpellId.GHAST_FIREBALL, TomeTier.ADVANCED, (TomeItem) TOME_GHASTFIRE);
+        putTome(SpellId.ICE_SHARDS,    TomeTier.BEGINNER, (TomeItem) TOME_ICE_SHARDS);
     }
 
     // Staffs (use StaffItem now)
@@ -67,6 +77,11 @@ public class ModItems {
                     EnumSet.of(TomeTier.BEGINNER, TomeTier.ADVANCED, TomeTier.MASTER))
     );
 
+    //other stuff
+    public static final Item ICE_SHARD_ITEM = registerItem("ice_shard",
+            new Item(new Item.Settings().maxCount(16)));
+
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(RagnarsMagicMod.MOD_ID, name), item);
     }
@@ -84,6 +99,8 @@ public class ModItems {
             entries.add(FALSE_TOME);
             entries.add(TOME_OF_FIREBALLS);
             entries.add(TOME_GHASTFIRE);
+            entries.add(new ItemStack(TOME_ICE_SHARDS));
+
         });
     }
 }

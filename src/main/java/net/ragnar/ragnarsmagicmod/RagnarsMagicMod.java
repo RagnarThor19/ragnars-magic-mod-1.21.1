@@ -23,5 +23,12 @@ public class RagnarsMagicMod implements ModInitializer {
             new net.ragnar.ragnarsmagicmod.item.spell.FireballSpell()
         );
         Spells.register(SpellId.GHAST_FIREBALL, new GhastFireballSpell(1)); // power 1 is safe
+        net.ragnar.ragnarsmagicmod.entity.ModEntities.register();
+
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_SHARDS,
+                new net.ragnar.ragnarsmagicmod.item.spell.IceShardsSpell()
+        );
+
     }
 }
