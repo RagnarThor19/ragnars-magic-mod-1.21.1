@@ -19,6 +19,16 @@ public final class IceShardsSpell implements Spell {
         spawnShard(world, player, look);
         spawnShard(world, player, yaw(look,  6));
 
+        // play a soft icy cast sound
+        world.playSound(
+                null,
+                player.getBlockPos(),
+                net.minecraft.sound.SoundEvents.ENTITY_WIND_CHARGE_THROW,
+                net.minecraft.sound.SoundCategory.PLAYERS,
+                0.4f,   // volume
+                1.4f    // pitch
+        );
+
         return true;
     }
 

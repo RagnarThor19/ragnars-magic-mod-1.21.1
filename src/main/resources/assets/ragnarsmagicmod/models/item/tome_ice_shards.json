@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ragnarsmagicmod:item/tome_fireballs"
+    "layer0": "ragnarsmagicmod:item/false_tome"
   }
 }

@@ -36,30 +36,78 @@ public class IceShardEntity extends ThrownItemEntity {
 
 
 
+
     @Override
-    protected void onEntityHit(EntityHitResult hit) {
+    protected void onEntityHit(net.minecraft.util.hit.EntityHitResult hit) {
         super.onEntityHit(hit);
 
-        if (!(hit.getEntity() instanceof LivingEntity target)) return;
+        if (!(hit.getEntity() instanceof net.minecraft.entity.LivingEntity target)) return;
 
         // --- damage (2 hearts) ---
-        LivingEntity owner = (this.getOwner() instanceof LivingEntity le) ? le : null;
-        target.damage(this.getDamageSources().thrown(this, owner), 5.0F);
+        net.minecraft.entity.LivingEntity owner = (this.getOwner() instanceof net.minecraft.entity.LivingEntity le) ? le : null;
+        target.damage(this.getDamageSources().thrown(this, owner), 4.0F);
 
-        // --- movement punish for 1s ---
-        // Slowness 100 for 20 ticks (1s)
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 100, false, true));
-
-        // Freeze for 1s (stops them hard)
+        // --- heavy slow for 2s + freeze for 1s ---
+        target.addStatusEffect(new net.minecraft.entity.effect.StatusEffectInstance(
+                net.minecraft.entity.effect.StatusEffects.SLOWNESS, 50, 100, false, true));
         target.setFrozenTicks(target.getFrozenTicks() + 20);
 
-        // shard is done
+        // --- impact sound ---
+        this.getWorld().playSound(
+                null,
+                target.getBlockPos(),
+                net.minecraft.sound.SoundEvents.BLOCK_GLASS_BREAK,    // ice shatter
+                net.minecraft.sound.SoundCategory.PLAYERS,
+                0.6f,
+                1.2f
+        );
+
+        // --- ice block shards particles ---
+        if (!this.getWorld().isClient) {
+            net.minecraft.server.world.ServerWorld sw = (net.minecraft.server.world.ServerWorld) this.getWorld();
+            var effect = new net.minecraft.particle.BlockStateParticleEffect(
+                    net.minecraft.particle.ParticleTypes.BLOCK,
+                    net.minecraft.block.Blocks.ICE.getDefaultState()
+            );
+            sw.spawnParticles(
+                    effect,
+                    target.getX(), target.getBodyY(0.5), target.getZ(),
+                    12,           // count
+                    0.25, 0.25, 0.25, // spread xyz
+                    0.08          // speed
+            );
+        }
+
         this.discard();
     }
+
     @Override
-    protected void onBlockHit(BlockHitResult hit) {
+    protected void onBlockHit(net.minecraft.util.hit.BlockHitResult hit) {
         super.onBlockHit(hit);
+
+        // sound
+        this.getWorld().playSound(
+                null,
+                hit.getBlockPos(),
+                net.minecraft.sound.SoundEvents.BLOCK_GLASS_BREAK,
+                net.minecraft.sound.SoundCategory.PLAYERS,
+                0.5f,
+                1.1f
+        );
+
+        // particles at impact point
+        if (!this.getWorld().isClient) {
+            net.minecraft.server.world.ServerWorld sw = (net.minecraft.server.world.ServerWorld) this.getWorld();
+            var effect = new net.minecraft.particle.BlockStateParticleEffect(
+                    net.minecraft.particle.ParticleTypes.BLOCK,
+                    net.minecraft.block.Blocks.ICE.getDefaultState()
+            );
+            var p = hit.getPos();
+            sw.spawnParticles(effect, p.x, p.y, p.z, 10, 0.2, 0.2, 0.2, 0.08);
+        }
+
         this.discard();
     }
+
 
 }

@@ -153,7 +153,7 @@ public class StaffItem extends Item {
         if (spell != null && spell.cast(world, player, staff)) {
             player.incrementStat(Stats.USED.getOrCreateStat(this));
             staff.damage(1, player, EquipmentSlot.MAINHAND);
-            player.getItemCooldownManager().set(this, 10);
+            player.getItemCooldownManager().set(this, 24);
             return TypedActionResult.success(staff, world.isClient);
         }
         return TypedActionResult.pass(staff);
