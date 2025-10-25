@@ -30,5 +30,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.IceShardsSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                SpellId.FALLING_ANVILS,
+                new net.ragnar.ragnarsmagicmod.item.spell.FallingAnvilsSpell()
+        );
+
     }
 }

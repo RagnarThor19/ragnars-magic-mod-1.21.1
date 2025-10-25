@@ -53,11 +53,26 @@ public class ModItems {
                     6 // XP cost
             )
     );
+    public static final Item TOME_FALLING_ANVILS = registerItem("tome_falling_anvils",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    SpellId.FALLING_ANVILS,
+                    22 // XP cost (a bit pricier than others)
+            )
+    );
+
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
         putTome(SpellId.GHAST_FIREBALL, TomeTier.ADVANCED, (TomeItem) TOME_GHASTFIRE);
         putTome(SpellId.ICE_SHARDS,    TomeTier.BEGINNER, (TomeItem) TOME_ICE_SHARDS);
+        putTome(
+                SpellId.FALLING_ANVILS,    // or FALLING_ANVILS
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_FALLING_ANVILS
+        );
+
     }
 
     // Staffs (use StaffItem now)
@@ -100,7 +115,7 @@ public class ModItems {
             entries.add(TOME_OF_FIREBALLS);
             entries.add(TOME_GHASTFIRE);
             entries.add(new ItemStack(TOME_ICE_SHARDS));
-
+            entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
         });
     }
 }
