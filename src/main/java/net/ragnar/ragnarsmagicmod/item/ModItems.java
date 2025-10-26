@@ -61,6 +61,14 @@ public class ModItems {
                     22 // XP cost (a bit pricier than others)
             )
     );
+    public static final Item TOME_METEOR = registerItem("tome_meteor",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master tier color
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.METEOR,
+                    50 // XP cost (big boom should cost more)
+            )
+    );
 
 
     static {
@@ -72,6 +80,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_FALLING_ANVILS
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.METEOR,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_METEOR
+        );
+
 
     }
 
@@ -116,6 +130,7 @@ public class ModItems {
             entries.add(TOME_GHASTFIRE);
             entries.add(new ItemStack(TOME_ICE_SHARDS));
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
+            entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
         });
     }
 }

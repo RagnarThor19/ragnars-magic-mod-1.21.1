@@ -46,7 +46,7 @@ public final class FallingAnvilsSpell implements Spell {
                 player.getBlockPos(),
                 SoundEvents.BLOCK_ANVIL_PLACE,
                 SoundCategory.PLAYERS,
-                0.9f,
+                0.4f,
                 0.8f
         );
 

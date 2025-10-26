@@ -35,5 +35,11 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.FallingAnvilsSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.METEOR,
+                new net.ragnar.ragnarsmagicmod.item.spell.MeteorSpell()
+        );
+
+
     }
 }
