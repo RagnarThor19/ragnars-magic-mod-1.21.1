@@ -88,6 +88,16 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_BLINKING = registerItem("tome_blinking",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.BLINK,
+                    10 // XP cost
+            )
+    );
+
+
 
 
     static {
@@ -114,6 +124,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_PUSHING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.BLINK,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_BLINKING
+        );
+
 
 
 
@@ -164,6 +180,8 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_STALACTITE));
             entries.add(new net.minecraft.item.ItemStack(TOME_PUSHING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
+
 
         });
     }

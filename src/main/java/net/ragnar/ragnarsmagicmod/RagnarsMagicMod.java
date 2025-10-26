@@ -50,6 +50,12 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.WindPushSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.BLINK,
+                new net.ragnar.ragnarsmagicmod.item.spell.BlinkSpell()
+        );
+
+
 
     }
 }
