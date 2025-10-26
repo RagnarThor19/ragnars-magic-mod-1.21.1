@@ -79,6 +79,16 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_PUSHING = registerItem("tome_pushing",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_PUSH,
+                    10 // XP cost
+            )
+    );
+
+
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -99,6 +109,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_FALLING_STALACTITE
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_PUSH,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_PUSHING
+        );
+
 
 
 
@@ -147,6 +163,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_STALACTITE));
+            entries.add(new net.minecraft.item.ItemStack(TOME_PUSHING));
 
         });
     }

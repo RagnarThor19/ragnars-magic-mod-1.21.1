@@ -45,6 +45,11 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.FallingStalactiteSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_PUSH,
+                new net.ragnar.ragnarsmagicmod.item.spell.WindPushSpell()
+        );
+
 
     }
 }

@@ -6,5 +6,6 @@ public enum SpellId {
     ICE_SHARDS,
     FALLING_ANVILS,
     METEOR,
-    FALLING_STALACTITE
+    FALLING_STALACTITE,
+    WIND_PUSH
 }
