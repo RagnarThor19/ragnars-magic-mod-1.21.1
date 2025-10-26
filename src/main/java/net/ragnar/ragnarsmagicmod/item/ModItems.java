@@ -70,6 +70,15 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_FALLING_STALACTITE = registerItem("tome_falling_stalactite",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.FALLING_STALACTITE,
+                    5 // XP cost (cheap beginner)
+            )
+    );
+
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -85,6 +94,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_METEOR
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.FALLING_STALACTITE,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_FALLING_STALACTITE
+        );
+
 
 
     }
@@ -131,6 +146,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_ICE_SHARDS));
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
+            entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_STALACTITE));
+
         });
     }
 }
