@@ -55,6 +55,11 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.BlinkSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.RISING_SPIKES,
+                new net.ragnar.ragnarsmagicmod.item.spell.RisingSpikesSpell()
+        );
+
 
 
     }

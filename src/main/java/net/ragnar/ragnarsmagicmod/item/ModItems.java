@@ -97,6 +97,15 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_RISING_SPIKES = registerItem("tome_rising_spikes",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.RISING_SPIKES,
+                    14 // XP cost
+            )
+    );
+
 
 
 
@@ -129,6 +138,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_BLINKING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.RISING_SPIKES,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RISING_SPIKES
+        );
+
 
 
 
@@ -181,8 +196,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_STALACTITE));
             entries.add(new net.minecraft.item.ItemStack(TOME_PUSHING));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
-
-
+            entries.add(new net.minecraft.item.ItemStack(TOME_RISING_SPIKES));
         });
     }
 }

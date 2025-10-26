@@ -9,4 +9,5 @@ public enum SpellId {
     FALLING_STALACTITE,
     WIND_PUSH,
     BLINK,
+    RISING_SPIKES,
 }
