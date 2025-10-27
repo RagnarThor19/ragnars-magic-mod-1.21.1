@@ -60,6 +60,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.RisingSpikesSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.DASH,
+                new net.ragnar.ragnarsmagicmod.item.spell.DashSpell()
+        );
 
 
     }

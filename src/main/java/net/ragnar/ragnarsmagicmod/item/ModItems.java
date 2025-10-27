@@ -106,6 +106,16 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_DASHING = registerItem("tome_dashing",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.DASH,
+                    10
+            )
+    );
+
+
 
 
 
@@ -143,6 +153,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RISING_SPIKES
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.DASH,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_DASHING
+        );
+
 
 
 
@@ -197,6 +213,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_PUSHING));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
             entries.add(new net.minecraft.item.ItemStack(TOME_RISING_SPIKES));
+            entries.add(new net.minecraft.item.ItemStack(TOME_DASHING));
         });
     }
 }
