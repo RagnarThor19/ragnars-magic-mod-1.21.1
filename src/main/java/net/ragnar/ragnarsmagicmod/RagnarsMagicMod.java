@@ -65,6 +65,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.DashSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_CHARGE,
+                new net.ragnar.ragnarsmagicmod.item.spell.WindChargeSpell()
+        );
 
     }
 }

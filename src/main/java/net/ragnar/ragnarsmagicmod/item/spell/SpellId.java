@@ -11,4 +11,5 @@ public enum SpellId {
     BLINK,
     RISING_SPIKES,
     DASH,
+    WIND_CHARGE,
 }

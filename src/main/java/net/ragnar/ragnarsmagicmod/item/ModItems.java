@@ -38,7 +38,7 @@ public class ModItems {
     // Tome(s)
     public static final TomeItem TOME_OF_FIREBALLS = (TomeItem) registerItem(
             "tome_of_fireballs",
-            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), TomeTier.BEGINNER, SpellId.FIREBALLS, 8)
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), TomeTier.BEGINNER, SpellId.FIREBALLS, 7)
     );
     public static final Item TOME_GHASTFIRE = registerItem("tome_ghastfire",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE),
@@ -50,7 +50,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON),
                     TomeTier.BEGINNER,
                     SpellId.ICE_SHARDS,
-                    6 // XP cost
+                    10 // XP cost
             )
     );
     public static final Item TOME_FALLING_ANVILS = registerItem("tome_falling_anvils",
@@ -66,7 +66,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master tier color
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.METEOR,
-                    50 // XP cost (big boom should cost more)
+                    80 // XP cost (big boom should cost more)
             )
     );
 
@@ -75,7 +75,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.FALLING_STALACTITE,
-                    5 // XP cost (cheap beginner)
+                    6 // XP cost (cheap beginner)
             )
     );
 
@@ -84,7 +84,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_PUSH,
-                    10 // XP cost
+                    12 // XP cost
             )
     );
 
@@ -93,7 +93,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.BLINK,
-                    10 // XP cost
+                    9 // XP cost
             )
     );
 
@@ -102,7 +102,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.RISING_SPIKES,
-                    14 // XP cost
+                    25 // XP cost
             )
     );
 
@@ -111,7 +111,16 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.DASH,
-                    10
+                    6
+            )
+    );
+
+    public static final Item TOME_CHARGED_WIND = registerItem("tome_charged_wind",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_CHARGE,
+                    10 // XP cost
             )
     );
 
@@ -158,6 +167,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_DASHING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_CHARGE,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_CHARGED_WIND
+        );
+
 
 
 
@@ -214,6 +229,8 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
             entries.add(new net.minecraft.item.ItemStack(TOME_RISING_SPIKES));
             entries.add(new net.minecraft.item.ItemStack(TOME_DASHING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_CHARGED_WIND));
+
         });
     }
 }
