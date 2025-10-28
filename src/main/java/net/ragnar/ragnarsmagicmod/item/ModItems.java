@@ -178,6 +178,24 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_REJUVENATION = registerItem("tome_rejuvenation",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.REJUVENATION,
+                    18 // XP cost
+            )
+    );
+
+    public static final net.minecraft.item.Item TOME_LIGHT = registerItem("tome_light",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHT,
+                    6 // cheap XP cost
+            )
+    );
+
 
 
 
@@ -255,6 +273,17 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_SONIC_BOOM
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.REJUVENATION,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_REJUVENATION
+        );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHT,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_LIGHT
+        );
+
 
 
 
@@ -314,6 +343,8 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING_CASCADE));
             entries.add(new net.minecraft.item.ItemStack(TOME_ENERGY));
             entries.add(new net.minecraft.item.ItemStack(TOME_SONIC_BOOM));
+            entries.add(new net.minecraft.item.ItemStack(TOME_REJUVENATION));
+            entries.add(new net.minecraft.item.ItemStack(TOME_LIGHT));
         });
     }
 }

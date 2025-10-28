@@ -101,5 +101,17 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.SonicBoomSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.REJUVENATION,
+                new net.ragnar.ragnarsmagicmod.item.spell.RejuvenationSpell()
+        );
+
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHT,
+                new net.ragnar.ragnarsmagicmod.item.spell.LightOrbSpell()
+        );
+
+
+
     }
 }

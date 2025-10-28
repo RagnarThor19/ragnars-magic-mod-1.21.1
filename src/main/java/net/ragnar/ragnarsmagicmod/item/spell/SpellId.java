@@ -18,4 +18,6 @@ public enum SpellId {
     LIGHTNING_CASCADE,
     ENERGY_ORB,
     SONIC_BOOM,
+    REJUVENATION,
+    LIGHT
 }
