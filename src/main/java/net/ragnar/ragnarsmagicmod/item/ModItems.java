@@ -142,6 +142,16 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_LIGHTNING = registerItem("tome_lightning",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING,
+                    14 // XP cost (match your ADVANCED example style)
+            )
+    );
+
+
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -197,6 +207,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ZAP
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_LIGHTNING
+        );
+
 
 
     }
@@ -251,6 +267,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_CHARGED_WIND));
             entries.add(new net.minecraft.item.ItemStack(TOME_SKULLS));
             entries.add(new net.minecraft.item.ItemStack(TOME_ZAP));
+            entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING));
         });
     }
 }
