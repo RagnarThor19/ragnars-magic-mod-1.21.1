@@ -90,5 +90,11 @@ public class RagnarsMagicMod implements ModInitializer {
                 net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE,
                 new net.ragnar.ragnarsmagicmod.item.spell.LightningCascadeSpell()
         );
+
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ENERGY_ORB,
+                new net.ragnar.ragnarsmagicmod.item.spell.EnergyOrbSpell()
+        );
+
     }
 }

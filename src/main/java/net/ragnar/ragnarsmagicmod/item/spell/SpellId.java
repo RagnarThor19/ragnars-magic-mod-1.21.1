@@ -15,5 +15,6 @@ public enum SpellId {
     WITHER_SKULL,
     ZAP,
     LIGHTNING,
-    LIGHTNING_CASCADE
+    LIGHTNING_CASCADE,
+    ENERGY_ORB
 }

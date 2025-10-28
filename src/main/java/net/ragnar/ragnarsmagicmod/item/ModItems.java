@@ -160,6 +160,16 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_ENERGY = registerItem("tome_energy",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.ENERGY_ORB,
+                    18 // XP cost
+            )
+    );
+
+
 
 
     static {
@@ -226,6 +236,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_LIGHTNING_CASCADE
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ENERGY_ORB,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ENERGY
+        );
+
 
 
     }
@@ -282,6 +298,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_ZAP));
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING));
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING_CASCADE));
+            entries.add(new net.minecraft.item.ItemStack(TOME_ENERGY));
         });
     }
 }
