@@ -12,4 +12,5 @@ public enum SpellId {
     RISING_SPIKES,
     DASH,
     WIND_CHARGE,
+    WITHER_SKULL,
 }

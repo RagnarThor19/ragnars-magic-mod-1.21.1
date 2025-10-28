@@ -70,5 +70,11 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.WindChargeSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WITHER_SKULL,
+                new net.ragnar.ragnarsmagicmod.item.spell.WitherSkullSpell()
+        );
+
+
     }
 }

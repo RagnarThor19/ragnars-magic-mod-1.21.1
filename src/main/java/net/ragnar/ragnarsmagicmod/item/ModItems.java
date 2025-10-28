@@ -124,9 +124,14 @@ public class ModItems {
             )
     );
 
-
-
-
+    public static final Item TOME_SKULLS = registerItem("tome_skulls",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner tier
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.WITHER_SKULL,
+                    12 // a bit expensive for beginner
+            )
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -172,13 +177,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_CHARGED_WIND
         );
-
-
-
-
-
-
-
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WITHER_SKULL,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_SKULLS
+        );
 
     }
 
@@ -230,7 +233,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_RISING_SPIKES));
             entries.add(new net.minecraft.item.ItemStack(TOME_DASHING));
             entries.add(new net.minecraft.item.ItemStack(TOME_CHARGED_WIND));
-
+            entries.add(new net.minecraft.item.ItemStack(TOME_SKULLS));
         });
     }
 }
