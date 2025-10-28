@@ -133,6 +133,16 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_ZAP = registerItem("tome_zap",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.ZAP,
+                    12 // XP cost
+            )
+    );
+
+
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
         putTome(SpellId.GHAST_FIREBALL, TomeTier.ADVANCED, (TomeItem) TOME_GHASTFIRE);
@@ -182,6 +192,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_SKULLS
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ZAP,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ZAP
+        );
+
 
     }
 
@@ -234,6 +250,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_DASHING));
             entries.add(new net.minecraft.item.ItemStack(TOME_CHARGED_WIND));
             entries.add(new net.minecraft.item.ItemStack(TOME_SKULLS));
+            entries.add(new net.minecraft.item.ItemStack(TOME_ZAP));
         });
     }
 }

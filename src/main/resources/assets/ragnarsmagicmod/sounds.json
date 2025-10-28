@@ -1,0 +1,14 @@
+{
+  "zap_cast": {
+    "subtitle": "subtitle.ragnarsmagicmod.zap_cast",
+    "sounds": [
+      { "name": "ragnarsmagicmod:zap_cast", "stream": false, "volume": 1.0, "pitch": 1.0 }
+    ]
+  },
+  "zap_impact": {
+    "subtitle": "subtitle.ragnarsmagicmod.zap_impact",
+    "sounds": [
+      { "name": "ragnarsmagicmod:zap_impact", "stream": false, "volume": 1.0, "pitch": 1.0 }
+    ]
+  }
+}

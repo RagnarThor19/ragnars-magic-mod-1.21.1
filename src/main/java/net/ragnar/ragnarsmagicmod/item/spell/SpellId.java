@@ -13,4 +13,5 @@ public enum SpellId {
     DASH,
     WIND_CHARGE,
     WITHER_SKULL,
+    ZAP,
 }

@@ -17,6 +17,7 @@ public class RagnarsMagicMod implements ModInitializer {
 	public void onInitialize() {
         LOGGER.info("Initializing {}", MOD_ID);
         ModItems.registerModItems();
+        net.ragnar.ragnarsmagicmod.sound.ModSoundEvents.init();
         net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
 
             net.ragnar.ragnarsmagicmod.item.spell.SpellId.FIREBALLS,
@@ -74,6 +75,12 @@ public class RagnarsMagicMod implements ModInitializer {
                 net.ragnar.ragnarsmagicmod.item.spell.SpellId.WITHER_SKULL,
                 new net.ragnar.ragnarsmagicmod.item.spell.WitherSkullSpell()
         );
+
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ZAP,
+                new net.ragnar.ragnarsmagicmod.item.spell.ZapSpell()
+        );
+
 
 
     }
