@@ -151,6 +151,15 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_LIGHTNING_CASCADE = registerItem("tome_lightning_cascade",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE,
+                    50 // XP cost (Master tier; adjust if you have a standard)
+            )
+    );
+
 
 
     static {
@@ -212,7 +221,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_LIGHTNING
         );
-
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_LIGHTNING_CASCADE
+        );
 
 
     }
@@ -268,6 +281,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_SKULLS));
             entries.add(new net.minecraft.item.ItemStack(TOME_ZAP));
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING_CASCADE));
         });
     }
 }
