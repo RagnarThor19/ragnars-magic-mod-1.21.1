@@ -16,5 +16,6 @@ public enum SpellId {
     ZAP,
     LIGHTNING,
     LIGHTNING_CASCADE,
-    ENERGY_ORB
+    ENERGY_ORB,
+    SONIC_BOOM,
 }

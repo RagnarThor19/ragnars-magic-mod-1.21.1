@@ -96,5 +96,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.EnergyOrbSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SONIC_BOOM,
+                new net.ragnar.ragnarsmagicmod.item.spell.SonicBoomSpell()
+        );
+
     }
 }

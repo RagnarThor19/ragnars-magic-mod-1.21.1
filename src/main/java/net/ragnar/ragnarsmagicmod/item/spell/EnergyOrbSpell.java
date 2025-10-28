@@ -143,7 +143,7 @@ public class EnergyOrbSpell implements Spell {
             for (int i = 0; i < SHELL_POINTS; i++) {
                 Vec3d n = randomUnit(rand);
                 Vec3d p = o.pos.add(n.multiply(ORB_RADIUS));
-                world.spawnParticles(SHELL, p.x, p.y, p.z, 1, 0, 0, 0, 0);
+                world.spawnParticles(SHELL, p.x, p.y, p.z, 4, 0, 0, 0, 0);
             }
             // Core points inside the ball
             //for (int i = 0; i < CORE_POINTS; i++) {

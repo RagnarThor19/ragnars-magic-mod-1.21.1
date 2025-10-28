@@ -169,6 +169,15 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_SONIC_BOOM = registerItem("tome_sonic_boom",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.SONIC_BOOM,
+                    40 // XP cost (Master-tier)
+            )
+    );
+
 
 
 
@@ -241,6 +250,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ENERGY
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SONIC_BOOM,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_SONIC_BOOM
+        );
 
 
 
@@ -299,6 +313,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING));
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHTNING_CASCADE));
             entries.add(new net.minecraft.item.ItemStack(TOME_ENERGY));
+            entries.add(new net.minecraft.item.ItemStack(TOME_SONIC_BOOM));
         });
     }
 }
