@@ -165,7 +165,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.ENERGY_ORB,
-                    18 // XP cost
+                    15 // XP cost
             )
     );
 
