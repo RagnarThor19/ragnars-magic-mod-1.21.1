@@ -22,20 +22,20 @@ import java.util.*;
 
 public class SunSpell implements Spell {
 
-    // --- behavior tuning ---
-    private static final double START_RADIUS = 0.2;     // starts at 1 block radius
-    private static final double END_RADIUS   = 5.0;     // grows to 4, then disappears
-    private static final double GROWTH_PER_TICK = 0.02; // ~60 ticks from 1 -> 4
-    private static final double SPEED = 0.18;           // slow, unstoppable drift
+    // --- behavior tuning (your current values) ---
+    private static final double START_RADIUS = 0.2;     // starts tiny
+    private static final double END_RADIUS   = 5.0;     // grows to 5, then disappears
+    private static final double GROWTH_PER_TICK = 0.02; // growth step
+    private static final double SPEED = 0.18;           // forward drift
 
-    // fire placement (optional, never breaks blocks)
-    private static final boolean CAN_IGNITE = true;     // set to false to disable all fire
-    private static final double FIRE_CHANCE = 0.25;     // chance per sampled point (kept low)
-    private static final int FIRE_SAMPLES = 18;         // how many surface points to try per tick
+    // fire placement (optional)
+    private static final boolean CAN_IGNITE = true;     // set false to disable all fire
+    private static final double FIRE_CHANCE = 0.25;     // chance per sampled point
+    private static final int FIRE_SAMPLES = 18;         // sampled shell points per tick
 
-    // visuals (no trail, no dragon breath)
-    private static final int CORE_PARTICLES_PER_TICK = 5; // dense core “fusion” look
-    private static final int SHELL_POINTS_BASE = 300;      // roiling surface density
+    // visuals
+    private static final int CORE_PARTICLES_PER_TICK = 5;   // core particles
+    private static final int SHELL_POINTS_BASE = 300;       // roiling surface density
 
     private static final Map<RegistryKey<World>, List<SunBall>> ACTIVE = new HashMap<>();
     private static boolean TICK_REGISTERED = false;
@@ -91,27 +91,54 @@ public class SunSpell implements Spell {
                 continue;
             }
 
+            // previous position (for swept/capsule hit)
+            Vec3d oldPos = s.pos;
+
             // move forward (no collision: passes through walls)
             s.pos = s.pos.add(s.forward.multiply(SPEED));
 
             // grow
+            double prevRadius = s.radius;
             s.radius += GROWTH_PER_TICK;
 
             // optional: ignite *air only* where the shell touches (never replace/break blocks)
             if (CAN_IGNITE) tryIgniteAirOnShell(world, s.pos, s.radius);
 
-            // kill entities inside sphere
-            Box box = new Box(
-                    s.pos.x - s.radius, s.pos.y - s.radius, s.pos.z - s.radius,
-                    s.pos.x + s.radius, s.pos.y + s.radius, s.pos.z + s.radius
+            // ---- CAPTURE ALL ENTITIES CROSSED THIS TICK (capsule test) ----
+            // Build an AABB that fully contains the swept sphere from oldPos->newPos expanded by max radius
+            double maxR = Math.max(prevRadius, s.radius);
+            Box sweepAabb = new Box(oldPos, s.pos).expand(maxR, maxR, maxR);
+
+            // owner (for friendly fire/credit)
+            PlayerEntity owner = world.getPlayerByUuid(s.owner);
+
+            List<Entity> candidates = world.getOtherEntities(
+                    owner, sweepAabb,
+                    e -> e instanceof LivingEntity && e.isAlive()
             );
-            List<Entity> hits = world.getOtherEntities(null, box, e -> e instanceof LivingEntity && e.isAlive());
-            for (Entity e : hits) {
-                double d = e.getPos().distanceTo(s.pos);
-                if (d <= s.radius + 0.1) {
+
+            for (Entity e : candidates) {
+                // quick precise test: distance from entity center to segment <= (sphere radius + entity radius)
+                Vec3d c = e.getBoundingBox().getCenter(); // center point
+                double entityRadius = Math.max(e.getWidth(), e.getHeight()) * 0.5;
+
+                // Interpolate effective radius along movement by projection t
+                double t = clamp01(projectParamOnSegment(oldPos, s.pos, c));
+                double radiusAtT = prevRadius + (s.radius - prevRadius) * t;
+
+                double distSq = distanceSqPointToSegment(c, oldPos, s.pos);
+                double limit = radiusAtT + entityRadius;
+
+                if (distSq <= limit * limit) {
                     LivingEntity le = (LivingEntity) e;
+                    // light them up a bit for flair
                     le.setOnFireFor(6);
-                    le.damage(world.getDamageSources().magic(), 1_000_000.0f); // “instant” kill
+                    // kill — prefer playerAttack for proper attribution if owner exists
+                    if (owner != null) {
+                        le.damage(world.getDamageSources().playerAttack(owner), 1_000_000.0f);
+                    } else {
+                        le.damage(world.getDamageSources().magic(), 1_000_000.0f);
+                    }
                 }
             }
 
@@ -195,6 +222,28 @@ public class SunSpell implements Spell {
                 }
             }
         }
+    }
+
+    // --- math helpers ---
+
+    private static double clamp01(double t) {
+        return t < 0 ? 0 : (t > 1 ? 1 : t);
+    }
+
+    /** Parameter t (0..1) of closest point on segment AB to point P */
+    private static double projectParamOnSegment(Vec3d a, Vec3d b, Vec3d p) {
+        Vec3d ab = b.subtract(a);
+        double abLenSq = ab.lengthSquared();
+        if (abLenSq <= 1.0e-12) return 0.0;
+        double t = p.subtract(a).dotProduct(ab) / abLenSq;
+        return t;
+    }
+
+    /** Squared distance from point P to segment AB */
+    private static double distanceSqPointToSegment(Vec3d p, Vec3d a, Vec3d b) {
+        double t = clamp01(projectParamOnSegment(a, b, p));
+        Vec3d q = a.lerp(b, t);
+        return p.squaredDistanceTo(q);
     }
 
     private static class SunBall {
