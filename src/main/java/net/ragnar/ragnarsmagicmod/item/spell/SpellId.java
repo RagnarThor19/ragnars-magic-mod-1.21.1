@@ -20,5 +20,6 @@ public enum SpellId {
     SONIC_BOOM,
     REJUVENATION,
     LIGHT,
-    AEGIS
+    AEGIS,
+    INSIGHT
 }

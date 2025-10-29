@@ -205,6 +205,15 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_INSIGHT = registerItem("tome_insight",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.INSIGHT,
+                    8 // cheap XP cost
+            )
+    );
+
 
 
     static {
@@ -291,9 +300,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_LIGHT
         );
-
-
-
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.INSIGHT,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_INSIGHT
+        );
 
     }
 
@@ -354,6 +365,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_REJUVENATION));
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHT));
             entries.add(new net.minecraft.item.ItemStack(TOME_AEGIS));
+            entries.add(new net.minecraft.item.ItemStack(TOME_INSIGHT));
         });
     }
 }
