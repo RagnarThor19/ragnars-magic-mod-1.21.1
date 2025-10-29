@@ -131,5 +131,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.SunSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.MINING,
+                new net.ragnar.ragnarsmagicmod.item.spell.MiningSpell()
+        );
+
     }
 }

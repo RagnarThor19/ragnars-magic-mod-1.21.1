@@ -23,5 +23,6 @@ public enum SpellId {
     AEGIS,
     INSIGHT,
     TRACKING,
-    SUN
+    SUN,
+    MINING
 }
