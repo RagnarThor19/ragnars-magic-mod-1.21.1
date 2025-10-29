@@ -223,6 +223,15 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_SUN = registerItem("tome_sun",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUN,
+                    40 // high XP cost
+            )
+    );
+
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -318,6 +327,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_TRACKING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUN,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_SUN
+        );
 
     }
 
@@ -380,6 +394,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_AEGIS));
             entries.add(new net.minecraft.item.ItemStack(TOME_INSIGHT));
             entries.add(new net.minecraft.item.ItemStack(TOME_TRACKING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_SUN));
         });
     }
 }
