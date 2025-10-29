@@ -21,5 +21,6 @@ public enum SpellId {
     REJUVENATION,
     LIGHT,
     AEGIS,
-    INSIGHT
+    INSIGHT,
+    TRACKING,
 }

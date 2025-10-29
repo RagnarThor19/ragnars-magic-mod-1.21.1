@@ -214,6 +214,14 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_TRACKING = registerItem("tome_tracking",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.TRACKING,
+                    10 // cheap-mid XP
+            )
+    );
 
 
     static {
@@ -305,6 +313,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_INSIGHT
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.TRACKING,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_TRACKING
+        );
 
     }
 
@@ -366,6 +379,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHT));
             entries.add(new net.minecraft.item.ItemStack(TOME_AEGIS));
             entries.add(new net.minecraft.item.ItemStack(TOME_INSIGHT));
+            entries.add(new net.minecraft.item.ItemStack(TOME_TRACKING));
         });
     }
 }
