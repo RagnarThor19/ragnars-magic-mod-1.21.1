@@ -196,6 +196,14 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_AEGIS = registerItem("tome_aegis",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.AEGIS,
+                    10 // XP cost
+            )
+    );
 
 
 
@@ -345,6 +353,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_SONIC_BOOM));
             entries.add(new net.minecraft.item.ItemStack(TOME_REJUVENATION));
             entries.add(new net.minecraft.item.ItemStack(TOME_LIGHT));
+            entries.add(new net.minecraft.item.ItemStack(TOME_AEGIS));
         });
     }
 }

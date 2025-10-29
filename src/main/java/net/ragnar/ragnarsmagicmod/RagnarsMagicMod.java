@@ -111,7 +111,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.LightOrbSpell()
         );
 
-
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.AEGIS,
+                new net.ragnar.ragnarsmagicmod.item.spell.AegisSpell()
+        );
 
     }
 }
