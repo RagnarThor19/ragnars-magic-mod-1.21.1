@@ -241,6 +241,15 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_DRAGON_BREATH = registerItem("tome_dragon_breath",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.DRAGON_BREATH,
+                    32 // strong & costly
+            )
+    );
+
 
 
     static {
@@ -347,6 +356,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_MINING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.DRAGON_BREATH,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_DRAGON_BREATH
+        );
 
     }
 
@@ -411,6 +425,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_TRACKING));
             entries.add(new net.minecraft.item.ItemStack(TOME_SUN));
             entries.add(new net.minecraft.item.ItemStack(TOME_MINING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_DRAGON_BREATH));
         });
     }
 }

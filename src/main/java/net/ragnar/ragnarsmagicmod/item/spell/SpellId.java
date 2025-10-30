@@ -24,5 +24,6 @@ public enum SpellId {
     INSIGHT,
     TRACKING,
     SUN,
-    MINING
+    MINING,
+    DRAGON_BREATH,
 }

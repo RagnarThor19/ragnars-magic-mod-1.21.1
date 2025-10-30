@@ -136,5 +136,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.MiningSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.DRAGON_BREATH,
+                new net.ragnar.ragnarsmagicmod.item.spell.DragonBreathSpell()
+        );
+
     }
 }
