@@ -259,6 +259,15 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_ICE_BEAM = registerItem("tome_ice_beam",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_BEAM,
+                    30 // XP cost; tune if you want
+            )
+    );
+
 
 
 
@@ -376,6 +385,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_GRAVITY
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_BEAM,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ICE_BEAM
+        );
 
     }
 
@@ -442,6 +456,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_MINING));
             entries.add(new net.minecraft.item.ItemStack(TOME_DRAGON_BREATH));
             entries.add(new net.minecraft.item.ItemStack(TOME_GRAVITY));
+            entries.add(new net.minecraft.item.ItemStack(TOME_ICE_BEAM));
         });
     }
 }

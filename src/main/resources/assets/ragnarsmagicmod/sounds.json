@@ -10,5 +10,10 @@
     "sounds": [
       { "name": "ragnarsmagicmod:zap_impact", "stream": false, "volume": 1.0, "pitch": 1.0 }
     ]
+  },
+  "ice_beam": {
+    "sounds": [
+      { "name": "ragnarsmagicmod:ice_beam", "stream": true }
+    ]
   }
 }

@@ -27,4 +27,5 @@ public enum SpellId {
     MINING,
     DRAGON_BREATH,
     GRAVITY,
+    ICE_BEAM,
 }

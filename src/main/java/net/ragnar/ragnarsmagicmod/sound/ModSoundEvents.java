@@ -8,6 +8,8 @@ import net.minecraft.util.Identifier;
 public final class ModSoundEvents {
     public static final SoundEvent ZAP_CAST   = register("zap_cast");
     public static final SoundEvent ZAP_IMPACT = register("zap_impact");
+    public static final SoundEvent ICE_BEAM = register("ice_beam");
+
 
     private static SoundEvent register(String path) {
         Identifier id = Identifier.of("ragnarsmagicmod", path);
