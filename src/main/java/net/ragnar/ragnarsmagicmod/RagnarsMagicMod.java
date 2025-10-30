@@ -151,5 +151,10 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.VORTEX,
+                new net.ragnar.ragnarsmagicmod.item.spell.VortexSpell()
+        );
+
     }
 }

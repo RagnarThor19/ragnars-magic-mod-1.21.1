@@ -264,7 +264,16 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_BEAM,
-                    30 // XP cost; tune if you want
+                    40 // XP cost; tune if you want
+            )
+    );
+
+    public static final net.minecraft.item.Item TOME_VORTEX = registerItem("tome_vortex",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.VORTEX,
+                    10 // XP cost
             )
     );
 
@@ -390,6 +399,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ICE_BEAM
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.VORTEX,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_VORTEX
+        );
 
     }
 
@@ -457,6 +471,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_DRAGON_BREATH));
             entries.add(new net.minecraft.item.ItemStack(TOME_GRAVITY));
             entries.add(new net.minecraft.item.ItemStack(TOME_ICE_BEAM));
+            entries.add(new net.minecraft.item.ItemStack(TOME_VORTEX));
         });
     }
 }
