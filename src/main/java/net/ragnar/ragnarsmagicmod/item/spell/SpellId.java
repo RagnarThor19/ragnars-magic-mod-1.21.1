@@ -28,5 +28,6 @@ public enum SpellId {
     DRAGON_BREATH,
     GRAVITY,
     ICE_BEAM,
-    VORTEX
+    VORTEX,
+    PUSHBACK
 }
