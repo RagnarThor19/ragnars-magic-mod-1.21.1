@@ -250,6 +250,16 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_GRAVITY = registerItem("tome_gravity",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.GRAVITY,
+                    10 // XP cost
+            )
+    );
+
+
 
 
     static {
@@ -257,7 +267,7 @@ public class ModItems {
         putTome(SpellId.GHAST_FIREBALL, TomeTier.ADVANCED, (TomeItem) TOME_GHASTFIRE);
         putTome(SpellId.ICE_SHARDS,    TomeTier.BEGINNER, (TomeItem) TOME_ICE_SHARDS);
         putTome(
-                SpellId.FALLING_ANVILS,    // or FALLING_ANVILS
+                SpellId.FALLING_ANVILS,
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_FALLING_ANVILS
         );
@@ -361,6 +371,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_DRAGON_BREATH
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.GRAVITY,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_GRAVITY
+        );
 
     }
 
@@ -426,6 +441,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_SUN));
             entries.add(new net.minecraft.item.ItemStack(TOME_MINING));
             entries.add(new net.minecraft.item.ItemStack(TOME_DRAGON_BREATH));
+            entries.add(new net.minecraft.item.ItemStack(TOME_GRAVITY));
         });
     }
 }
