@@ -286,6 +286,15 @@ public class ModItems {
             )
     );
 
+    public static final Item TOME_RECALLING = registerItem("tome_recalling",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.RECALLING,
+                    40 // XP cost
+            )
+    );
+
 
 
 
@@ -418,6 +427,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_PUSHBACK
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.RECALLING,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RECALLING
+        );
 
     }
 
@@ -487,6 +501,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_ICE_BEAM));
             entries.add(new net.minecraft.item.ItemStack(TOME_VORTEX));
             entries.add(new net.minecraft.item.ItemStack(TOME_PUSHBACK));
+            entries.add(new net.minecraft.item.ItemStack(TOME_RECALLING));
         });
     }
 }

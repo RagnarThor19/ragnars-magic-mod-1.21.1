@@ -29,5 +29,6 @@ public enum SpellId {
     GRAVITY,
     ICE_BEAM,
     VORTEX,
-    PUSHBACK
+    PUSHBACK,
+    RECALLING,
 }
