@@ -295,6 +295,23 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_FANGS = registerItem("tome_fangs",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.FANGS,
+                    8 // XP cost
+            )
+    );
+
+    public static final net.minecraft.item.Item TOME_GHOSTSTEP = registerItem("tome_ghoststep",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.GHOSTSTEP,
+                    4 // cheap XP cost
+            )
+    );
 
 
 
@@ -432,6 +449,17 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RECALLING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.FANGS,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_FANGS
+        );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.GHOSTSTEP,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_GHOSTSTEP
+        );
+
 
     }
 
@@ -502,6 +530,8 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_VORTEX));
             entries.add(new net.minecraft.item.ItemStack(TOME_PUSHBACK));
             entries.add(new net.minecraft.item.ItemStack(TOME_RECALLING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_FANGS));
+            entries.add(new net.minecraft.item.ItemStack(TOME_GHOSTSTEP));
         });
     }
 }

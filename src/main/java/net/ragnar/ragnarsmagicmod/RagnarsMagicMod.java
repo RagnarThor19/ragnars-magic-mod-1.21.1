@@ -166,5 +166,15 @@ public class RagnarsMagicMod implements ModInitializer {
                 new net.ragnar.ragnarsmagicmod.item.spell.RecallingSpell()
         );
 
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.FANGS,
+                new net.ragnar.ragnarsmagicmod.item.spell.FangsSpell()
+        );
+
+        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.GHOSTSTEP,
+                new net.ragnar.ragnarsmagicmod.item.spell.GhoststepSpell()
+        );
+
     }
 }

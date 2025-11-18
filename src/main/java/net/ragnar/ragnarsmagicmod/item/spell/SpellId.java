@@ -31,4 +31,6 @@ public enum SpellId {
     VORTEX,
     PUSHBACK,
     RECALLING,
+    FANGS,
+    GHOSTSTEP,
 }
