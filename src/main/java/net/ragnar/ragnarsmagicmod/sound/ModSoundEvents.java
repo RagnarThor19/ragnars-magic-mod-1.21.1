@@ -9,6 +9,8 @@ public final class ModSoundEvents {
     public static final SoundEvent ZAP_CAST   = register("zap_cast");
     public static final SoundEvent ZAP_IMPACT = register("zap_impact");
     public static final SoundEvent ICE_BEAM = register("ice_beam");
+    public static final SoundEvent STEVE_OOF = register("oof");
+
 
 
     private static SoundEvent register(String path) {

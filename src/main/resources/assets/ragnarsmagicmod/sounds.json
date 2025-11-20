@@ -15,5 +15,12 @@
     "sounds": [
       { "name": "ragnarsmagicmod:ice_beam", "stream": true }
     ]
+  },
+  "oof": {
+    "sounds": [
+      {
+        "name": "ragnarsmagicmod:oof"
+      }
+    ]
   }
 }
