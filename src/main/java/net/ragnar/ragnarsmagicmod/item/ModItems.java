@@ -313,6 +313,15 @@ public class ModItems {
             )
     );
 
+    public static final net.minecraft.item.Item TOME_OF_STEVE = registerItem("tome_steve",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUMMON_STEVE,
+                    50 // Quite expensive
+            )
+    );
+
 
 
     static {
@@ -459,6 +468,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_GHOSTSTEP
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUMMON_STEVE,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_STEVE
+        );
 
 
     }
@@ -532,6 +546,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_RECALLING));
             entries.add(new net.minecraft.item.ItemStack(TOME_FANGS));
             entries.add(new net.minecraft.item.ItemStack(TOME_GHOSTSTEP));
+            entries.add(new net.minecraft.item.ItemStack(TOME_OF_STEVE));
         });
     }
 }
