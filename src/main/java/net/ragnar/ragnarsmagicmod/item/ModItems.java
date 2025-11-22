@@ -198,7 +198,7 @@ public class ModItems {
 
     public static final Item TOME_AEGIS = registerItem("tome_aegis",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
-                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.AEGIS,
                     10 // XP cost
@@ -416,6 +416,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHT,
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_LIGHT
+        );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.AEGIS,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_AEGIS
         );
         putTome(
                 net.ragnar.ragnarsmagicmod.item.spell.SpellId.INSIGHT,
