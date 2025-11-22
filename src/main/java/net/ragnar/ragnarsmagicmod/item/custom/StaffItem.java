@@ -47,6 +47,10 @@ public class StaffItem extends Item {
         stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
     }
 
+    public boolean hasTome(ItemStack staff) {
+        return readCustom(staff).contains(NBT_ID);
+    }
+
     public void socket(ItemStack staff, TomeItem tome) {
         NbtCompound nbt = readCustom(staff);
         nbt.putString(NBT_ID, tome.getSpell().name());

@@ -48,7 +48,15 @@ public class TomeItem extends Item {
                 return TypedActionResult.success(tome);
             }
 
-            // 2. Perform the socketing (Server only)
+            // 2. Check if the staff ALREADY has a tome socketed
+            if (staff.hasTome(off)) {
+                if (!world.isClient) {
+                    player.sendMessage(Text.literal("Socket occupied! Shift-Right-Click the staff to remove the old tome first."), true);
+                }
+                return TypedActionResult.success(tome);
+            }
+
+            // 3. Perform the socketing (Server only)
             if (!world.isClient) {
                 staff.socket(off, this);
                 if (!player.isCreative()) {
@@ -57,7 +65,7 @@ public class TomeItem extends Item {
                 player.sendMessage(Text.literal("Tome socketed."), true);
             }
 
-            // 3. IMPORTANT: Return SUCCESS on both Client and Server.
+            // 4. Return SUCCESS on both Client and Server.
             // This tells the game "I handled the interaction", so it won't try to use the off-hand item.
             return TypedActionResult.success(tome);
         }
