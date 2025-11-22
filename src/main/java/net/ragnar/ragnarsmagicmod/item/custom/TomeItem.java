@@ -19,11 +19,28 @@ public class TomeItem extends Item {
     private final SpellId spell;
     private final int xpCost;
 
+    // Default cooldown (20 ticks = 1 second)
+    private int cooldown = 20;
+
     public TomeItem(Settings settings, TomeTier tier, SpellId spell, int xpCost) {
         super(settings);
         this.tier = tier;
         this.spell = spell;
         this.xpCost = xpCost;
+    }
+
+    /**
+     * Sets the cooldown for this specific tome.
+     * @param ticks Cooldown in ticks (20 ticks = 1 second)
+     * @return The TomeItem itself, for chaining.
+     */
+    public TomeItem setCooldown(int ticks) {
+        this.cooldown = ticks;
+        return this;
+    }
+
+    public int getCooldown() {
+        return cooldown;
     }
 
     public TomeTier getTier() { return tier; }
@@ -55,12 +72,9 @@ public class TomeItem extends Item {
                         if (!player.getInventory().insertStack(existing)) {
                             player.dropItem(existing, false);
                         }
-                        // Optional: small visual feedback
                         player.sendMessage(Text.literal("Swapped out previous tome."), true);
                     }
                 }
-                // Note: We do NOT return here. We allow execution to continue to step 3,
-                // which will overwrite the socket with the NEW tome.
             }
 
             // 3. Perform the socketing (Server only)
@@ -76,29 +90,25 @@ public class TomeItem extends Item {
             return TypedActionResult.success(tome);
         }
 
-        // If no staff is in the off-hand, pass (allows normal behavior)
         return TypedActionResult.pass(tome);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        // Tier line (colored)
-        tooltip.add(Text.literal("Tier: " + tier.name())
-                .formatted(colorFor(tier)));
+        tooltip.add(Text.literal("Tier: " + tier.name()).formatted(colorFor(tier)));
+        tooltip.add(Text.literal("XP Cost: " + xpCost).formatted(Formatting.GRAY));
 
-        // XP cost
-        tooltip.add(Text.literal("XP Cost: " + xpCost)
-                .formatted(Formatting.GRAY));
+        // Show cooldown in tooltip
+        float seconds = cooldown / 20.0f;
+        tooltip.add(Text.literal("Cooldown: " + String.format("%.1f", seconds) + "s").formatted(Formatting.BLUE));
 
-        // Which staffs can use it
         String usable = switch (tier) {
             case BEGINNER -> "Golden, Diamond, Netherite";
             case ADVANCED -> "Diamond, Netherite";
             case MASTER -> "Netherite";
         };
 
-        tooltip.add(Text.literal("Usable with: " + usable)
-                .formatted(Formatting.DARK_GRAY));
+        tooltip.add(Text.literal("Usable with: " + usable).formatted(Formatting.DARK_GRAY));
     }
 
     private static Formatting colorFor(TomeTier t) {

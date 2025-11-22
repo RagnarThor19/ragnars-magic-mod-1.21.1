@@ -47,16 +47,10 @@ public class StaffItem extends Item {
         stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
     }
 
-    /**
-     * Checks if the staff currently has a tome socketed.
-     */
     public boolean hasTome(ItemStack staff) {
         return readCustom(staff).contains(NBT_ID);
     }
 
-    /**
-     * Retrieves the currently socketed tome as an ItemStack (for swapping).
-     */
     public ItemStack getSocketedTomeStack(ItemStack staff) {
         NbtCompound nbt = readCustom(staff);
         if (!nbt.contains(NBT_ID) || !nbt.contains(NBT_TIER)) return ItemStack.EMPTY;
@@ -96,18 +90,15 @@ public class StaffItem extends Item {
 
     private static boolean spendXp(PlayerEntity p, int cost) {
         if (p.isCreative()) return true;
-
         int have = getCurrentXpPoints(p);
         if (have < cost) return false;
-
         p.addExperience(-cost);
         return true;
     }
 
     private static int getCurrentXpPoints(PlayerEntity p) {
         int lvl = p.experienceLevel;
-        float prog = p.experienceProgress; // 0..1 of current level
-
+        float prog = p.experienceProgress;
         int total = 0;
         for (int i = 0; i < lvl; i++) {
             total += xpToNextLevel(i);
@@ -128,31 +119,25 @@ public class StaffItem extends Item {
 
         // ---------- Shift-right-click: clear socket ----------
         if (player.isSneaking()) {
-            // read socket
             NbtCompound nbt = readCustom(staff);
             if (!nbt.contains(NBT_ID)) {
                 if (!world.isClient) player.sendMessage(Text.literal("No tome socketed."), true);
                 return TypedActionResult.success(staff);
             }
 
-            // parse saved values
             SpellId id = SpellId.valueOf(nbt.getString(NBT_ID));
             TomeTier tier = TomeTier.valueOf(nbt.getString(NBT_TIER));
-
-            // find the correct TomeItem via ModItems registry
             TomeItem tomeItem = ModItems.getTomeFor(id, tier);
+
             if (tomeItem != null) {
                 ItemStack refund = new ItemStack(tomeItem);
                 if (!player.getInventory().insertStack(refund)) {
                     player.dropItem(refund, false);
                 }
             } else {
-                if (!world.isClient) {
-                    player.sendMessage(Text.literal("Unknown tome (" + id + ", " + tier + ") — please report"), true);
-                }
+                if (!world.isClient) player.sendMessage(Text.literal("Unknown tome (" + id + ")"), true);
             }
 
-            // wipe socket
             nbt.remove(NBT_ID);
             nbt.remove(NBT_TIER);
             nbt.remove(NBT_XP);
@@ -165,8 +150,7 @@ public class StaffItem extends Item {
         // ---------- Cast ----------
         SpellId id = getSocketed(staff);
         if (id == null) {
-            if (!world.isClient)
-                player.sendMessage(Text.literal("No tome socketed."), true);
+            if (!world.isClient) player.sendMessage(Text.literal("No tome socketed."), true);
             return TypedActionResult.pass(staff);
         }
 
@@ -180,24 +164,38 @@ public class StaffItem extends Item {
         if (spell != null && spell.cast(world, player, staff)) {
             player.incrementStat(Stats.USED.getOrCreateStat(this));
             staff.damage(1, player, EquipmentSlot.MAINHAND);
-            player.getItemCooldownManager().set(this, 24);
+
+            // --- DYNAMIC COOLDOWN LOGIC ---
+            int cooldown = 24; // Fallback default
+
+            // Read NBT to find which tome is inside, then get its specific cooldown
+            NbtCompound nbt = readCustom(staff);
+            if (nbt.contains(NBT_TIER)) {
+                try {
+                    TomeTier tier = TomeTier.valueOf(nbt.getString(NBT_TIER));
+                    TomeItem tome = ModItems.getTomeFor(id, tier);
+                    if (tome != null) {
+                        cooldown = tome.getCooldown();
+                    }
+                } catch (IllegalArgumentException ignored) {}
+            }
+
+            player.getItemCooldownManager().set(this, cooldown);
+            // -----------------------------
+
             return TypedActionResult.success(staff, world.isClient);
         }
         return TypedActionResult.pass(staff);
     }
 
-    // ---------- TOOLTIP LOGIC ----------
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         NbtCompound nbt = readCustom(stack);
 
-        // Check if a spell is socketed
         if (nbt.contains(NBT_ID) && nbt.contains(NBT_TIER)) {
             try {
                 SpellId id = SpellId.valueOf(nbt.getString(NBT_ID));
                 TomeTier tier = TomeTier.valueOf(nbt.getString(NBT_TIER));
-
-                // Retrieve the actual Tome Item to get its translated name
                 TomeItem tome = ModItems.getTomeFor(id, tier);
 
                 tooltip.add(Text.literal("Socketed: ").formatted(Formatting.GRAY));

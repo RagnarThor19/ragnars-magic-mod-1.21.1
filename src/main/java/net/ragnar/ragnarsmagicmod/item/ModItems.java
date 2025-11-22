@@ -43,7 +43,7 @@ public class ModItems {
     public static final Item TOME_GHASTFIRE = registerItem("tome_ghastfire",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE),
             TomeTier.ADVANCED, SpellId.GHAST_FIREBALL, 15
-            )
+            ).setCooldown(40)
     );
     public static final Item TOME_ICE_SHARDS = registerItem("tome_ice_shards",
             new TomeItem(
@@ -51,7 +51,7 @@ public class ModItems {
                     TomeTier.BEGINNER,
                     SpellId.ICE_SHARDS,
                     10 // XP cost
-            )
+            ).setCooldown(30)
     );
     public static final Item TOME_FALLING_ANVILS = registerItem("tome_falling_anvils",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -59,7 +59,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     SpellId.FALLING_ANVILS,
                     22 // XP cost (a bit pricier than others)
-            )
+            ).setCooldown(60)
     );
     public static final Item TOME_METEOR = registerItem("tome_meteor",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -67,7 +67,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.METEOR,
                     80 // XP cost (big boom should cost more)
-            )
+            ).setCooldown(200)
     );
 
     public static final Item TOME_FALLING_STALACTITE = registerItem("tome_falling_stalactite",
@@ -76,7 +76,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.FALLING_STALACTITE,
                     6 // XP cost (cheap beginner)
-            )
+            ).setCooldown(30)
     );
 
     public static final Item TOME_PUSHING = registerItem("tome_pushing",
@@ -85,7 +85,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_PUSH,
                     12 // XP cost
-            )
+            ).setCooldown(50)
     );
 
     public static final Item TOME_BLINKING = registerItem("tome_blinking",
@@ -94,7 +94,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.BLINK,
                     9 // XP cost
-            )
+            ).setCooldown(30)
     );
 
     public static final Item TOME_RISING_SPIKES = registerItem("tome_rising_spikes",
@@ -103,7 +103,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.RISING_SPIKES,
                     25 // XP cost
-            )
+            ).setCooldown(60)
     );
 
     public static final Item TOME_DASHING = registerItem("tome_dashing",
@@ -112,7 +112,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.DASH,
                     6
-            )
+            ).setCooldown(25)
     );
 
     public static final Item TOME_CHARGED_WIND = registerItem("tome_charged_wind",
@@ -121,7 +121,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_CHARGE,
                     10 // XP cost
-            )
+            ).setCooldown(35)
     );
 
     public static final Item TOME_SKULLS = registerItem("tome_skulls",
@@ -130,7 +130,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.WITHER_SKULL,
                     12 // a bit expensive for beginner
-            )
+            ).setCooldown(40)
     );
 
     public static final Item TOME_ZAP = registerItem("tome_zap",
@@ -139,7 +139,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.ZAP,
                     12 // XP cost
-            )
+            ).setCooldown(25)
     );
 
     public static final net.minecraft.item.Item TOME_LIGHTNING = registerItem("tome_lightning",
@@ -148,7 +148,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING,
                     14 // XP cost (match your ADVANCED example style)
-            )
+            ).setCooldown(60)
     );
 
     public static final net.minecraft.item.Item TOME_LIGHTNING_CASCADE = registerItem("tome_lightning_cascade",
@@ -157,7 +157,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE,
                     50 // XP cost (Master tier; adjust if you have a standard)
-            )
+            ).setCooldown(140)
     );
 
     public static final net.minecraft.item.Item TOME_ENERGY = registerItem("tome_energy",
@@ -166,7 +166,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.ENERGY_ORB,
                     15 // XP cost
-            )
+            ).setCooldown(50)
     );
 
     public static final net.minecraft.item.Item TOME_SONIC_BOOM = registerItem("tome_sonic_boom",
@@ -175,7 +175,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SONIC_BOOM,
                     40 // XP cost (Master-tier)
-            )
+            ).setCooldown(120)
     );
 
     public static final net.minecraft.item.Item TOME_REJUVENATION = registerItem("tome_rejuvenation",
@@ -184,7 +184,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.REJUVENATION,
                     18 // XP cost
-            )
+            ).setCooldown(100)
     );
 
     public static final net.minecraft.item.Item TOME_LIGHT = registerItem("tome_light",
@@ -193,7 +193,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHT,
                     6 // cheap XP cost
-            )
+            ).setCooldown(150)
     );
 
     public static final Item TOME_AEGIS = registerItem("tome_aegis",
@@ -202,7 +202,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.AEGIS,
                     10 // XP cost
-            )
+            ).setCooldown(120)
     );
 
     public static final net.minecraft.item.Item TOME_INSIGHT = registerItem("tome_insight",
@@ -211,7 +211,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.INSIGHT,
                     8 // cheap XP cost
-            )
+            ).setCooldown(100)
     );
 
     public static final net.minecraft.item.Item TOME_TRACKING = registerItem("tome_tracking",
@@ -220,7 +220,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.TRACKING,
                     10 // cheap-mid XP
-            )
+            ).setCooldown(20)
     );
 
     public static final net.minecraft.item.Item TOME_SUN = registerItem("tome_sun",
@@ -229,7 +229,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUN,
                     40 // high XP cost
-            )
+            ).setCooldown(150)
     );
 
     public static final net.minecraft.item.Item TOME_MINING = registerItem("tome_mining",
@@ -238,7 +238,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.MINING,
                     10 // XP cost
-            )
+            ).setCooldown(20)
     );
 
     public static final net.minecraft.item.Item TOME_DRAGON_BREATH = registerItem("tome_dragon_breath",
@@ -247,7 +247,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.DRAGON_BREATH,
                     32 // strong & costly
-            )
+            ).setCooldown(60)
     );
 
     public static final net.minecraft.item.Item TOME_GRAVITY = registerItem("tome_gravity",
@@ -256,7 +256,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.GRAVITY,
                     10 // XP cost
-            )
+            ).setCooldown(150)
     );
 
     public static final net.minecraft.item.Item TOME_ICE_BEAM = registerItem("tome_ice_beam",
@@ -265,7 +265,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_BEAM,
                     40 // XP cost; tune if you want
-            )
+            ).setCooldown(150)
     );
 
     public static final net.minecraft.item.Item TOME_VORTEX = registerItem("tome_vortex",
@@ -274,7 +274,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.VORTEX,
                     10 // XP cost
-            )
+            ).setCooldown(120)
     );
 
     public static final Item TOME_PUSHBACK = registerItem("tome_pushback",
@@ -283,7 +283,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.PUSHBACK,
                     3 // XP cost
-            )
+            ).setCooldown(20)
     );
 
     public static final Item TOME_RECALLING = registerItem("tome_recalling",
@@ -292,7 +292,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.RECALLING,
                     40 // XP cost
-            )
+            ).setCooldown(40)
     );
 
     public static final net.minecraft.item.Item TOME_FANGS = registerItem("tome_fangs",
@@ -301,7 +301,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.FANGS,
                     8 // XP cost
-            )
+            ).setCooldown(15)
     );
 
     public static final net.minecraft.item.Item TOME_GHOSTSTEP = registerItem("tome_ghoststep",
@@ -310,7 +310,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.GHOSTSTEP,
                     4 // cheap XP cost
-            )
+            ).setCooldown(40)
     );
 
     public static final net.minecraft.item.Item TOME_OF_STEVE = registerItem("tome_steve",
@@ -319,7 +319,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUMMON_STEVE,
                     50 // Quite expensive
-            )
+            ).setCooldown(150)
     );
 
     public static final net.minecraft.item.Item TOME_GROWTH = registerItem("tome_growth",
@@ -328,7 +328,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.GROWTH,
                     4
-            )
+            ).setCooldown(10)
     );
 
 
