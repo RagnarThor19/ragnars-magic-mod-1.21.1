@@ -4,23 +4,22 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
-import net.minecraft.sound.SoundCategory;
-
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class StaffItem extends Item {
     private static final String NBT_ID = "rmm_tome_id";
@@ -59,7 +58,11 @@ public class StaffItem extends Item {
     private SpellId getSocketed(ItemStack staff) {
         NbtCompound nbt = readCustom(staff);
         if (!nbt.contains(NBT_ID)) return null;
-        return SpellId.valueOf(nbt.getString(NBT_ID));
+        try {
+            return SpellId.valueOf(nbt.getString(NBT_ID));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     private int getXpCost(ItemStack staff) {
@@ -76,6 +79,7 @@ public class StaffItem extends Item {
         p.addExperience(-cost);
         return true;
     }
+
     private static int getCurrentXpPoints(PlayerEntity p) {
         int lvl = p.experienceLevel;
         float prog = p.experienceProgress; // 0..1 of current level
@@ -132,7 +136,6 @@ public class StaffItem extends Item {
 
             if (!world.isClient) player.sendMessage(Text.literal("Socket cleared."), true);
             return TypedActionResult.success(staff);
-
         }
 
         // ---------- Cast ----------
@@ -142,7 +145,7 @@ public class StaffItem extends Item {
                 player.sendMessage(Text.literal("No tome socketed."), true);
             return TypedActionResult.pass(staff);
         }
-        
+
         int xpCost = getXpCost(staff);
         if (!spendXp(player, xpCost)) {
             if (!world.isClient) player.sendMessage(Text.literal("Not enough XP."), true);
@@ -157,7 +160,43 @@ public class StaffItem extends Item {
             return TypedActionResult.success(staff, world.isClient);
         }
         return TypedActionResult.pass(staff);
+    }
 
+    // ---------- TOOLTIP LOGIC ----------
+    @Override
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        NbtCompound nbt = readCustom(stack);
 
+        // Check if a spell is socketed
+        if (nbt.contains(NBT_ID) && nbt.contains(NBT_TIER)) {
+            try {
+                SpellId id = SpellId.valueOf(nbt.getString(NBT_ID));
+                TomeTier tier = TomeTier.valueOf(nbt.getString(NBT_TIER));
+
+                // Retrieve the actual Tome Item to get its translated name
+                TomeItem tome = ModItems.getTomeFor(id, tier);
+
+                tooltip.add(Text.literal("Socketed: ").formatted(Formatting.GRAY));
+                if (tome != null) {
+                    // Display the tome's name in Gold
+                    tooltip.add(tome.getName().copy().formatted(Formatting.GOLD));
+                } else {
+                    // Fallback if the item map fails
+                    tooltip.add(Text.literal(id.name()).formatted(Formatting.RED));
+                }
+
+                // Optional: Show XP Cost in tooltip
+                if (nbt.contains(NBT_XP)) {
+                    tooltip.add(Text.literal("Cost: " + nbt.getInt(NBT_XP) + " XP").formatted(Formatting.BLUE));
+                }
+
+            } catch (IllegalArgumentException e) {
+                tooltip.add(Text.literal("Corrupt Socket Data").formatted(Formatting.RED));
+            }
+        } else {
+            tooltip.add(Text.literal("No Tome Socketed").formatted(Formatting.DARK_GRAY).formatted(Formatting.ITALIC));
+        }
+
+        super.appendTooltip(stack, context, tooltip, type);
     }
 }
