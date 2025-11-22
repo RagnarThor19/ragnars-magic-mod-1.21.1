@@ -44,16 +44,23 @@ public class TomeItem extends Item {
                 if (!world.isClient) {
                     player.sendMessage(Text.literal("This staff cannot use that tome."), true);
                 }
-                // Return SUCCESS here to consume the click and prevent the staff from firing
                 return TypedActionResult.success(tome);
             }
 
-            // 2. Check if the staff ALREADY has a tome socketed
+            // 2. AUTO-SWAP: If there's an existing tome, refund it first
             if (staff.hasTome(off)) {
                 if (!world.isClient) {
-                    player.sendMessage(Text.literal("Socket occupied! Shift-Right-Click the staff to remove the old tome first."), true);
+                    ItemStack existing = staff.getSocketedTomeStack(off);
+                    if (!existing.isEmpty()) {
+                        if (!player.getInventory().insertStack(existing)) {
+                            player.dropItem(existing, false);
+                        }
+                        // Optional: small visual feedback
+                        player.sendMessage(Text.literal("Swapped out previous tome."), true);
+                    }
                 }
-                return TypedActionResult.success(tome);
+                // Note: We do NOT return here. We allow execution to continue to step 3,
+                // which will overwrite the socket with the NEW tome.
             }
 
             // 3. Perform the socketing (Server only)
@@ -65,8 +72,7 @@ public class TomeItem extends Item {
                 player.sendMessage(Text.literal("Tome socketed."), true);
             }
 
-            // 4. Return SUCCESS on both Client and Server.
-            // This tells the game "I handled the interaction", so it won't try to use the off-hand item.
+            // 4. Return SUCCESS to consume click and prevent staff usage
             return TypedActionResult.success(tome);
         }
 

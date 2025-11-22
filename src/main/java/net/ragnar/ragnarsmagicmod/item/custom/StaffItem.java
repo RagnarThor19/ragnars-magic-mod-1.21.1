@@ -47,8 +47,28 @@ public class StaffItem extends Item {
         stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
     }
 
+    /**
+     * Checks if the staff currently has a tome socketed.
+     */
     public boolean hasTome(ItemStack staff) {
         return readCustom(staff).contains(NBT_ID);
+    }
+
+    /**
+     * Retrieves the currently socketed tome as an ItemStack (for swapping).
+     */
+    public ItemStack getSocketedTomeStack(ItemStack staff) {
+        NbtCompound nbt = readCustom(staff);
+        if (!nbt.contains(NBT_ID) || !nbt.contains(NBT_TIER)) return ItemStack.EMPTY;
+
+        try {
+            SpellId id = SpellId.valueOf(nbt.getString(NBT_ID));
+            TomeTier tier = TomeTier.valueOf(nbt.getString(NBT_TIER));
+            TomeItem item = ModItems.getTomeFor(id, tier);
+            return item != null ? new ItemStack(item) : ItemStack.EMPTY;
+        } catch (IllegalArgumentException e) {
+            return ItemStack.EMPTY;
+        }
     }
 
     public void socket(ItemStack staff, TomeItem tome) {
@@ -182,14 +202,11 @@ public class StaffItem extends Item {
 
                 tooltip.add(Text.literal("Socketed: ").formatted(Formatting.GRAY));
                 if (tome != null) {
-                    // Display the tome's name in Gold
                     tooltip.add(tome.getName().copy().formatted(Formatting.GOLD));
                 } else {
-                    // Fallback if the item map fails
                     tooltip.add(Text.literal(id.name()).formatted(Formatting.RED));
                 }
 
-                // Optional: Show XP Cost in tooltip
                 if (nbt.contains(NBT_XP)) {
                     tooltip.add(Text.literal("Cost: " + nbt.getInt(NBT_XP) + " XP").formatted(Formatting.BLUE));
                 }
