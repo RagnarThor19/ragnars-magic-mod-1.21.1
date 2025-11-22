@@ -2,7 +2,9 @@ package net.ragnar.ragnarsmagicmod.entity.client;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
+import net.minecraft.client.render.entity.model.ArmorEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.util.Identifier;
@@ -22,6 +24,14 @@ public class SteveRenderer extends MobEntityRenderer<SteveEntity, PlayerEntityMo
 
         // IMPORTANT: This MUST be added for held items to render
         this.addFeature(new HeldItemFeatureRenderer<>(this, context.getHeldItemRenderer()));
+
+        // 2. Render Armor
+        this.addFeature(new ArmorFeatureRenderer<>(
+                this,
+                new ArmorEntityModel<>(context.getPart(EntityModelLayers.PLAYER_INNER_ARMOR)),
+                new ArmorEntityModel<>(context.getPart(EntityModelLayers.PLAYER_OUTER_ARMOR)),
+                context.getModelManager()
+        ));
     }
 
     @Override

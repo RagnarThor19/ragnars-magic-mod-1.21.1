@@ -22,5 +22,10 @@
         "name": "ragnarsmagicmod:oof"
       }
     ]
+  },
+  "steve_aura": {
+    "sounds": [
+      { "name": "ragnarsmagicmod:aura" }
+    ]
   }
 }
