@@ -1,4 +1,5 @@
 package net.ragnar.ragnarsmagicmod.item.custom;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,8 @@ import net.minecraft.world.World;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
 
+import java.util.List;
+
 public class TomeItem extends Item {
     private final TomeTier tier;
     private final SpellId spell;
@@ -18,7 +21,9 @@ public class TomeItem extends Item {
 
     public TomeItem(Settings settings, TomeTier tier, SpellId spell, int xpCost) {
         super(settings);
-        this.tier = tier; this.spell = spell; this.xpCost = xpCost;
+        this.tier = tier;
+        this.spell = spell;
+        this.xpCost = xpCost;
     }
 
     public TomeTier getTier() { return tier; }
@@ -30,21 +35,39 @@ public class TomeItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack tome = player.getStackInHand(hand);
         ItemStack off = player.getOffHandStack();
-        if (!world.isClient && off.getItem() instanceof StaffItem staff) {
+
+        // Check if the off-hand item is a Staff
+        if (off.getItem() instanceof StaffItem staff) {
+
+            // 1. Check if this staff supports this tome tier
             if (!staff.canAccept(this)) {
-                player.sendMessage(Text.literal("This staff cannot use that tome."), true);
+                if (!world.isClient) {
+                    player.sendMessage(Text.literal("This staff cannot use that tome."), true);
+                }
+                // Return SUCCESS here to consume the click and prevent the staff from firing
                 return TypedActionResult.success(tome);
             }
-            staff.socket(off, this);
-            if (!player.isCreative()) tome.decrement(1);
-            player.sendMessage(Text.literal("Tome socketed."), true);
+
+            // 2. Perform the socketing (Server only)
+            if (!world.isClient) {
+                staff.socket(off, this);
+                if (!player.isCreative()) {
+                    tome.decrement(1);
+                }
+                player.sendMessage(Text.literal("Tome socketed."), true);
+            }
+
+            // 3. IMPORTANT: Return SUCCESS on both Client and Server.
+            // This tells the game "I handled the interaction", so it won't try to use the off-hand item.
             return TypedActionResult.success(tome);
         }
+
+        // If no staff is in the off-hand, pass (allows normal behavior)
         return TypedActionResult.pass(tome);
     }
+
     @Override
-    public void appendTooltip(ItemStack stack, Item.TooltipContext context,
-                              java.util.List<Text> tooltip, TooltipType type) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         // Tier line (colored)
         tooltip.add(Text.literal("Tier: " + tier.name())
                 .formatted(colorFor(tier)));
@@ -71,5 +94,4 @@ public class TomeItem extends Item {
             case MASTER -> Formatting.LIGHT_PURPLE;
         };
     }
-
 }
