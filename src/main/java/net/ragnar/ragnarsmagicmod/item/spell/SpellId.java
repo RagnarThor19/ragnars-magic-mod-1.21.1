@@ -33,5 +33,6 @@ public enum SpellId {
     RECALLING,
     FANGS,
     GHOSTSTEP,
-    SUMMON_STEVE
+    SUMMON_STEVE,
+    GROWTH
 }
