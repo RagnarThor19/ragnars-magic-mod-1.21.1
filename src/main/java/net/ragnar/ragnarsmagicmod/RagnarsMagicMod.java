@@ -1,7 +1,7 @@
 package net.ragnar.ragnarsmagicmod;
 
 import net.fabricmc.api.ModInitializer;
-
+import net.ragnar.ragnarsmagicmod.enchantment.ModEnchantments;
 import net.ragnar.ragnarsmagicmod.entity.ModEntities;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
 import net.ragnar.ragnarsmagicmod.item.spell.GhastFireballSpell;
@@ -11,182 +11,53 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RagnarsMagicMod implements ModInitializer {
-	public static final String MOD_ID = "ragnarsmagicmod";
+    public static final String MOD_ID = "ragnarsmagicmod";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	@Override
-	public void onInitialize() {
+    @Override
+    public void onInitialize() {
         LOGGER.info("Initializing {}", MOD_ID);
+
         ModItems.registerModItems();
+        ModEnchantments.registerModEnchantments(); // Just loads the keys
+
         net.ragnar.ragnarsmagicmod.sound.ModSoundEvents.init();
         ModEntities.registerModEntities();
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
 
-            net.ragnar.ragnarsmagicmod.item.spell.SpellId.FIREBALLS,
-            new net.ragnar.ragnarsmagicmod.item.spell.FireballSpell()
-        );
-        Spells.register(SpellId.GHAST_FIREBALL, new GhastFireballSpell(1)); // power 1 is safe
-        net.ragnar.ragnarsmagicmod.entity.ModEntities.register();
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_SHARDS,
-                new net.ragnar.ragnarsmagicmod.item.spell.IceShardsSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                SpellId.FALLING_ANVILS,
-                new net.ragnar.ragnarsmagicmod.item.spell.FallingAnvilsSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.METEOR,
-                new net.ragnar.ragnarsmagicmod.item.spell.MeteorSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.FALLING_STALACTITE,
-                new net.ragnar.ragnarsmagicmod.item.spell.FallingStalactiteSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_PUSH,
-                new net.ragnar.ragnarsmagicmod.item.spell.WindPushSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.BLINK,
-                new net.ragnar.ragnarsmagicmod.item.spell.BlinkSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.RISING_SPIKES,
-                new net.ragnar.ragnarsmagicmod.item.spell.RisingSpikesSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.DASH,
-                new net.ragnar.ragnarsmagicmod.item.spell.DashSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WIND_CHARGE,
-                new net.ragnar.ragnarsmagicmod.item.spell.WindChargeSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.WITHER_SKULL,
-                new net.ragnar.ragnarsmagicmod.item.spell.WitherSkullSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ZAP,
-                new net.ragnar.ragnarsmagicmod.item.spell.ZapSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING,
-                new net.ragnar.ragnarsmagicmod.item.spell.LightningSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE,
-                new net.ragnar.ragnarsmagicmod.item.spell.LightningCascadeSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ENERGY_ORB,
-                new net.ragnar.ragnarsmagicmod.item.spell.EnergyOrbSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SONIC_BOOM,
-                new net.ragnar.ragnarsmagicmod.item.spell.SonicBoomSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.REJUVENATION,
-                new net.ragnar.ragnarsmagicmod.item.spell.RejuvenationSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHT,
-                new net.ragnar.ragnarsmagicmod.item.spell.LightOrbSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.AEGIS,
-                new net.ragnar.ragnarsmagicmod.item.spell.AegisSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.INSIGHT,
-                new net.ragnar.ragnarsmagicmod.item.spell.InsightSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.TRACKING,
-                new net.ragnar.ragnarsmagicmod.item.spell.TrackingSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUN,
-                new net.ragnar.ragnarsmagicmod.item.spell.SunSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.MINING,
-                new net.ragnar.ragnarsmagicmod.item.spell.MiningSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.DRAGON_BREATH,
-                new net.ragnar.ragnarsmagicmod.item.spell.DragonBreathSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.GRAVITY,
-                new net.ragnar.ragnarsmagicmod.item.spell.GravitySpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_BEAM,
-                new net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.VORTEX,
-                new net.ragnar.ragnarsmagicmod.item.spell.VortexSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.PUSHBACK,
-                new net.ragnar.ragnarsmagicmod.item.spell.PushbackSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.RECALLING,
-                new net.ragnar.ragnarsmagicmod.item.spell.RecallingSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.FANGS,
-                new net.ragnar.ragnarsmagicmod.item.spell.FangsSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.GHOSTSTEP,
-                new net.ragnar.ragnarsmagicmod.item.spell.GhoststepSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUMMON_STEVE,
-                new net.ragnar.ragnarsmagicmod.item.spell.SummonSteveSpell()
-        );
-
-        net.ragnar.ragnarsmagicmod.item.spell.Spells.register(
-                net.ragnar.ragnarsmagicmod.item.spell.SpellId.GROWTH,
-                new net.ragnar.ragnarsmagicmod.item.spell.GrowthSpell()
-        );
-
+        // Spell Registration
+        Spells.register(SpellId.FIREBALLS, new net.ragnar.ragnarsmagicmod.item.spell.FireballSpell());
+        Spells.register(SpellId.GHAST_FIREBALL, new GhastFireballSpell(1));
+        Spells.register(SpellId.ICE_SHARDS, new net.ragnar.ragnarsmagicmod.item.spell.IceShardsSpell());
+        Spells.register(SpellId.FALLING_ANVILS, new net.ragnar.ragnarsmagicmod.item.spell.FallingAnvilsSpell());
+        Spells.register(SpellId.METEOR, new net.ragnar.ragnarsmagicmod.item.spell.MeteorSpell());
+        Spells.register(SpellId.FALLING_STALACTITE, new net.ragnar.ragnarsmagicmod.item.spell.FallingStalactiteSpell());
+        Spells.register(SpellId.WIND_PUSH, new net.ragnar.ragnarsmagicmod.item.spell.WindPushSpell());
+        Spells.register(SpellId.BLINK, new net.ragnar.ragnarsmagicmod.item.spell.BlinkSpell());
+        Spells.register(SpellId.RISING_SPIKES, new net.ragnar.ragnarsmagicmod.item.spell.RisingSpikesSpell());
+        Spells.register(SpellId.DASH, new net.ragnar.ragnarsmagicmod.item.spell.DashSpell());
+        Spells.register(SpellId.WIND_CHARGE, new net.ragnar.ragnarsmagicmod.item.spell.WindChargeSpell());
+        Spells.register(SpellId.WITHER_SKULL, new net.ragnar.ragnarsmagicmod.item.spell.WitherSkullSpell());
+        Spells.register(SpellId.ZAP, new net.ragnar.ragnarsmagicmod.item.spell.ZapSpell());
+        Spells.register(SpellId.LIGHTNING, new net.ragnar.ragnarsmagicmod.item.spell.LightningSpell());
+        Spells.register(SpellId.LIGHTNING_CASCADE, new net.ragnar.ragnarsmagicmod.item.spell.LightningCascadeSpell());
+        Spells.register(SpellId.ENERGY_ORB, new net.ragnar.ragnarsmagicmod.item.spell.EnergyOrbSpell());
+        Spells.register(SpellId.SONIC_BOOM, new net.ragnar.ragnarsmagicmod.item.spell.SonicBoomSpell());
+        Spells.register(SpellId.REJUVENATION, new net.ragnar.ragnarsmagicmod.item.spell.RejuvenationSpell());
+        Spells.register(SpellId.LIGHT, new net.ragnar.ragnarsmagicmod.item.spell.LightOrbSpell());
+        Spells.register(SpellId.AEGIS, new net.ragnar.ragnarsmagicmod.item.spell.AegisSpell());
+        Spells.register(SpellId.INSIGHT, new net.ragnar.ragnarsmagicmod.item.spell.InsightSpell());
+        Spells.register(SpellId.TRACKING, new net.ragnar.ragnarsmagicmod.item.spell.TrackingSpell());
+        Spells.register(SpellId.SUN, new net.ragnar.ragnarsmagicmod.item.spell.SunSpell());
+        Spells.register(SpellId.MINING, new net.ragnar.ragnarsmagicmod.item.spell.MiningSpell());
+        Spells.register(SpellId.DRAGON_BREATH, new net.ragnar.ragnarsmagicmod.item.spell.DragonBreathSpell());
+        Spells.register(SpellId.GRAVITY, new net.ragnar.ragnarsmagicmod.item.spell.GravitySpell());
+        Spells.register(SpellId.ICE_BEAM, new net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell());
+        Spells.register(SpellId.VORTEX, new net.ragnar.ragnarsmagicmod.item.spell.VortexSpell());
+        Spells.register(SpellId.PUSHBACK, new net.ragnar.ragnarsmagicmod.item.spell.PushbackSpell());
+        Spells.register(SpellId.RECALLING, new net.ragnar.ragnarsmagicmod.item.spell.RecallingSpell());
+        Spells.register(SpellId.FANGS, new net.ragnar.ragnarsmagicmod.item.spell.FangsSpell());
+        Spells.register(SpellId.GHOSTSTEP, new net.ragnar.ragnarsmagicmod.item.spell.GhoststepSpell());
+        Spells.register(SpellId.SUMMON_STEVE, new net.ragnar.ragnarsmagicmod.item.spell.SummonSteveSpell());
+        Spells.register(SpellId.GROWTH, new net.ragnar.ragnarsmagicmod.item.spell.GrowthSpell());
     }
 }
