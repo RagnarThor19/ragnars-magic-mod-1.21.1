@@ -34,5 +34,6 @@ public enum SpellId {
     FANGS,
     GHOSTSTEP,
     SUMMON_STEVE,
-    GROWTH
+    GROWTH,
+    ARROW_VOLLEY
 }

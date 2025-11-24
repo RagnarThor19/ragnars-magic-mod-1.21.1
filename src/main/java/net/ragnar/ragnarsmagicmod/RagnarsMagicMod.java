@@ -7,6 +7,7 @@ import net.ragnar.ragnarsmagicmod.item.ModItems;
 import net.ragnar.ragnarsmagicmod.item.spell.GhastFireballSpell;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
+import net.ragnar.ragnarsmagicmod.util.ModLootTableModifiers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,9 @@ public class RagnarsMagicMod implements ModInitializer {
 
         net.ragnar.ragnarsmagicmod.sound.ModSoundEvents.init();
         ModEntities.registerModEntities();
+
+        // Register Loot Table Modifiers
+        ModLootTableModifiers.modifyLootTables();
 
         // Spell Registration
         Spells.register(SpellId.FIREBALLS, new net.ragnar.ragnarsmagicmod.item.spell.FireballSpell());
@@ -59,5 +63,6 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.GHOSTSTEP, new net.ragnar.ragnarsmagicmod.item.spell.GhoststepSpell());
         Spells.register(SpellId.SUMMON_STEVE, new net.ragnar.ragnarsmagicmod.item.spell.SummonSteveSpell());
         Spells.register(SpellId.GROWTH, new net.ragnar.ragnarsmagicmod.item.spell.GrowthSpell());
+        Spells.register(SpellId.ARROW_VOLLEY, new net.ragnar.ragnarsmagicmod.item.spell.ArrowVolleySpell());
     }
 }

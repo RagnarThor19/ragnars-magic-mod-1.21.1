@@ -330,7 +330,14 @@ public class ModItems {
                     4
             ).setCooldown(10)
     );
-
+    public static final net.minecraft.item.Item TOME_ARROW_VOLLEY = registerItem("tome_arrow_volley",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON),
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.ARROW_VOLLEY,
+                    7
+            ).setCooldown(50)
+    );
 
 
     static {
@@ -492,6 +499,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_GROWTH
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.ARROW_VOLLEY,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ARROW_VOLLEY
+        );
 
 
     }
@@ -567,6 +579,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_GHOSTSTEP));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_STEVE));
             entries.add(new net.minecraft.item.ItemStack(TOME_GROWTH));
+            entries.add(new net.minecraft.item.ItemStack(TOME_ARROW_VOLLEY));
         });
     }
 }
