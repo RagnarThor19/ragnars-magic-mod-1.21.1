@@ -196,9 +196,9 @@ public class StaffItem extends Item {
             int quickcastLevel = getEnchLevel(world, staff, ModEnchantments.QUICKCAST);
             if (quickcastLevel > 0) {
                 float multiplier = switch (quickcastLevel) {
-                    case 1 -> 0.90f; // 10% faster
-                    case 2 -> 0.85f; // 15% faster
-                    default -> 0.80f; // 20% faster
+                    case 1 -> 0.85f; // 15% faster
+                    case 2 -> 0.75f; // 25% faster
+                    default -> 0.50f; // 45% faster
                 };
                 cooldown = Math.max(2, (int)(cooldown * multiplier));
             }

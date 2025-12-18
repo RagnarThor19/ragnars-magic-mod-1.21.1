@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " LB",
+    " SL",
+    "S  "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "B": {
+      "item": "minecraft:netherite_block"
+    }
+  },
+  "result": {
+    "id": "ragnarsmagicmod:netherite_staff",
+    "count": 1
+  }
+}
