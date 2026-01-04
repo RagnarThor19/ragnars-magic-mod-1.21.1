@@ -33,7 +33,7 @@ public class IceBeamSpell implements Spell {
     private static final double START_OFFSET = 3.0; // spawn in front of eyes
     private static final double MAX_RANGE    = 24.0;
     private static final double THICKNESS    = 0.20;  // collision radius
-    private static final float  DPT          = 6.0f;  // damage per tick on hit
+    private static final float  DPT          = 12.0f;  // damage per tick on hit
 
     // debuffs
     private static final StatusEffectInstance SLOW   =

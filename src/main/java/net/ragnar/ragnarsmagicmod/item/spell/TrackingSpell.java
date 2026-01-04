@@ -27,7 +27,7 @@ public class TrackingSpell implements Spell {
     private static final double TURN = 0.14;           // steering per tick (limited homing)
     private static final int LIFE_TICKS = 60;          // 3s max life
     private static final double HIT_RADIUS = 0.35;     // collision thickness
-    private static final float DAMAGE = 4.0f;          // 4 damage (2 hearts)
+    private static final float DAMAGE = 5.0f;          // 5 damage (2.5 hearts)
     private static final double KNOCKBACK = 0.50;      // tiny push
     private static final double START_AHEAD = 1.7;     // spawn in front of eyes
 

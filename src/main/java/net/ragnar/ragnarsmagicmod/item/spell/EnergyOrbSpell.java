@@ -29,7 +29,7 @@ public class EnergyOrbSpell implements Spell {
     private static final int LIFE_TICKS = 80;              // 4s
     private static final double HIT_RADIUS = 0.6;          // fatter for big orb
     private static final double AOE_RADIUS = 2.0;          // small AoE
-    private static final float DAMAGE = 5.0f;              // ~2.5 hearts
+    private static final float DAMAGE = 12.0f;              // ~6 hearts
     private static final double KNOCKBACK = 0.8;           // light push
     private static final double ORB_RADIUS = 0.55;         // ~1 block diameter
     private static final int SHELL_POINTS = 30;            // particles on the “ball” shell per tick

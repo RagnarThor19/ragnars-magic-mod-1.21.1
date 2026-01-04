@@ -29,7 +29,7 @@ public class DragonBreathSpell implements Spell {
     private static final double START_RADIUS = 1.2;   // cone radius near mouth
     private static final double END_RADIUS = 3.5;     // cone radius at max range
     private static final int SAMPLES_ALONG = 12;      // points along the ray per tick
-    private static final double DPT = 3.5;            // damage per tick if inside breath
+    private static final double DPT = 4;            // damage per tick if inside breath
     private static final int CLOUD_EVERY = 3;         // place lingering clouds every N ticks
     private static final float CLOUD_BASE_RADIUS = 1.2f;
     private static final int CLOUD_DURATION = 40;     // short clouds (~2s); we spawn many

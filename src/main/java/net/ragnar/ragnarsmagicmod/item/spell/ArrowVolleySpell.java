@@ -20,7 +20,7 @@ import java.util.*;
 public class ArrowVolleySpell implements Spell {
 
     private static final int CHARGE_TICKS = 20; // 1 second charge
-    private static final float VELOCITY = 6.0f; // much faster than bow (usually ~3.0 max)
+    private static final float VELOCITY = 7.0f; // much faster than bow (usually ~3.0 max)
     private static final float DIVERGENCE = 0.5f; // very accurate
     private static final double DAMAGE = 2.0;
 
