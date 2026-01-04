@@ -64,5 +64,6 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.SUMMON_STEVE, new net.ragnar.ragnarsmagicmod.item.spell.SummonSteveSpell());
         Spells.register(SpellId.GROWTH, new net.ragnar.ragnarsmagicmod.item.spell.GrowthSpell());
         Spells.register(SpellId.ARROW_VOLLEY, new net.ragnar.ragnarsmagicmod.item.spell.ArrowVolleySpell());
+        Spells.register(SpellId.BOOMING, new net.ragnar.ragnarsmagicmod.item.spell.BoomingSpell());
     }
 }

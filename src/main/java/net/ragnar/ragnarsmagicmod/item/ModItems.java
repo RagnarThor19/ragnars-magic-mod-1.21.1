@@ -147,7 +147,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING,
-                    14 // XP cost (match your ADVANCED example style)
+                    14 // XP cost
             ).setCooldown(60)
     );
 
@@ -156,7 +156,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE,
-                    50 // XP cost (Master tier; adjust if you have a standard)
+                    50 // XP cost
             ).setCooldown(140)
     );
 
@@ -220,7 +220,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.TRACKING,
                     10 // cheap-mid XP
-            ).setCooldown(20)
+            ).setCooldown(17)
     );
 
     public static final net.minecraft.item.Item TOME_SUN = registerItem("tome_sun",
@@ -229,7 +229,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUN,
                     40 // high XP cost
-            ).setCooldown(150)
+            ).setCooldown(175)
     );
 
     public static final net.minecraft.item.Item TOME_MINING = registerItem("tome_mining",
@@ -301,7 +301,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.FANGS,
                     8 // XP cost
-            ).setCooldown(15)
+            ).setCooldown(12)
     );
 
     public static final net.minecraft.item.Item TOME_GHOSTSTEP = registerItem("tome_ghoststep",
@@ -337,6 +337,14 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.ARROW_VOLLEY,
                     7
             ).setCooldown(50)
+    );
+    public static final net.minecraft.item.Item TOME_BOOMING = registerItem("tome_booming",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master Tier
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.BOOMING,
+                    40 // XP cost
+            ).setCooldown(100) // 5 seconds
     );
 
 
@@ -504,6 +512,12 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_ARROW_VOLLEY
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.BOOMING,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_BOOMING
+        );
+
 
 
     }
@@ -580,6 +594,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_STEVE));
             entries.add(new net.minecraft.item.ItemStack(TOME_GROWTH));
             entries.add(new net.minecraft.item.ItemStack(TOME_ARROW_VOLLEY));
+            entries.add(new net.minecraft.item.ItemStack(TOME_BOOMING));
         });
     }
 }
