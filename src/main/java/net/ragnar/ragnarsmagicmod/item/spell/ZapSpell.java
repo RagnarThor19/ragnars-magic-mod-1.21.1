@@ -21,13 +21,13 @@ import java.util.List;
 public final class ZapSpell implements Spell {
 
     private static final double RANGE = 32.0;
-    private static final float DAMAGE = 5.0f;
+    private static final float DAMAGE = 8.0f;
     private static final double KNOCK = 0.6;
     private static final double KNOCK_UP = 0.10;
 
     // visuals
     private static final int SEGMENTS = 16;
-    private static final double JITTER = 0.75;
+    private static final double JITTER = 0.55;
     private static final int DENSITY_PER_EDGE = 5; // slightly fewer particles
     private static final double START_OFFSET = 1.8;
 

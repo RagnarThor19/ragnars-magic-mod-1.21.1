@@ -29,7 +29,7 @@ public class BoomingSpell implements Spell {
     private static final double TURN = 0.15;
     private static final int LIFE_TICKS = 100;
     private static final double HIT_RADIUS = 0.5;
-    private static final float MAX_DAMAGE = 25.0f;
+    private static final float MAX_DAMAGE = 22.0f;
     private static final double BOOM_RADIUS = 6.0;
 
     private static final Map<RegistryKey<World>, List<BoomOrb>> ACTIVE = new HashMap<>();

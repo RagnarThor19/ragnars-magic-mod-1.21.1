@@ -23,7 +23,7 @@ public class TrackingSpell implements Spell {
 
     // --- tuning ---
     private static final double CAST_RANGE = 48.0;     // how far we search for a target on cast
-    private static final double SPEED = 0.70;          // quite fast
+    private static final double SPEED = 0.60;          // quite fast
     private static final double TURN = 0.14;           // steering per tick (limited homing)
     private static final int LIFE_TICKS = 60;          // 3s max life
     private static final double HIT_RADIUS = 0.35;     // collision thickness
