@@ -219,7 +219,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.TRACKING,
-                    10 // cheap-mid XP
+                    8 // cheap-mid XP
             ).setCooldown(17)
     );
 
@@ -319,7 +319,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUMMON_STEVE,
                     50 // Quite expensive
-            ).setCooldown(150)
+            ).setCooldown(120)
     );
 
     public static final net.minecraft.item.Item TOME_GROWTH = registerItem("tome_growth",
@@ -345,6 +345,14 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.BOOMING,
                     40 // XP cost
             ).setCooldown(100) // 5 seconds
+    );
+    public static final Item TOME_OF_TORCHES = registerItem("tome_of_torches",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.TORCHES,
+                    3
+            ).setCooldown(15) // Fast cast
     );
 
 
@@ -517,6 +525,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_BOOMING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.TORCHES,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_TORCHES
+        );
 
 
 
@@ -595,6 +608,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_GROWTH));
             entries.add(new net.minecraft.item.ItemStack(TOME_ARROW_VOLLEY));
             entries.add(new net.minecraft.item.ItemStack(TOME_BOOMING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_OF_TORCHES));
         });
     }
 }
