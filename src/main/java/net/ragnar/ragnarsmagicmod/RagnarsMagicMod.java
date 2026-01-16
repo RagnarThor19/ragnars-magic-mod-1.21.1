@@ -70,5 +70,6 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.INVISIBILITY, new net.ragnar.ragnarsmagicmod.item.spell.InvisibilitySpell());
         Spells.register(SpellId.VOID, new net.ragnar.ragnarsmagicmod.item.spell.VoidSpell());
         Spells.register(SpellId.FREEZING, new net.ragnar.ragnarsmagicmod.item.spell.FreezingSpell());
+        Spells.register(SpellId.RAINING_ARROWS, new net.ragnar.ragnarsmagicmod.item.spell.RainingArrowsSpell());
     }
 }
