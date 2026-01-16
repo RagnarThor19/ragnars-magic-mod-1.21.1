@@ -30,10 +30,14 @@ public final class FreezingNova {
         int age;
         float currentRadius;
 
-        // UPDATED SETTINGS
-        final float maxRadius = 22.0f;   // Reduced to 22 blocks
-        final int expansionTicks = 40;   // 2.0 seconds to expand
-        final int holdTicks = 10;        // 0.5 seconds hold
+        // Settings
+        final float maxRadius = 22.0f;
+        final int expansionTicks = 40;   // 2.0s expand
+        final int holdTicks = 10;        // 0.5s hold
+        final int freezeDuration = 100;  // 5.0s freeze duration
+
+        // Track victims to keep spawning particles on them
+        List<LivingEntity> frozenTargets = new ArrayList<>();
 
         NovaState(ServerWorld w, Vec3d c, UUID id) {
             this.world = w;
@@ -59,12 +63,12 @@ public final class FreezingNova {
                 if (s.world != world) continue;
 
                 s.age++;
-                int detonateTick = s.expansionTicks + s.holdTicks;
+                int detonateTick = s.expansionTicks + s.holdTicks;       // 50
+                int finishTick = detonateTick + s.freezeDuration;        // 150
 
-                // 1. EXPANSION PHASE
+                // 1. EXPANSION (0-40)
                 if (s.age <= s.expansionTicks) {
                     s.currentRadius = (float) s.age / s.expansionTicks * s.maxRadius;
-
                     if (s.age % 5 == 0) {
                         float progress = (float) s.age / s.expansionTicks;
                         world.playSound(null, s.center.x, s.center.y, s.center.z,
@@ -73,18 +77,25 @@ public final class FreezingNova {
                     spawnSphereParticles(s.world, s.center, s.currentRadius);
                 }
 
-                // 2. HOLD PHASE
+                // 2. HOLD (41-50)
                 else if (s.age <= detonateTick) {
                     s.currentRadius = s.maxRadius;
                     spawnSphereParticles(s.world, s.center, s.maxRadius);
                 }
 
-                // 3. DETONATION
+                // 3. DETONATION (50)
                 if (s.age == detonateTick) {
                     freezeEverything(s);
                 }
 
-                if (s.age > detonateTick) {
+                // 4. LINGERING (51-150)
+                // Continuously spawn particles on victims until they unfreeze
+                if (s.age > detonateTick && s.age <= finishTick) {
+                    spawnLingeringParticles(s);
+                }
+
+                // cleanup
+                if (s.age > finishTick) {
                     it.remove();
                 }
             }
@@ -102,6 +113,7 @@ public final class FreezingNova {
         s.world.playSound(null, s.center.x, s.center.y, s.center.z,
                 SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.PLAYERS, 2.0f, 1.2f);
 
+        // Explosion visuals
         spawnSphereParticles(s.world, s.center, s.maxRadius);
         spawnSphereParticles(s.world, s.center, s.maxRadius * 0.95f);
 
@@ -111,23 +123,36 @@ public final class FreezingNova {
         for (LivingEntity e : targets) {
             if (s.casterId != null && e.getUuid().equals(s.casterId)) continue;
 
-            // Damage + Status Effects
+            // Damage + Effect
             e.damage(s.world.getDamageSources().freeze(), 10.0f);
             e.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 255, false, false, true));
             e.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 100, 255, false, false, true));
-            e.setFrozenTicks(400);
 
-            // NEW: "Ice Breaking" Particles
-            // We use BLOCK particles of ICE, spawned within the entity's width/height.
-            // Speed (0.02) is very low so they linger/cling rather than flying away.
+            // Visual Freeze (Screen Tint / Shaking)
+            e.setFrozenTicks(240);
+
+            // Add to lingering list
+            s.frozenTargets.add(e);
+        }
+    }
+
+    private static void spawnLingeringParticles(NovaState s) {
+        // Run every tick for smooth visuals
+        var iceParticle = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.ICE.getDefaultState());
+
+        for (LivingEntity e : s.frozenTargets) {
+            if (!e.isAlive()) continue;
+
+            // Spawn 2 particles per tick on every frozen entity
+            // This creates a constant "crumbling ice" effect clinging to them
             s.world.spawnParticles(
-                    new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.ICE.getDefaultState()),
+                    iceParticle,
                     e.getX(), e.getY() + e.getHeight() / 2.0, e.getZ(),
-                    50,                      // Count
+                    2,                       // Count (Low per tick, but constant)
                     e.getWidth() / 2.0,      // X Spread
                     e.getHeight() / 2.0,     // Y Spread
                     e.getWidth() / 2.0,      // Z Spread
-                    0.001                     // Speed (Very Slow)
+                    0.02                     // Speed
             );
         }
     }
