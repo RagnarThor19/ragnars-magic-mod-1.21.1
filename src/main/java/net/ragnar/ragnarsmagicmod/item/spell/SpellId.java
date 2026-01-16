@@ -40,5 +40,6 @@ public enum SpellId {
     TORCHES,
     IMPALING,
     INVISIBILITY,
-    VOID
+    VOID,
+    FREEZING
 }
