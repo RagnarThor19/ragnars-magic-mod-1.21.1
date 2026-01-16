@@ -394,6 +394,14 @@ public class ModItems {
                     20 // XP Cost
             ).setCooldown(120) // 6s Cooldown
     );
+    public static final Item TOME_RANDOMNESS = registerItem("tome_randomness",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.RANDOMNESS,
+                    10 // Cheap XP
+            ).setCooldown(50)
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -594,6 +602,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RAINING_ARROWS
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.RANDOMNESS,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RANDOMNESS
+        );
 
 
 
@@ -678,6 +691,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_THE_VOID));
             entries.add(new net.minecraft.item.ItemStack(TOME_FREEZING));
             entries.add(new net.minecraft.item.ItemStack(TOME_RAINING_ARROWS));
+            entries.add(new net.minecraft.item.ItemStack(TOME_RANDOMNESS));
         });
     }
 }

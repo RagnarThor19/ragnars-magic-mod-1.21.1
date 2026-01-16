@@ -42,5 +42,6 @@ public enum SpellId {
     INVISIBILITY,
     VOID,
     FREEZING,
-    RAINING_ARROWS
+    RAINING_ARROWS,
+    RANDOMNESS
 }
