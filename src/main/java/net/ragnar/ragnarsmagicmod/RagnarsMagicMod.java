@@ -67,5 +67,6 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.BOOMING, new net.ragnar.ragnarsmagicmod.item.spell.BoomingSpell());
         Spells.register(SpellId.TORCHES, new net.ragnar.ragnarsmagicmod.item.spell.TorchesSpell());
         Spells.register(SpellId.IMPALING, new net.ragnar.ragnarsmagicmod.item.spell.ImpalingSpell());
+        Spells.register(SpellId.INVISIBILITY, new net.ragnar.ragnarsmagicmod.item.spell.InvisibilitySpell());
     }
 }

@@ -38,5 +38,6 @@ public enum SpellId {
     ARROW_VOLLEY,
     BOOMING,
     TORCHES,
-    IMPALING
+    IMPALING,
+    INVISIBILITY
 }
