@@ -37,27 +37,25 @@ public class ImpalingSpell implements Spell {
         BlockPos targetPos = hit.getBlockPos();
 
         if (world instanceof ServerWorld sw) {
-            // Warning Effects
-            sw.playSound(null, targetPos, SoundEvents.BLOCK_DEEPSLATE_BREAK, SoundCategory.PLAYERS, 1.4f, 0.5f);
-            sw.playSound(null, targetPos, SoundEvents.ENTITY_VEX_AMBIENT, SoundCategory.PLAYERS, 1.8f, 0.5f);
+            sw.playSound(null, targetPos, SoundEvents.BLOCK_DEEPSLATE_BREAK, SoundCategory.PLAYERS, 1.0f, 0.5f);
+            sw.playSound(null, targetPos, SoundEvents.ENTITY_VEX_AMBIENT, SoundCategory.PLAYERS, 1.5f, 0.5f);
 
             sw.spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
                     targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5,
                     10, 0.2, 0.1, 0.2, 0.05);
 
-            // Queue Giant Spike
             SpikeWave.queueSingleSpike(
                     sw,
                     targetPos.getX() + 0.5,
                     targetPos.getZ() + 0.5,
-                    targetPos.getY() + 1.0,
+                    targetPos.getY() + 1.1,
                     0.0, 0.0,
-                    18,       // Delay
+                    15,       // Delay
                     40,       // Lifetime
                     player.getUuid(),
-                    3,        // Height: 4 blocks
-                    1.2,      // Lift: High launch
-                    7.0f      // DAMAGE: 6.0 per hit * 2 hits = 12.0 total (6 Hearts)
+                    3,        // Height
+                    1.5,      // Lift: (Unchanged, but now reliable because they aren't stuck!)
+                    10.0f     // Damage: 10.0f once = 5 Hearts
             );
         }
 

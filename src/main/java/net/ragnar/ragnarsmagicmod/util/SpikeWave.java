@@ -29,14 +29,13 @@ public final class SpikeWave {
 
     private static boolean registered = false;
 
-    // Added 'damage' to the record
     private record PendingSpawn(
             ServerWorld w, double x, double z, double startY,
             double dirX, double dirZ, int ticksUntil, int lifetime,
             UUID casterId,
             int height,
             double lift,
-            float damage     // NEW: Explicit damage control
+            float damage
     ) {}
 
     private record ActiveSpike(ServerWorld w, List<BlockPos> blocks, int ticksLeft) {}
@@ -103,7 +102,7 @@ public final class SpikeWave {
         });
     }
 
-    /** Rising Spikes: Uses default height 2, lift 0.6, and damage 12.0F (Heavy damage) */
+    /** Rising Spikes: h=2, lift=1.0 (Stronger to compensate for single loop), dmg=12 */
     public static void queueWave(ServerWorld world, Vec3d origin, Vec3d forward,
                                  int length, int[] laneOffsets, int stepDelayTicks,
                                  int lifetimeTicks, UUID casterId) {
@@ -113,6 +112,7 @@ public final class SpikeWave {
         f = f.normalize();
         Vec3d s = new Vec3d(-f.z, 0, f.x); // left
 
+        // Using +2.5 offset for cave/tree compatibility
         double startY = origin.y + 2.5;
         for (int step = 1; step <= length; step++) {
             Vec3d base = origin.add(f.multiply(step));
@@ -126,15 +126,15 @@ public final class SpikeWave {
                         step * stepDelayTicks,
                         lifetimeTicks,
                         casterId,
-                        2,      // Default Height
-                        0.6,    // Default Lift
-                        10.0F   // Default Damage (Legacy value)
+                        2,      // Height
+                        1.3,    // Lift (Single loop now, so 1.3 is good)
+                        12.0F   // Damage (6 Hearts)
                 ));
             }
         }
     }
 
-    /** Impaling: Accepts custom damage to prevent instakills */
+    /** Impaling: height custom, lift custom, damage custom */
     public static void queueSingleSpike(ServerWorld world, double x, double z, double startY,
                                         double dirX, double dirZ, int delayTicks, int lifetimeTicks,
                                         UUID casterId, int height, double lift, float damage) {
@@ -147,7 +147,7 @@ public final class SpikeWave {
                 casterId,
                 height,
                 lift,
-                damage  // Custom damage passed from Spell
+                damage
         ));
     }
 
@@ -159,12 +159,32 @@ public final class SpikeWave {
         List<BlockPos> placedPositions = new ArrayList<>();
         int h = Math.max(1, p.height());
 
-        // Check clearance
         for (int i = 1; i <= h; i++) {
             if (!isAiry(p.w(), ground.up(i))) return;
         }
 
-        // Place blocks
+        // Apply Entity Effects (Damage + Launch + Teleport)
+        // We do this BEFORE placing blocks (or essentially same tick) but we move them OUT of the block space.
+        Box aabb = new Box(ground.up(1)).expand(0.85, h, 0.85);
+        double topY = ground.getY() + 1.0 + h; // The Y level just above the spike tip
+
+        for (Entity e : p.w().getOtherEntities(null, aabb, en -> en.isAlive() && !en.isSpectator())) {
+            if (e instanceof LivingEntity le) {
+                if (p.casterId() != null && le.getUuid().equals(p.casterId())) continue;
+
+                // FIX: Pop entity to the top of the spike so they don't get stuck
+                le.setPosition(le.getX(), topY, le.getZ());
+
+                // Damage
+                le.damage(p.w().getDamageSources().stalagmite(), p.damage());
+
+                // Launch
+                le.addVelocity(p.dirX() * 0.35, p.lift(), p.dirZ() * 0.35);
+                le.velocityDirty = true;
+            }
+        }
+
+        // Place Blocks
         for (int i = 1; i <= h; i++) {
             BlockPos pos = ground.up(i);
             Thickness thick;
@@ -189,29 +209,6 @@ public final class SpikeWave {
 
         BlockPos basePos = ground.up(1);
         impactFX(p.w(), basePos.getX() + 0.5, basePos.getY(), basePos.getZ() + 0.5, false);
-
-        Box aabb = new Box(basePos).expand(0.85, h, 0.85);
-
-        // Loop 1
-        for (Entity e : p.w().getOtherEntities(null, aabb, en -> en.isAlive() && !en.isSpectator())) {
-            if (e instanceof LivingEntity le) {
-                if (p.casterId() != null && le.getUuid().equals(p.casterId())) continue;
-
-                le.damage(p.w().getDamageSources().stalagmite(), p.damage()); // Uses parameter
-                le.addVelocity(p.dirX() * 0.35, p.lift(), p.dirZ() * 0.35);
-                le.velocityDirty = true;
-            }
-        }
-        // Loop 2
-        for (Entity e : p.w().getOtherEntities(null, aabb, en -> en.isAlive() && !en.isSpectator())) {
-            if (p.casterId() != null && e.getUuid().equals(p.casterId())) continue;
-            if (e instanceof LivingEntity le) {
-                le.damage(p.w().getDamageSources().stalagmite(), p.damage()); // Uses parameter
-                le.addVelocity(p.dirX() * 0.35, p.lift(), p.dirZ() * 0.35);
-                le.velocityDirty = true;
-            }
-        }
-
         ACTIVE.add(new ActiveSpike(p.w(), placedPositions, p.lifetime()));
     }
 
