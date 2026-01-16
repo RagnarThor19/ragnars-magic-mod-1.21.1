@@ -113,7 +113,7 @@ public final class SpikeWave {
         f = f.normalize();
         Vec3d s = new Vec3d(-f.z, 0, f.x); // left
 
-        double startY = origin.y + 6.0;
+        double startY = origin.y + 2.5;
         for (int step = 1; step <= length; step++) {
             Vec3d base = origin.add(f.multiply(step));
             for (int off : laneOffsets) {
@@ -128,7 +128,7 @@ public final class SpikeWave {
                         casterId,
                         2,      // Default Height
                         0.6,    // Default Lift
-                        12.0F   // Default Damage (Legacy value)
+                        10.0F   // Default Damage (Legacy value)
                 ));
             }
         }
