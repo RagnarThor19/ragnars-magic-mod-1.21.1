@@ -64,7 +64,7 @@ public final class FreezingNova {
 
                 s.age++;
                 int detonateTick = s.expansionTicks + s.holdTicks;       // 50
-                int finishTick = detonateTick + s.freezeDuration;        // 150
+                int finishTick = detonateTick + s.freezeDuration;        // 200
 
                 // 1. EXPANSION (0-40)
                 if (s.age <= s.expansionTicks) {

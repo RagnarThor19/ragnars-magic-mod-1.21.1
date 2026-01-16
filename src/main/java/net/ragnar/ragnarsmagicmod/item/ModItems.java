@@ -376,15 +376,15 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.VOID,
                     50 // High XP Cost
-            ).setCooldown(400) // 12s Cooldown
+            ).setCooldown(260) // 13s Cooldown
     );
     public static final Item TOME_FREEZING = registerItem("tome_freezing",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.FREEZING,
-                    55 // XP Cost
-            ).setCooldown(800) // 40s Cooldown
+                    50 // XP Cost
+            ).setCooldown(360) // 18s Cooldown
     );
 
     static {
