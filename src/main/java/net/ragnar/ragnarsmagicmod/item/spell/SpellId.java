@@ -39,5 +39,6 @@ public enum SpellId {
     BOOMING,
     TORCHES,
     IMPALING,
-    INVISIBILITY
+    INVISIBILITY,
+    VOID
 }

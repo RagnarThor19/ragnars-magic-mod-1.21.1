@@ -370,6 +370,14 @@ public class ModItems {
                     12 // XP Cost
             ).setCooldown(320) // 16 seconds
     );
+    public static final Item TOME_OF_THE_VOID = registerItem("tome_of_the_void",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.VOID,
+                    50 // High XP Cost
+            ).setCooldown(400) // 12s Cooldown
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -555,6 +563,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_INVISIBILITY
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.VOID,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_THE_VOID
+        );
 
 
 
@@ -636,6 +649,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_TORCHES));
             entries.add(new net.minecraft.item.ItemStack(TOME_IMPALING));
             entries.add(new net.minecraft.item.ItemStack(TOME_INVISIBILITY));
+            entries.add(new net.minecraft.item.ItemStack(TOME_OF_THE_VOID));
         });
     }
 }
