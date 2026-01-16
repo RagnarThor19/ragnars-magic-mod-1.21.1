@@ -1,3 +1,4 @@
+// File: src/main/java/net/ragnar/ragnarsmagicmod/util/SpikeWave.java
 package net.ragnar.ragnarsmagicmod.util;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -28,13 +29,17 @@ public final class SpikeWave {
 
     private static boolean registered = false;
 
+    // Added 'damage' to the record
     private record PendingSpawn(
             ServerWorld w, double x, double z, double startY,
             double dirX, double dirZ, int ticksUntil, int lifetime,
-            UUID casterId
+            UUID casterId,
+            int height,
+            double lift,
+            float damage     // NEW: Explicit damage control
     ) {}
 
-    private record ActiveSpike(ServerWorld w, BlockPos bottom, BlockPos top, int ticksLeft) {}
+    private record ActiveSpike(ServerWorld w, List<BlockPos> blocks, int ticksLeft) {}
 
     private static final List<PendingSpawn> SPAWNS = new ArrayList<>();
     private static final List<ActiveSpike> ACTIVE  = new ArrayList<>();
@@ -60,7 +65,10 @@ public final class SpikeWave {
                                 p.w(), p.x(), p.z(), p.startY(),
                                 p.dirX(), p.dirZ(),
                                 t, p.lifetime(),
-                                p.casterId()                 // <<< keep it
+                                p.casterId(),
+                                p.height(),
+                                p.lift(),
+                                p.damage()
                         ));
                         it.remove();
                     }
@@ -77,13 +85,16 @@ public final class SpikeWave {
                     if (a.w() != world) continue;
                     int t = a.ticksLeft() - 1;
                     if (t <= 0) {
-                        // break without drops + particles + sound
-                        a.w().breakBlock(a.top(), false);
-                        a.w().breakBlock(a.bottom(), false);
-                        impactFX(a.w(), a.bottom().getX() + 0.5, a.bottom().getY(), a.bottom().getZ() + 0.5, true);
+                        BlockPos bottom = a.blocks.isEmpty() ? null : a.blocks.get(0);
+                        for (BlockPos pos : a.blocks) {
+                            a.w().breakBlock(pos, false);
+                        }
+                        if (bottom != null) {
+                            impactFX(a.w(), bottom.getX() + 0.5, bottom.getY(), bottom.getZ() + 0.5, true);
+                        }
                         it2.remove();
                     } else {
-                        requeue2.add(new ActiveSpike(a.w(), a.bottom(), a.top(), t));
+                        requeue2.add(new ActiveSpike(a.w(), a.blocks(), t));
                         it2.remove();
                     }
                 }
@@ -92,7 +103,7 @@ public final class SpikeWave {
         });
     }
 
-    /** Queue an entire 3-lane wave forward. */
+    /** Rising Spikes: Uses default height 2, lift 0.6, and damage 12.0F (Heavy damage) */
     public static void queueWave(ServerWorld world, Vec3d origin, Vec3d forward,
                                  int length, int[] laneOffsets, int stepDelayTicks,
                                  int lifetimeTicks, UUID casterId) {
@@ -114,72 +125,100 @@ public final class SpikeWave {
                         f.x, f.z,
                         step * stepDelayTicks,
                         lifetimeTicks,
-                        casterId
+                        casterId,
+                        2,      // Default Height
+                        0.6,    // Default Lift
+                        12.0F   // Default Damage (Legacy value)
                 ));
             }
         }
     }
 
-
+    /** Impaling: Accepts custom damage to prevent instakills */
+    public static void queueSingleSpike(ServerWorld world, double x, double z, double startY,
+                                        double dirX, double dirZ, int delayTicks, int lifetimeTicks,
+                                        UUID casterId, int height, double lift, float damage) {
+        ensureRegistered();
+        SPAWNS.add(new PendingSpawn(
+                world, x, z, startY,
+                dirX, dirZ,
+                delayTicks,
+                lifetimeTicks,
+                casterId,
+                height,
+                lift,
+                damage  // Custom damage passed from Spell
+        ));
+    }
 
     private static void spawnSpike(PendingSpawn p) {
-        // find ground at (x,z)
         int startYInt = MathHelper.floor(p.startY());
         BlockPos ground = findGround(p.w(), MathHelper.floor(p.x()), MathHelper.floor(p.z()), startYInt);
         if (ground == null) return;
 
-        BlockPos bottomPos = ground.up(1);
-        BlockPos topPos    = ground.up(2);
+        List<BlockPos> placedPositions = new ArrayList<>();
+        int h = Math.max(1, p.height());
 
-        // need 2-block headroom
-        if (!isAiry(p.w(), bottomPos) || !isAiry(p.w(), topPos)) return;
+        // Check clearance
+        for (int i = 1; i <= h; i++) {
+            if (!isAiry(p.w(), ground.up(i))) return;
+        }
 
-        BlockState bottom = Blocks.POINTED_DRIPSTONE.getDefaultState()
-                .with(PointedDripstoneBlock.VERTICAL_DIRECTION, Direction.UP)
-                .with(PointedDripstoneBlock.THICKNESS, Thickness.FRUSTUM)
-                .with(PointedDripstoneBlock.WATERLOGGED, false);
+        // Place blocks
+        for (int i = 1; i <= h; i++) {
+            BlockPos pos = ground.up(i);
+            Thickness thick;
+            if (i == h) thick = Thickness.TIP;
+            else if (i == h - 1) thick = Thickness.FRUSTUM;
+            else if (i == 1) thick = Thickness.BASE;
+            else thick = Thickness.MIDDLE;
 
-        BlockState top = Blocks.POINTED_DRIPSTONE.getDefaultState()
-                .with(PointedDripstoneBlock.VERTICAL_DIRECTION, Direction.UP)
-                .with(PointedDripstoneBlock.THICKNESS, Thickness.TIP)
-                .with(PointedDripstoneBlock.WATERLOGGED, false);
+            if (h == 2) {
+                if (i == 1) thick = Thickness.FRUSTUM;
+                if (i == 2) thick = Thickness.TIP;
+            }
 
-        // place both blocks
-        p.w().setBlockState(bottomPos, bottom, 3);
-        p.w().setBlockState(topPos, top, 3);
+            BlockState state = Blocks.POINTED_DRIPSTONE.getDefaultState()
+                    .with(PointedDripstoneBlock.VERTICAL_DIRECTION, Direction.UP)
+                    .with(PointedDripstoneBlock.THICKNESS, thick)
+                    .with(PointedDripstoneBlock.WATERLOGGED, false);
 
-        // FX on spawn
-        impactFX(p.w(), bottomPos.getX() + 0.5, bottomPos.getY(), bottomPos.getZ() + 0.5, false);
+            p.w().setBlockState(pos, state, 3);
+            placedPositions.add(pos);
+        }
 
-        // damage + knock
-        Box aabb = new Box(bottomPos).expand(0.85, 1.2, 0.85);
+        BlockPos basePos = ground.up(1);
+        impactFX(p.w(), basePos.getX() + 0.5, basePos.getY(), basePos.getZ() + 0.5, false);
+
+        Box aabb = new Box(basePos).expand(0.85, h, 0.85);
+
+        // Loop 1
         for (Entity e : p.w().getOtherEntities(null, aabb, en -> en.isAlive() && !en.isSpectator())) {
             if (e instanceof LivingEntity le) {
-                // 6 hearts = 12.0F
-                le.damage(p.w().getDamageSources().stalagmite(), 12.0F);
-                // knock upward and forward
-                le.addVelocity(p.dirX() * 0.35, 0.6, p.dirZ() * 0.35);
+                if (p.casterId() != null && le.getUuid().equals(p.casterId())) continue;
+
+                le.damage(p.w().getDamageSources().stalagmite(), p.damage()); // Uses parameter
+                le.addVelocity(p.dirX() * 0.35, p.lift(), p.dirZ() * 0.35);
                 le.velocityDirty = true;
             }
         }
+        // Loop 2
         for (Entity e : p.w().getOtherEntities(null, aabb, en -> en.isAlive() && !en.isSpectator())) {
-            if (e.getUuid().equals(p.casterId())) continue; // don't hit the caster
+            if (p.casterId() != null && e.getUuid().equals(p.casterId())) continue;
             if (e instanceof LivingEntity le) {
-                le.damage(p.w().getDamageSources().stalagmite(), 12.0F); // 6 hearts
-                le.addVelocity(p.dirX() * 0.35, 0.6, p.dirZ() * 0.35);
+                le.damage(p.w().getDamageSources().stalagmite(), p.damage()); // Uses parameter
+                le.addVelocity(p.dirX() * 0.35, p.lift(), p.dirZ() * 0.35);
                 le.velocityDirty = true;
             }
         }
 
-        // queue despawn
-        ACTIVE.add(new ActiveSpike(p.w(), bottomPos.toImmutable(), topPos.toImmutable(), p.lifetime()));
+        ACTIVE.add(new ActiveSpike(p.w(), placedPositions, p.lifetime()));
     }
 
     private static void impactFX(ServerWorld w, double x, double y, double z, boolean breakSound) {
         var effect = new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.DRIPSTONE_BLOCK.getDefaultState());
         w.spawnParticles(effect, x, y, z, 24, 0.5, 0.25, 0.5, 0.08);
         w.spawnParticles(ParticleTypes.POOF, x, y + 0.2, z, 8, 0.2, 0.2, 0.2, 0.02);
-        // sound
         if (breakSound) {
             w.playSound(null, x, y, z, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.PLAYERS, 0.9f, 1.0f);
         } else {
@@ -193,9 +232,9 @@ public final class SpikeWave {
         for (int y = startY; y >= minY; y--) {
             BlockPos pos = new BlockPos(x, y, z);
             var state = w.getBlockState(pos);
-            if (!state.getFluidState().isEmpty()) continue; // skip water/lava surfaces
+            if (!state.getFluidState().isEmpty()) continue;
             if (!state.getCollisionShape(w, pos).isEmpty()) {
-                return pos; // this is the ground block
+                return pos;
             }
         }
         return null;
@@ -205,6 +244,4 @@ public final class SpikeWave {
         var state = w.getBlockState(pos);
         return state.isAir() || state.getCollisionShape(w, pos).isEmpty();
     }
-
-
 }

@@ -37,5 +37,6 @@ public enum SpellId {
     GROWTH,
     ARROW_VOLLEY,
     BOOMING,
-    TORCHES
+    TORCHES,
+    IMPALING
 }

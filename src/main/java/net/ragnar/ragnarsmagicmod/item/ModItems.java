@@ -354,6 +354,14 @@ public class ModItems {
                     3
             ).setCooldown(15) // Fast cast
     );
+    public static final Item TOME_IMPALING = registerItem("tome_impaling",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.IMPALING,
+                    16 // XP cost
+            ).setCooldown(80) // 4 seconds
+    );
 
 
     static {
@@ -530,6 +538,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_TORCHES
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.IMPALING,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_IMPALING
+        );
 
 
 
@@ -609,6 +622,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_ARROW_VOLLEY));
             entries.add(new net.minecraft.item.ItemStack(TOME_BOOMING));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_TORCHES));
+            entries.add(new net.minecraft.item.ItemStack(TOME_IMPALING));
         });
     }
 }
