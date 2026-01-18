@@ -1,4 +1,4 @@
 {
   "parent": "item/generated",
-  "textures": { "layer0": "ragnarsmagicmod:item/false_tome" }
+  "textures": { "layer0": "ragnarsmagicmod:item/advanced_tome" }
 }
