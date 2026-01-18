@@ -46,6 +46,9 @@
   "item.ragnarsmagicmod.tome_freezing": "Tome of Freezing",
   "item.ragnarsmagicmod.tome_raining_arrows": "Tome of Raining Arrows",
   "item.ragnarsmagicmod.tome_randomness": "Tome of Randomness",
+  "item.ragnarsmagicmod.tome_of_boulders": "Tome of Boulders",
+
+  "item.ragnarsmagicmod.boulder": "Boulder",
   "enchantment.ragnarsmagicmod.reserve": "Reserve",
   "enchantment.ragnarsmagicmod.quickcast": "Quickcast"
 }

@@ -37,6 +37,16 @@ public class ModEntities {
                     .build()
     );
 
+    public static final EntityType<BoulderProjectileEntity> BOULDER_PROJECTILE = Registry.register(
+            Registries.ENTITY_TYPE,
+            Identifier.of(RagnarsMagicMod.MOD_ID, "boulder"),
+            FabricEntityTypeBuilder.<BoulderProjectileEntity>create(SpawnGroup.MISC, BoulderProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.75f, 0.75f)) // Bigger hitbox
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(10)
+                    .build()
+    );
+
     public static void registerModEntities() {
         FabricDefaultAttributeRegistry.register(STEVE, SteveEntity.createAttributes());
     }

@@ -43,5 +43,6 @@ public enum SpellId {
     VOID,
     FREEZING,
     RAINING_ARROWS,
-    RANDOMNESS
+    RANDOMNESS,
+    BOULDER
 }

@@ -7,5 +7,6 @@ import net.ragnar.ragnarsmagicmod.entity.ModEntities;
 public class ModEntityRenderers {
     public static void register() {
         EntityRendererRegistry.register(ModEntities.ICE_SHARD, ctx -> new FlyingItemEntityRenderer<>(ctx));
+        EntityRendererRegistry.register(ModEntities.BOULDER_PROJECTILE, ctx -> new FlyingItemEntityRenderer<>(ctx));
     }
 }

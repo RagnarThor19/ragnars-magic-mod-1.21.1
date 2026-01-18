@@ -402,6 +402,14 @@ public class ModItems {
                     10 // Cheap XP
             ).setCooldown(50)
     );
+    public static final Item TOME_OF_BOULDERS = registerItem("tome_of_boulders",
+            new TomeItem(
+                    new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Advanced Tier
+                    TomeTier.BEGINNER,
+                    SpellId.BOULDER,
+                    12 // XP Cost
+            ).setCooldown(60) // 4 seconds (heavy spell)
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -607,6 +615,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RANDOMNESS
         );
+        putTome(
+                SpellId.BOULDER,
+                TomeTier.ADVANCED,
+                (TomeItem) TOME_OF_BOULDERS
+        );
 
 
 
@@ -631,6 +644,8 @@ public class ModItems {
 
     //other stuff
     public static final Item ICE_SHARD_ITEM = registerItem("ice_shard",
+            new Item(new Item.Settings().maxCount(16)));
+    public static final Item BOULDER_ITEM = registerItem("boulder",
             new Item(new Item.Settings().maxCount(16)));
 
 
@@ -667,6 +682,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_ARROW_VOLLEY));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_TORCHES));
             entries.add(new net.minecraft.item.ItemStack(TOME_INVISIBILITY));
+            entries.add(new ItemStack(TOME_OF_BOULDERS));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
