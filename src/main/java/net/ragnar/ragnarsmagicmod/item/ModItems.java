@@ -434,6 +434,14 @@ public class ModItems {
                     16 // XP Cost
             ).setCooldown(100) // 5 seconds
     );
+    public static final net.minecraft.item.Item TOME_OF_PULLING = registerItem("tome_of_pulling",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.PULL,
+                    6 // Low XP Cost
+            ).setCooldown(40) // 2 seconds
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -655,6 +663,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_SMASHING
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.PULL,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_PULLING
+        );
 
 
 
@@ -719,6 +732,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_INVISIBILITY));
             entries.add(new ItemStack(TOME_OF_BOULDERS));
             entries.add(new ItemStack(TOME_SWAPPING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_OF_PULLING));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));

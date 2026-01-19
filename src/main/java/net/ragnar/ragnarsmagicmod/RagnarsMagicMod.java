@@ -76,5 +76,6 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.SWAP, new net.ragnar.ragnarsmagicmod.item.spell.SwappingSpell());
         Spells.register(SpellId.CLOUDS, new net.ragnar.ragnarsmagicmod.item.spell.CloudSpell());
         Spells.register(SpellId.SMASH, new net.ragnar.ragnarsmagicmod.item.spell.SmashingSpell());
+        Spells.register(SpellId.PULL, new net.ragnar.ragnarsmagicmod.item.spell.PullingSpell());
     }
 }
