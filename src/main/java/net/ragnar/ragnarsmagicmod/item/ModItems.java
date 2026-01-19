@@ -418,6 +418,14 @@ public class ModItems {
                     15 // XP Cost
             ).setCooldown(140) // 7 seconds
     );
+    public static final Item TOME_OF_CLOUDS = registerItem("tome_of_clouds",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master Tier
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.CLOUDS,
+                    30 // XP cost
+            ).setCooldown(660) // 33 sec
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -629,6 +637,11 @@ public class ModItems {
                 (TomeItem) TOME_OF_BOULDERS
         );
         putTome(SpellId.SWAP, TomeTier.BEGINNER, (TomeItem) TOME_SWAPPING);
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.CLOUDS,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_CLOUDS
+        );
 
 
 
@@ -722,6 +735,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_BOOMING));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_THE_VOID));
             entries.add(new net.minecraft.item.ItemStack(TOME_FREEZING));
+            entries.add(new net.minecraft.item.ItemStack(TOME_OF_CLOUDS));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);
