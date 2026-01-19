@@ -404,7 +404,7 @@ public class ModItems {
     );
     public static final Item TOME_OF_BOULDERS = registerItem("tome_of_boulders",
             new TomeItem(
-                    new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Advanced Tier
+                    new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // begginner
                     TomeTier.BEGINNER,
                     SpellId.BOULDER,
                     12 // XP Cost
@@ -425,6 +425,14 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.CLOUDS,
                     30 // XP cost
             ).setCooldown(660) // 33 sec
+    );
+    public static final Item TOME_OF_SMASHING = registerItem("tome_of_smashing",
+            new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
+                    new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
+                    net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.SMASH,
+                    16 // XP Cost
+            ).setCooldown(100) // 5 seconds
     );
 
     static {
@@ -642,6 +650,11 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_CLOUDS
         );
+        putTome(
+                net.ragnar.ragnarsmagicmod.item.spell.SpellId.SMASH,
+                net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
+                (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_SMASHING
+        );
 
 
 
@@ -724,6 +737,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_IMPALING));
             entries.add(new net.minecraft.item.ItemStack(TOME_RAINING_ARROWS));
             entries.add(new net.minecraft.item.ItemStack(TOME_RANDOMNESS));
+            entries.add(new net.minecraft.item.ItemStack(TOME_OF_SMASHING));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

@@ -46,5 +46,6 @@ public enum SpellId {
     RANDOMNESS,
     BOULDER,
     SWAP,
-    CLOUDS
+    CLOUDS,
+    SMASH
 }
