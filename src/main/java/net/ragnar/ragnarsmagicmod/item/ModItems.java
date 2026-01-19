@@ -343,8 +343,8 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master Tier
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.BOOMING,
-                    40 // XP cost
-            ).setCooldown(120) // 6 seconds
+                    35 // XP cost
+            ).setCooldown(110) // 6 seconds
     );
     public static final Item TOME_OF_TORCHES = registerItem("tome_of_torches",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -375,7 +375,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.VOID,
-                    50 // High XP Cost
+                    30 // High XP Cost
             ).setCooldown(260) // 13s Cooldown
     );
     public static final Item TOME_FREEZING = registerItem("tome_freezing",
@@ -391,7 +391,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.RAINING_ARROWS,
-                    20 // XP Cost
+                    12 // XP Cost
             ).setCooldown(120) // 6s Cooldown
     );
     public static final Item TOME_RANDOMNESS = registerItem("tome_randomness",

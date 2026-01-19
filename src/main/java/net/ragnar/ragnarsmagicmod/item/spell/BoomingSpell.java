@@ -25,12 +25,12 @@ public class BoomingSpell implements Spell {
 
     // --- Tunables ---
     private static final double CAST_RANGE = 120.0;
-    private static final double SPEED = 0.85;
-    private static final double TURN = 0.15;
-    private static final int LIFE_TICKS = 100;
+    private static final double SPEED = 0.90;
+    private static final double TURN = 0.30;
+    private static final int LIFE_TICKS = 85;
     private static final double HIT_RADIUS = 0.5;
-    private static final float MAX_DAMAGE = 22.0f;
-    private static final double BOOM_RADIUS = 6.0;
+    private static final float MAX_DAMAGE = 24.0f;
+    private static final double BOOM_RADIUS = 5.0;
 
     private static final Map<RegistryKey<World>, List<BoomOrb>> ACTIVE = new HashMap<>();
     private static boolean TICK_REGISTERED = false;
