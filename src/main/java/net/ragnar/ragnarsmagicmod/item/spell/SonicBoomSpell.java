@@ -32,6 +32,7 @@ public class SonicBoomSpell implements Spell {
     private static final double RING_SPACING = 3.0; // distance between rings
     private static final int POINTS_PER_RING = 36;  // how many particles per ring
     private static final double RING_GROWTH = 0.05; // ring size growth per unit distance
+    private static final double RECOIL_STRENGTH = 1.2; // How hard it pushes you back
 
     private static final Map<RegistryKey<World>, List<Beam>> ACTIVE = new HashMap<>();
     private static boolean TICK_REGISTERED = false;
@@ -99,6 +100,14 @@ public class SonicBoomSpell implements Spell {
                     world.playSound(null, owner.getBlockPos(),
                             SoundEvents.ENTITY_WARDEN_SONIC_BOOM,
                             SoundCategory.PLAYERS, 3.0f, 1.0f);
+
+                    // --- APPLY RECOIL ---
+                    Vec3d look = owner.getRotationVector().normalize();
+                    // Push opposite to look direction
+                    // If looking slightly down, this will launch you slightly up + back
+                    owner.addVelocity(-look.x * RECOIL_STRENGTH, -look.y * RECOIL_STRENGTH * 0.5, -look.z * RECOIL_STRENGTH);
+                    owner.velocityModified = true;
+
                     fireRings(world, owner);
                 }
             }

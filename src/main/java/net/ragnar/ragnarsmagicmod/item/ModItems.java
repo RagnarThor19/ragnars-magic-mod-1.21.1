@@ -210,7 +210,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.INSIGHT,
-                    8 // cheap XP cost
+                    8 // XP cost
             ).setCooldown(100)
     );
 
@@ -219,7 +219,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.TRACKING,
-                    8 // cheap-mid XP
+                    8 // XP
             ).setCooldown(17)
     );
 
@@ -228,7 +228,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUN,
-                    40 // high XP cost
+                    40 // XP cost
             ).setCooldown(175)
     );
 
@@ -246,7 +246,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.DRAGON_BREATH,
-                    32 // strong & costly
+                    32 //
             ).setCooldown(60)
     );
 
@@ -264,7 +264,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.ICE_BEAM,
-                    40 // XP cost; tune if you want
+                    40 // XP cost;
             ).setCooldown(150)
     );
 
@@ -344,7 +344,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.BOOMING,
                     40 // XP cost
-            ).setCooldown(100) // 5 seconds
+            ).setCooldown(120) // 6 seconds
     );
     public static final Item TOME_OF_TORCHES = registerItem("tome_of_torches",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -415,8 +415,8 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner/Uncommon
                     TomeTier.BEGINNER,
                     SpellId.SWAP,
-                    15 // XP Cost
-            ).setCooldown(140) // 7 seconds
+                    10 // XP Cost
+            ).setCooldown(200) // 10 seconds
     );
     public static final Item TOME_OF_CLOUDS = registerItem("tome_of_clouds",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -440,7 +440,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.PULL,
                     6 // Low XP Cost
-            ).setCooldown(40) // 2 seconds
+            ).setCooldown(50) // 2.5 seconds
     );
 
     static {

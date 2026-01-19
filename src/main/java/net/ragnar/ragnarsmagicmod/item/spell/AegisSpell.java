@@ -17,7 +17,7 @@ import java.util.*;
 
 public class AegisSpell implements Spell {
 
-    private static final int DURATION_TICKS = 40; // 2 seconds (20 ticks per second)
+    private static final int DURATION_TICKS = 50; // 2.5 seconds (20 ticks per second)
     private static final Map<UUID, Long> ACTIVE = new HashMap<>();
     private static boolean TICK_REGISTERED = false;
 
