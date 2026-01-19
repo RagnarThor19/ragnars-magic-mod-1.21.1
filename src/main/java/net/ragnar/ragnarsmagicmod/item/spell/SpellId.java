@@ -44,5 +44,6 @@ public enum SpellId {
     FREEZING,
     RAINING_ARROWS,
     RANDOMNESS,
-    BOULDER
+    BOULDER,
+    SWAP
 }

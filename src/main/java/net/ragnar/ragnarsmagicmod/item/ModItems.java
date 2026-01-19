@@ -408,7 +408,15 @@ public class ModItems {
                     TomeTier.BEGINNER,
                     SpellId.BOULDER,
                     12 // XP Cost
-            ).setCooldown(60) // 4 seconds (heavy spell)
+            ).setCooldown(80) // 4 seconds
+    );
+    public static final Item TOME_SWAPPING = registerItem("tome_swapping",
+            new TomeItem(
+                    new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner/Uncommon
+                    TomeTier.BEGINNER,
+                    SpellId.SWAP,
+                    15 // XP Cost
+            ).setCooldown(140) // 7 seconds
     );
 
     static {
@@ -617,9 +625,10 @@ public class ModItems {
         );
         putTome(
                 SpellId.BOULDER,
-                TomeTier.ADVANCED,
+                TomeTier.BEGINNER,
                 (TomeItem) TOME_OF_BOULDERS
         );
+        putTome(SpellId.SWAP, TomeTier.BEGINNER, (TomeItem) TOME_SWAPPING);
 
 
 
@@ -683,6 +692,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_TORCHES));
             entries.add(new net.minecraft.item.ItemStack(TOME_INVISIBILITY));
             entries.add(new ItemStack(TOME_OF_BOULDERS));
+            entries.add(new ItemStack(TOME_SWAPPING));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
