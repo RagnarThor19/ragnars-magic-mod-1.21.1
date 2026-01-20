@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class GhoststepSpell implements Spell {
 
-    private static final double MAX_DISTANCE = 6.0D;
+    private static final double MAX_DISTANCE = 8.0D;
 
     @Override
     public boolean cast(World world, PlayerEntity player, ItemStack staff) {

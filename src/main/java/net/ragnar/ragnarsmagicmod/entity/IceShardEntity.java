@@ -45,7 +45,7 @@ public class IceShardEntity extends ThrownItemEntity {
 
         // --- damage (2 hearts) ---
         net.minecraft.entity.LivingEntity owner = (this.getOwner() instanceof net.minecraft.entity.LivingEntity le) ? le : null;
-        target.damage(this.getDamageSources().thrown(this, owner), 4.0F);
+        target.damage(this.getDamageSources().thrown(this, owner), 6.0F);
 
         // --- heavy slow for 2s + freeze for 1s ---
         target.addStatusEffect(new net.minecraft.entity.effect.StatusEffectInstance(
