@@ -3,7 +3,14 @@
 	"package": "net.ragnar.ragnarsmagicmod.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"MobEntityAccessor"
+	],
+	"client": [
+		"client.DrawContextMixin",
+		"client.HeldItemRendererMixin",
+		"client.InGameHudMixin",
+		"client.MouseMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

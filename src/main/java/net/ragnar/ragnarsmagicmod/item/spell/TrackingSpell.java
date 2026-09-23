@@ -31,11 +31,16 @@ public class TrackingSpell implements Spell {
     private static final double KNOCKBACK = 0.50;      // tiny push
     private static final double START_AHEAD = 1.7;     // spawn in front of eyes
 
-    // visuals (purple vibe)
-    private static final int SHELL_POINTS = 6;         // tight purple shell each tick
-    private static final int CORE_POINTS  = 2;         // faint core sparks
-    private static final int BURST_EVERY  = 6;         // small flare cadence
-    private static final double ORB_RADIUS = 0.18;
+    // visuals: an arcane seeker with a twin-helix trail and a lock-on sigil over its target
+    private static final double HELIX_RADIUS = 0.22;
+    private static final org.joml.Vector3f MAGENTA = new org.joml.Vector3f(1.0f, 0.3f, 0.9f);
+    private static final org.joml.Vector3f VIOLET = new org.joml.Vector3f(0.45f, 0.15f, 1.0f);
+    private static final net.minecraft.particle.DustParticleEffect CORE =
+            new net.minecraft.particle.DustParticleEffect(new org.joml.Vector3f(1.0f, 0.85f, 1.0f), 1.1f);
+    private static final net.minecraft.particle.DustColorTransitionParticleEffect TRAIL =
+            new net.minecraft.particle.DustColorTransitionParticleEffect(MAGENTA, VIOLET, 0.7f);
+    private static final net.minecraft.particle.DustParticleEffect SIGIL =
+            new net.minecraft.particle.DustParticleEffect(MAGENTA, 0.8f);
 
     private static final Map<RegistryKey<World>, List<Bolt>> ACTIVE = new HashMap<>();
     private static boolean TICK_REGISTERED = false;
@@ -65,6 +70,7 @@ public class TrackingSpell implements Spell {
         Vec3d start = eye.add(dir.multiply(START_AHEAD));
 
         ServerWorld sw = (ServerWorld) world;
+        launchSigil(sw, start, dir);
         ACTIVE.computeIfAbsent(sw.getRegistryKey(), k -> new ArrayList<>())
                 .add(new Bolt(player.getUuid(), target == null ? null : target.getUuid(),
                         start, dir.multiply(SPEED), dir, sw.getTime()));
@@ -145,36 +151,73 @@ public class TrackingSpell implements Spell {
             // move
             b.pos = newPos;
 
-            // visuals — purple orb with flare, not a plain trail
-            // tight shell
-            for (int i = 0; i < SHELL_POINTS; i++) {
-                double th = (Math.PI * 2 * i) / SHELL_POINTS;
-                double xOff = Math.cos(th) * ORB_RADIUS;
-                double zOff = Math.sin(th) * ORB_RADIUS;
-                double yOff = (rand.nextDouble() - 0.5) * 0.04;
-                world.spawnParticles(ParticleTypes.REVERSE_PORTAL, b.pos.x + xOff, b.pos.y + yOff, b.pos.z + zOff, 1, 0, 0, 0, 0);
-            }
-            // core sparks
-            for (int i = 0; i < CORE_POINTS; i++) {
-                double s = 0.03;
-                world.spawnParticles(ParticleTypes.DRAGON_BREATH,
-                        b.pos.x + (rand.nextDouble() - 0.5) * s,
-                        b.pos.y + (rand.nextDouble() - 0.5) * s,
-                        b.pos.z + (rand.nextDouble() - 0.5) * s,
-                        1, 0, 0, 0, 0);
-            }
-            // periodic flare ring (gives motion feel, still not a boring trail)
-            if (((now - b.spawnTick) % BURST_EVERY) == 0) {
-                int n = 10;
-                double r = ORB_RADIUS + 0.08;
-                for (int i = 0; i < n; i++) {
-                    double a = (Math.PI * 2 * i) / n;
-                    world.spawnParticles(ParticleTypes.ENCHANT, b.pos.x + Math.cos(a) * r, b.pos.y, b.pos.z + Math.sin(a) * r, 1, 0, 0, 0, 0);
-                }
+            renderBolt(world, b, oldPos, newPos, (int) (now - b.spawnTick));
+            if (target != null) renderLockOn(world, target, (int) (now - b.spawnTick));
+            if (((now - b.spawnTick) % 6) == 0) {
                 world.playSound(null, BlockPos.ofFloored(b.pos),
-                        SoundEvents.BLOCK_AMETHYST_BLOCK_STEP, SoundCategory.PLAYERS, 0.4f, 1.8f);
+                        SoundEvents.BLOCK_AMETHYST_BLOCK_STEP, SoundCategory.PLAYERS, 0.5f, 1.8f);
             }
         }
+    }
+
+    /** Bright core, twin helix spiralling around the flight path, and the odd spark shed behind. */
+    private static void renderBolt(ServerWorld world, Bolt b, Vec3d from, Vec3d to, int age) {
+        Vec3d dir = to.subtract(from);
+        double len = dir.length();
+        if (len < 1.0e-4) return;
+        dir = dir.multiply(1.0 / len);
+        Vec3d helper = Math.abs(dir.y) > 0.9 ? new Vec3d(1, 0, 0) : new Vec3d(0, 1, 0);
+        Vec3d u = dir.crossProduct(helper).normalize();
+        Vec3d v = dir.crossProduct(u).normalize();
+
+        int steps = 4;
+        for (int i = 0; i < steps; i++) {
+            double t = i / (double) steps;
+            Vec3d p = from.lerp(to, t);
+            double phase = (age + t) * 1.6;
+            for (int strand = 0; strand < 2; strand++) {
+                double a = phase + strand * Math.PI;
+                Vec3d q = p.add(u.multiply(Math.cos(a) * HELIX_RADIUS)).add(v.multiply(Math.sin(a) * HELIX_RADIUS));
+                world.spawnParticles(TRAIL, q.x, q.y, q.z, 1, 0, 0, 0, 0);
+            }
+        }
+        world.spawnParticles(CORE, to.x, to.y, to.z, 2, 0.03, 0.03, 0.03, 0);
+        world.spawnParticles(ParticleTypes.WITCH, to.x, to.y, to.z, 1, 0.05, 0.05, 0.05, 0);
+        if (age % 3 == 0) {
+            world.spawnParticles(ParticleTypes.END_ROD, from.x, from.y, from.z, 0, -dir.x * 0.05, -dir.y * 0.05, -dir.z * 0.05, 1.0);
+        }
+    }
+
+    /** A spinning reticle over whatever the bolt is hunting. */
+    private static void renderLockOn(ServerWorld world, LivingEntity target, int age) {
+        if (age % 2 != 0) return;
+        Vec3d c = target.getPos().add(0, target.getHeight() + 0.5, 0);
+        double r = Math.max(0.5, target.getWidth() * 0.8);
+        double spin = age * 0.3;
+        for (int i = 0; i < 4; i++) {
+            double a = spin + i * Math.PI / 2.0;
+            // four chevrons pointing inward
+            for (int k = 0; k < 3; k++) {
+                double off = (k - 1) * 0.12;
+                double ax = Math.cos(a + off) * (r - Math.abs(off) * 0.8);
+                double az = Math.sin(a + off) * (r - Math.abs(off) * 0.8);
+                world.spawnParticles(SIGIL, c.x + ax, c.y, c.z + az, 1, 0, 0, 0, 0);
+            }
+        }
+    }
+
+    /** A small rune ring flashes at the staff as the bolt leaves. */
+    private static void launchSigil(ServerWorld world, Vec3d at, Vec3d dir) {
+        Vec3d helper = Math.abs(dir.y) > 0.9 ? new Vec3d(1, 0, 0) : new Vec3d(0, 1, 0);
+        Vec3d u = dir.crossProduct(helper).normalize();
+        Vec3d v = dir.crossProduct(u).normalize();
+        for (int i = 0; i < 20; i++) {
+            double a = i * Math.PI * 2.0 / 20;
+            Vec3d p = at.add(u.multiply(Math.cos(a) * 0.45)).add(v.multiply(Math.sin(a) * 0.45));
+            world.spawnParticles(SIGIL, p.x, p.y, p.z, 1, 0, 0, 0, 0);
+        }
+        world.spawnParticles(ParticleTypes.ENCHANT, at.x, at.y, at.z, 12, 0.2, 0.2, 0.2, 0.5);
+        world.spawnParticles(ParticleTypes.WITCH, at.x, at.y, at.z, 6, 0.1, 0.1, 0.1, 0.05);
     }
 
     // pick a target the player is looking at (front-cone)
@@ -209,15 +252,19 @@ public class TrackingSpell implements Spell {
     }
 
     private static void impact(ServerWorld world, Vec3d where, PlayerEntity owner) {
-        // purple puff + chime
-        for (int i = 0; i < 20; i++) {
-            double vx = (world.getRandom().nextDouble() - 0.5) * 0.3;
-            double vy = (world.getRandom().nextDouble() - 0.2) * 0.3;
-            double vz = (world.getRandom().nextDouble() - 0.5) * 0.3;
-            world.spawnParticles(ParticleTypes.DRAGON_BREATH, where.x, where.y, where.z, 1, vx, vy, vz, 0.0);
+        net.minecraft.util.math.random.Random rand = world.getRandom();
+        for (int i = 0; i < 24; i++) {
+            double z = rand.nextDouble() * 2 - 1, th = rand.nextDouble() * Math.PI * 2, s = Math.sqrt(1 - z * z);
+            double speed = 0.15 + rand.nextDouble() * 0.2;
+            world.spawnParticles(TRAIL, where.x, where.y, where.z, 0, s * Math.cos(th) * speed, z * speed, s * Math.sin(th) * speed, 1.0);
         }
+        world.spawnParticles(ParticleTypes.WITCH, where.x, where.y, where.z, 15, 0.25, 0.25, 0.25, 0.1);
+        world.spawnParticles(ParticleTypes.ENCHANTED_HIT, where.x, where.y, where.z, 10, 0.2, 0.2, 0.2, 0.3);
+        world.spawnParticles(ParticleTypes.END_ROD, where.x, where.y, where.z, 5, 0.1, 0.1, 0.1, 0.08);
         world.playSound(null, BlockPos.ofFloored(where),
-                SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.PLAYERS, 0.9f, 1.2f);
+                SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.PLAYERS, 1.2f, 1.2f);
+        world.playSound(null, BlockPos.ofFloored(where),
+                SoundEvents.BLOCK_AMETHYST_CLUSTER_BREAK, SoundCategory.PLAYERS, 0.9f, 1.4f);
     }
 
     private static class Bolt {

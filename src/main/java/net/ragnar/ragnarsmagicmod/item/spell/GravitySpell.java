@@ -1,160 +1,217 @@
 package net.ragnar.ragnarsmagicmod.item.spell;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import net.ragnar.ragnarsmagicmod.util.SkyDrop;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
+/**
+ * Plants a beam of reversed gravity that reaches high into the sky. Anything standing in the beam,
+ * caster and players included, is carried upward; everything outside stays on the ground.
+ * Use it to climb cliffs and mountains (step out sideways onto a ledge, sneak to sink back down),
+ * or to haul mobs up and let them drop when the beam fades.
+ * Players still inside when it fades are given Slow Falling; mobs are not.
+ */
 public class GravitySpell implements Spell {
+    private static final double RANGE = 48.0;
+    private static final double RADIUS = 1.5;
+    private static final double MAX_HEIGHT = 96.0;
+    private static final int DURATION_TICKS = 20 * 12;
+    private static final double RISE_SPEED = 0.6;       // blocks/tick at full lift
+    private static final double LIFT_ACCEL = 0.12;
+    private static final double SINK_SPEED = 0.18;       // while sneaking
+    private static final double MOB_CENTERING = 0.04;   // keeps mobs from drifting out on the way up
+    private static final int SAFE_FALL_TICKS = 20 * 10;
+    private static final double VIEW_RANGE = 160.0;
 
-    private static final double RANGE = 64.0;
-    private static final double RADIUS = 3.0;
-    private static final int DURATION_TICKS = 100;   // 5s
-    private static final int APPLY_EVERY = 5;        // re-apply every 0.25s
-    private static final int LEV_DURATION = 15;      // short refresh window
-    private static final int LEV_AMP = 20;            // Levitation III
+    private static final List<Beam> BEAMS = new ArrayList<>();
+    private static boolean registered = false;
 
-    private static final Map<RegistryKey<World>, List<Field>> ACTIVE = new HashMap<>();
-    private static boolean TICK_REGISTERED = false;
+    private static final class Beam {
+        final ServerWorld world;
+        final Vec3d floor;
+        final double top;
+        final Set<Integer> lifted = new HashSet<>();
+        int age = 0;
 
-    private static void ensureTicker() {
-        if (TICK_REGISTERED) return;
-        ServerTickEvents.END_WORLD_TICK.register(GravitySpell::tickWorld);
-        TICK_REGISTERED = true;
+        Beam(ServerWorld world, Vec3d floor, double top) {
+            this.world = world;
+            this.floor = floor;
+            this.top = top;
+        }
+    }
+
+    private static void ensureRegistered() {
+        if (registered) return;
+        registered = true;
+        ServerTickEvents.END_WORLD_TICK.register(world -> {
+            Iterator<Beam> it = BEAMS.iterator();
+            while (it.hasNext()) {
+                Beam b = it.next();
+                if (b.world == world && !tick(b)) it.remove();
+            }
+        });
     }
 
     @Override
     public boolean cast(World world, PlayerEntity player, ItemStack staff) {
         if (world.isClient) return false;
-        ensureTicker();
-
-        // exact look point (no surfacing). If miss, use 8 blocks ahead.
-        Vec3d center = pickTargetPoint(world, player);
-
-        // SFX
-        var horn = SoundEvents.GOAT_HORN_SOUNDS.get(2).value();
-        world.playSound(
-                null,
-                player.getBlockPos(),
-                horn,
-                SoundCategory.PLAYERS,
-                0.75f,
-                1.4f
-        );
-        world.playSound(null, BlockPos.ofFloored(center),
-                SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.PLAYERS, 0.9f, 1.2f);
-
+        ensureRegistered();
         ServerWorld sw = (ServerWorld) world;
-        ACTIVE.computeIfAbsent(sw.getRegistryKey(), k -> new ArrayList<>())
-                .add(new Field(center, sw.getTime()));
+
+        Vec3d floor = SkyDrop.aimedGround(sw, player, RANGE);
+        // The beam reaches up until the sky limit, or a ceiling if there is one
+        double limit = Math.min(floor.y + MAX_HEIGHT, world.getTopY());
+        BlockHitResult ceiling = world.raycast(new RaycastContext(floor.add(0, 0.5, 0), new Vec3d(floor.x, limit, floor.z),
+                RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, ShapeContext.absent()));
+        double top = ceiling.getType() == HitResult.Type.BLOCK ? ceiling.getPos().y : limit;
+        BEAMS.add(new Beam(sw, floor, top));
+
+        world.playSound(null, floor.x, floor.y, floor.z, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.PLAYERS, 1.5f, 1.3f);
+        world.playSound(null, floor.x, floor.y, floor.z, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.PLAYERS, 1.0f, 1.5f);
+        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_EVOKER_CAST_SPELL, SoundCategory.PLAYERS, 0.7f, 1.6f);
         return true;
     }
 
-    private static Vec3d pickTargetPoint(World world, PlayerEntity player) {
-        HitResult hit = player.raycast(RANGE, 0.0f, false);
-        if (hit.getType() == HitResult.Type.BLOCK) {
-            // exact hit position on the block face
-            return ((BlockHitResult) hit).getPos();
+    /** Returns false once the beam has faded. */
+    private static boolean tick(Beam b) {
+        b.age++;
+        if (b.age > DURATION_TICKS) {
+            fade(b);
+            return false;
+        }
+
+        Set<Integer> inside = new HashSet<>();
+        for (LivingEntity e : inBeam(b)) {
+            inside.add(e.getId());
+            if (b.lifted.add(e.getId())) {
+                b.world.playSound(null, e.getX(), e.getY(), e.getZ(), SoundEvents.ENTITY_BREEZE_JUMP, SoundCategory.PLAYERS, 0.8f, 1.2f);
+            }
+            lift(b, e);
+        }
+        b.lifted.retainAll(inside);
+
+        render(b);
+        if (b.age % 40 == 1) {
+            b.world.playSound(null, b.floor.x, b.floor.y, b.floor.z, SoundEvents.BLOCK_BEACON_AMBIENT, SoundCategory.PLAYERS, 1.5f, 1.5f);
+        }
+        return true;
+    }
+
+    private static List<LivingEntity> inBeam(Beam b) {
+        Box column = new Box(b.floor.x - RADIUS, b.floor.y - 0.5, b.floor.z - RADIUS, b.floor.x + RADIUS, b.top, b.floor.z + RADIUS);
+        return b.world.getEntitiesByClass(LivingEntity.class, column, e -> {
+            if (!e.isAlive() || e.isSpectator()) return false;
+            if (e instanceof PlayerEntity p && p.getAbilities().flying) return false;
+            double dx = e.getX() - b.floor.x, dz = e.getZ() - b.floor.z;
+            return dx * dx + dz * dz <= RADIUS * RADIUS;
+        });
+    }
+
+    private static void lift(Beam b, LivingEntity e) {
+        Vec3d v = e.getVelocity();
+        double vy;
+        if (e.isSneaking()) {
+            vy = -SINK_SPEED;
         } else {
-            // 8 blocks straight ahead
-            return player.getCameraPosVec(0).add(player.getRotationVector().normalize().multiply(8.0));
+            vy = Math.min(RISE_SPEED, Math.max(v.y, 0) + LIFT_ACCEL);
+            // Ease to a stop just under the top of the beam
+            double headroom = b.top - (e.getY() + e.getHeight());
+            if (headroom < 3.0) vy = Math.min(vy, MathHelper.clamp(headroom * 0.2, -0.2, RISE_SPEED));
+        }
+
+        double vx = v.x, vz = v.z;
+        if (!(e instanceof PlayerEntity)) {
+            // Players steer freely (to step off onto a ledge); mobs are kept in the middle
+            vx = vx * 0.8 + (b.floor.x - e.getX()) * MOB_CENTERING;
+            vz = vz * 0.8 + (b.floor.z - e.getZ()) * MOB_CENTERING;
+        }
+        e.setVelocity(vx, vy, vz);
+        e.velocityModified = true;
+        e.fallDistance = 0;   // stepping off at the top of a climb shouldn't hurt
+
+        if (b.age % 3 == 0) {
+            b.world.spawnParticles(ParticleTypes.REVERSE_PORTAL, e.getX(), e.getY(), e.getZ(), 2, e.getWidth() * 0.4, 0.05, e.getWidth() * 0.4, 0.02);
         }
     }
 
-    private static void tickWorld(ServerWorld world) {
-        List<Field> fields = ACTIVE.get(world.getRegistryKey());
-        if (fields == null || fields.isEmpty()) return;
-
-        long now = world.getTime();
-        Iterator<Field> it = fields.iterator();
-        while (it.hasNext()) {
-            Field f = it.next();
-
-            int age = (int) (now - f.spawnTick);
-            if (age >= DURATION_TICKS) {
-                world.playSound(null, BlockPos.ofFloored(f.center),
-                        SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.PLAYERS, 0.9f, 1.0f);
-                it.remove();
-                continue;
-            }
-
-            // visuals at exact height, then slowly rising
-            renderParticles(world, f, age);
-
-            // affect ALL living entities (players included, caster included if inside)
-            if (age % APPLY_EVERY == 0) {
-                double r = RADIUS;
-                Box aabb = new Box(
-                        f.center.x - r, f.center.y - 0.5, f.center.z - r,
-                        f.center.x + r, f.center.y + 3.0, f.center.z + r
-                );
-                List<Entity> ents = world.getOtherEntities(null, aabb,
-                        e -> e instanceof LivingEntity && e.isAlive());
-
-                for (Entity e : ents) {
-                    LivingEntity le = (LivingEntity) e;
-                    le.addStatusEffect(new StatusEffectInstance(
-                            StatusEffects.LEVITATION, LEV_DURATION, LEV_AMP, true, true, true));
-                }
+    private static void fade(Beam b) {
+        b.world.playSound(null, b.floor.x, b.floor.y, b.floor.z, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.PLAYERS, 1.5f, 1.2f);
+        for (LivingEntity e : inBeam(b)) {
+            if (e instanceof PlayerEntity) {
+                e.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, SAFE_FALL_TICKS, 0, false, true, true));
             }
         }
     }
 
-    private static void renderParticles(ServerWorld world, Field f, int age) {
-        net.minecraft.util.math.random.Random rand = world.getRandom();
+    private static void render(Beam b) {
+        ServerWorld world = b.world;
+        var rand = world.random;
+        Vec3d c = b.floor;
+        double height = b.top - c.y;
 
-        // boundary ring exactly at look Y, rising slowly
-        double ringY = f.center.y + age * 0.02; // gentle rise
-        int ringPts = 36;
-        for (int i = 0; i < ringPts; i++) {
-            double a = (MathHelper.TAU * i) / ringPts;
-            double x = f.center.x + Math.cos(a) * RADIUS;
-            double z = f.center.z + Math.sin(a) * RADIUS;
-            world.spawnParticles(ParticleTypes.END_ROD, x, ringY, z, 1, 0, 0, 0, 0.0);
-        }
-
-        // interior wisps start at exact center height
-        for (int i = 0; i < 20; i++) {
-            double rx = (rand.nextDouble() * 2 - 1) * (RADIUS * 0.9);
-            double rz = (rand.nextDouble() * 2 - 1) * (RADIUS * 0.9);
-            double baseY = f.center.y + (rand.nextDouble() * 0.2 - 0.1);
-            for (int h = 0; h < 6; h++) {
-                world.spawnParticles(
-                        ParticleTypes.ENCHANT,
-                        f.center.x + rx * 0.85,
-                        baseY + h * 0.2 + age * 0.01,
-                        f.center.z + rz * 0.85,
-                        1, 0, 0, 0, 0.0
-                );
+        // Base ring
+        if (b.age % 2 == 0) {
+            int points = 20;
+            double spin = b.age * 0.1;
+            for (int i = 0; i < points; i++) {
+                double a = spin + i * Math.PI * 2.0 / points;
+                emit(world, ParticleTypes.END_ROD, c.add(Math.cos(a) * RADIUS, 0.1, Math.sin(a) * RADIUS), 0, 0, 0.05, 0);
             }
         }
 
-        if (age % 20 == 0) {
-            world.playSound(null, BlockPos.ofFloored(f.center),
-                    SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.PLAYERS, 0.6f, 1.4f);
+        // Twin spirals climbing the column
+        double spin = b.age * 0.25;
+        for (int strand = 0; strand < 2; strand++) {
+            for (int i = 0; i < 6; i++) {
+                double y = rand.nextDouble() * height;
+                double a = spin + strand * Math.PI + y * 0.35;
+                emit(world, ParticleTypes.END_ROD, c.add(Math.cos(a) * RADIUS * 0.9, y, Math.sin(a) * RADIUS * 0.9), 0, 0, 0.08, 0);
+            }
+        }
+
+        // Motes rising through the core of the beam
+        for (int i = 0; i < 18; i++) {
+            double a = rand.nextDouble() * Math.PI * 2.0;
+            double r = Math.sqrt(rand.nextDouble()) * RADIUS * 0.8;
+            double y = rand.nextDouble() * height;
+            ParticleEffect type = i % 3 == 0 ? ParticleTypes.REVERSE_PORTAL : ParticleTypes.ENCHANT;
+            emit(world, type, c.add(Math.cos(a) * r, y, Math.sin(a) * r), 0, 0, 0.25, 0);
+        }
+        if (rand.nextInt(3) == 0) {
+            emit(world, ParticleTypes.CLOUD, c.add((rand.nextDouble() - 0.5) * RADIUS, 0.2, (rand.nextDouble() - 0.5) * RADIUS), 0, 0, 0.15, 0);
         }
     }
 
-    private static class Field {
-        final Vec3d center;
-        final long spawnTick;
-        Field(Vec3d center, long spawnTick) {
-            this.center = center;
-            this.spawnTick = spawnTick;
+    /** Single particle with the given velocity, sent to everyone within {@link #VIEW_RANGE} so the whole beam can be seen. */
+    private static void emit(ServerWorld world, ParticleEffect type, Vec3d p, int count, double vx, double vy, double vz) {
+        for (ServerPlayerEntity viewer : world.getPlayers()) {
+            if (viewer.squaredDistanceTo(p) <= VIEW_RANGE * VIEW_RANGE) {
+                world.spawnParticles(viewer, type, true, p.x, p.y, p.z, count, vx, vy, vz, 1.0);
+            }
         }
     }
 }

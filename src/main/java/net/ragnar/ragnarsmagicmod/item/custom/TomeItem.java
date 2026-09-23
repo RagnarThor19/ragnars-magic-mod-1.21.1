@@ -47,46 +47,23 @@ public class TomeItem extends Item {
     public SpellId getSpell() { return spell; }
     public int getXpCost() { return xpCost; }
 
-    // Right-click while a staff is in OFF-HAND to socket it
+    // Right-click while a staff is in OFF-HAND to equip it onto the staff
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack tome = player.getStackInHand(hand);
         ItemStack off = player.getOffHandStack();
 
-        // Check if the off-hand item is a Staff
-        if (off.getItem() instanceof StaffItem staff) {
-
-            // 1. Check if this staff supports this tome tier
-            if (!staff.canAccept(this)) {
-                if (!world.isClient) {
-                    player.sendMessage(Text.literal("This staff cannot use that tome."), true);
-                }
-                return TypedActionResult.success(tome);
-            }
-
-            // 2. AUTO-SWAP: If there's an existing tome, refund it first
-            if (staff.hasTome(off)) {
-                if (!world.isClient) {
-                    ItemStack existing = staff.getSocketedTomeStack(off);
-                    if (!existing.isEmpty()) {
-                        if (!player.getInventory().insertStack(existing)) {
-                            player.dropItem(existing, false);
-                        }
-                        player.sendMessage(Text.literal("Swapped out previous tome."), true);
-                    }
-                }
-            }
-
-            // 3. Perform the socketing (Server only)
+        if (hand == Hand.MAIN_HAND && off.getItem() instanceof StaffItem staff) {
             if (!world.isClient) {
-                staff.socket(off, this);
-                if (!player.isCreative()) {
-                    tome.decrement(1);
+                StaffItem.InsertResult result = staff.insertTome(off, this);
+                if (result == StaffItem.InsertResult.OK) {
+                    if (!player.isCreative()) tome.decrement(1);
+                    player.sendMessage(Text.literal("Tome equipped."), true);
+                } else {
+                    player.sendMessage(StaffItem.insertFailMessage(result), true);
                 }
-                player.sendMessage(Text.literal("Tome socketed."), true);
             }
-
-            // 4. Return SUCCESS to consume click and prevent staff usage
+            // SUCCESS consumes the click so the staff doesn't also cast
             return TypedActionResult.success(tome);
         }
 
@@ -111,7 +88,7 @@ public class TomeItem extends Item {
         tooltip.add(Text.literal("Usable with: " + usable).formatted(Formatting.DARK_GRAY));
     }
 
-    private static Formatting colorFor(TomeTier t) {
+    public static Formatting colorFor(TomeTier t) {
         return switch (t) {
             case BEGINNER -> Formatting.GREEN;
             case ADVANCED -> Formatting.AQUA;

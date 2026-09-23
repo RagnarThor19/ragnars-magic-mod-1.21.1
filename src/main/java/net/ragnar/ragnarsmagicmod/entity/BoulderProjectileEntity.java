@@ -77,8 +77,8 @@ public class BoulderProjectileEntity extends ThrownItemEntity {
         for (LivingEntity target : targets) {
             double distSq = this.squaredDistanceTo(target);
             if (distSq < radius * radius) {
-                // Damage: 4 hearts = 8.0f
-                target.damage(this.getDamageSources().thrown(this, this.getOwner() instanceof LivingEntity le ? le : null), 6.0F);
+                // Damage: 7.5 = three hits kill a 20 HP mob, even through light armor
+                target.damage(this.getDamageSources().thrown(this, this.getOwner() instanceof LivingEntity le ? le : null), 7.5F);
 
                 // Heavy Knockback away from boulder
                 Vec3d dir = target.getPos().subtract(this.getPos()).normalize().multiply(1.5); // 1.5 multiplier is strong

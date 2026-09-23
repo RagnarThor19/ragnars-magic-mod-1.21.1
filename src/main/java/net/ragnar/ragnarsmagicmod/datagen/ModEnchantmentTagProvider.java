@@ -18,16 +18,19 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
         // We explicitly add our custom keys to the IN_ENCHANTING_TABLE tag
         getOrCreateTagBuilder(EnchantmentTags.IN_ENCHANTING_TABLE)
                 .add(ModEnchantments.RESERVE)
-                .add(ModEnchantments.QUICKCAST);
+                .add(ModEnchantments.QUICKCAST)
+                .add(ModEnchantments.ATTUNEMENT);
 
         getOrCreateTagBuilder(EnchantmentTags.TRADEABLE)
                 .add(ModEnchantments.RESERVE)
-                .add(ModEnchantments.QUICKCAST);
+                .add(ModEnchantments.QUICKCAST)
+                .add(ModEnchantments.ATTUNEMENT);
 
         // Also add to CURSE tag if you wanted curses, but we don't.
         // Adding to NON_TREASURE helps ensure they show up in tables too (vs strictly chest loot)
         getOrCreateTagBuilder(EnchantmentTags.NON_TREASURE)
                 .add(ModEnchantments.RESERVE)
-                .add(ModEnchantments.QUICKCAST);
+                .add(ModEnchantments.QUICKCAST)
+                .add(ModEnchantments.ATTUNEMENT);
     }
 }

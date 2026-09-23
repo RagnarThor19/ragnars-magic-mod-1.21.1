@@ -247,7 +247,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.DRAGON_BREATH,
                     32 //
-            ).setCooldown(60)
+            ).setCooldown(160) // 8s; the breath itself lasts ~3.6s
     );
 
     public static final net.minecraft.item.Item TOME_GRAVITY = registerItem("tome_gravity",
@@ -433,6 +433,41 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SMASH,
                     16 // XP Cost
             ).setCooldown(100) // 5 seconds
+    );
+    public static final TomeItem TOME_OF_FELLING = (TomeItem) registerItem("tome_of_felling",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.FELLING, 10
+            ).setCooldown(30) // 1.5 seconds
+    );
+    public static final TomeItem TOME_OF_IGNITION = (TomeItem) registerItem("tome_of_ignition",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.IGNITION, 14
+            ).setCooldown(100) // 5 seconds
+    );
+    public static final TomeItem TOME_OF_THE_DEAD = (TomeItem) registerItem("tome_of_the_dead",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.DEAD, 18
+            ).setCooldown(200) // 10 seconds, summons last 8
+    );
+    public static final TomeItem TOME_OF_SWORDS = (TomeItem) registerItem("tome_of_swords",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.SWORDS, 45 // paid once, when the swords are summoned
+            ).setCooldown(20 * 50) // 50s, starts after the fifth sword is fired
+    );
+    public static final TomeItem TOME_OF_LEVITATION = (TomeItem) registerItem("tome_of_levitation",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.LEVITATION, 6
+            ).setCooldown(60) // 3 seconds
+    );
+    public static final TomeItem TOME_OF_CONTROLLING = (TomeItem) registerItem("tome_of_controlling",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.CONTROLLING, 14
+            ).setCooldown(20 * 25) // 25s, starts when you let go
+    );
+    public static final TomeItem TOME_OF_BREATHING = (TomeItem) registerItem("tome_of_breathing",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.BREATHING, 8
+            ).setCooldown(60) // 3 seconds
     );
     public static final net.minecraft.item.Item TOME_OF_PULLING = registerItem("tome_of_pulling",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -668,6 +703,13 @@ public class ModItems {
                 net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_OF_PULLING
         );
+        putTome(SpellId.FELLING, TomeTier.ADVANCED, TOME_OF_FELLING);
+        putTome(SpellId.BREATHING, TomeTier.BEGINNER, TOME_OF_BREATHING);
+        putTome(SpellId.IGNITION, TomeTier.ADVANCED, TOME_OF_IGNITION);
+        putTome(SpellId.DEAD, TomeTier.ADVANCED, TOME_OF_THE_DEAD);
+        putTome(SpellId.SWORDS, TomeTier.MASTER, TOME_OF_SWORDS);
+        putTome(SpellId.LEVITATION, TomeTier.BEGINNER, TOME_OF_LEVITATION);
+        putTome(SpellId.CONTROLLING, TomeTier.ADVANCED, TOME_OF_CONTROLLING);
 
 
 
@@ -677,17 +719,17 @@ public class ModItems {
     public static final Item GOLDEN_STAFF = registerItem(
             "golden_staff",
             new StaffItem(new Item.Settings().maxDamage(128).rarity(Rarity.UNCOMMON),
-                    EnumSet.of(TomeTier.BEGINNER))
+                    EnumSet.of(TomeTier.BEGINNER), 3)
     );
     public static final Item DIAMOND_STAFF = registerItem(
             "diamond_staff",
             new StaffItem(new Item.Settings().maxDamage(384).rarity(Rarity.RARE),
-                    EnumSet.of(TomeTier.BEGINNER, TomeTier.ADVANCED))
+                    EnumSet.of(TomeTier.BEGINNER, TomeTier.ADVANCED), 4)
     );
     public static final Item NETHERITE_STAFF = registerItem(
             "netherite_staff",
             new StaffItem(new Item.Settings().maxDamage(2031).rarity(Rarity.EPIC).fireproof(),
-                    EnumSet.of(TomeTier.BEGINNER, TomeTier.ADVANCED, TomeTier.MASTER))
+                    EnumSet.of(TomeTier.BEGINNER, TomeTier.ADVANCED, TomeTier.MASTER), 5)
     );
 
     //other stuff
@@ -733,6 +775,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_BOULDERS));
             entries.add(new ItemStack(TOME_SWAPPING));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_PULLING));
+            entries.add(new ItemStack(TOME_OF_BREATHING));
+            entries.add(new ItemStack(TOME_OF_LEVITATION));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
@@ -752,6 +796,10 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_RAINING_ARROWS));
             entries.add(new net.minecraft.item.ItemStack(TOME_RANDOMNESS));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_SMASHING));
+            entries.add(new ItemStack(TOME_OF_FELLING));
+            entries.add(new ItemStack(TOME_OF_IGNITION));
+            entries.add(new ItemStack(TOME_OF_THE_DEAD));
+            entries.add(new ItemStack(TOME_OF_CONTROLLING));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
@@ -764,6 +812,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_THE_VOID));
             entries.add(new net.minecraft.item.ItemStack(TOME_FREEZING));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_CLOUDS));
+            entries.add(new ItemStack(TOME_OF_SWORDS));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);

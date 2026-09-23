@@ -51,8 +51,20 @@
   "item.ragnarsmagicmod.tome_of_clouds": "Tome of Clouds",
   "item.ragnarsmagicmod.tome_of_smashing": "Tome of Smashing",
   "item.ragnarsmagicmod.tome_of_pulling": "Tome of Pulling",
+  "item.ragnarsmagicmod.tome_of_felling": "Tome of Felling",
+  "item.ragnarsmagicmod.tome_of_breathing": "Tome of Breathing",
+  "item.ragnarsmagicmod.tome_of_ignition": "Tome of Ignition",
+  "item.ragnarsmagicmod.tome_of_the_dead": "Tome of the Dead",
+  "item.ragnarsmagicmod.tome_of_swords": "Tome of Swords",
+  "item.ragnarsmagicmod.tome_of_levitation": "Tome of Levitation",
+  "item.ragnarsmagicmod.tome_of_controlling": "Tome of Controlling",
 
   "item.ragnarsmagicmod.boulder": "Boulder",
   "enchantment.ragnarsmagicmod.reserve": "Reserve",
-  "enchantment.ragnarsmagicmod.quickcast": "Quickcast"
+  "enchantment.ragnarsmagicmod.quickcast": "Quickcast",
+  "enchantment.ragnarsmagicmod.attunement": "Attunement",
+  "key.category.ragnarsmagicmod": "Ragnar's Magic Mod",
+  "key.ragnarsmagicmod.scroll_spells": "Scroll Spells (Hold + Mouse Wheel)",
+  "key.ragnarsmagicmod.next_spell": "Next Spell",
+  "key.ragnarsmagicmod.previous_spell": "Previous Spell"
 }

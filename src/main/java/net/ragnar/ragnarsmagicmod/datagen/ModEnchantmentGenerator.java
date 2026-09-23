@@ -58,6 +58,19 @@ public class ModEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         AttributeModifierSlot.MAINHAND
                 ))
         );
+
+        // Single level and very rare, like Silk Touch
+        register(registerable, ModEnchantments.ATTUNEMENT, Enchantment.builder(
+                Enchantment.definition(
+                        itemLookup.getOrThrow(ModTags.Items.STAFFS),
+                        1,
+                        1,
+                        Enchantment.constantCost(15),
+                        Enchantment.constantCost(65),
+                        8,
+                        AttributeModifierSlot.MAINHAND
+                ))
+        );
     }
 
     private static void register(Registerable<Enchantment> registry, net.minecraft.registry.RegistryKey<Enchantment> key, Enchantment.Builder builder) {

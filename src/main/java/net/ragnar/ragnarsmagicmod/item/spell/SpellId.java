@@ -48,5 +48,12 @@ public enum SpellId {
     SWAP,
     CLOUDS,
     SMASH,
-    PULL
+    PULL,
+    FELLING,
+    BREATHING,
+    IGNITION,
+    DEAD,
+    SWORDS,
+    LEVITATION,
+    CONTROLLING
 }
