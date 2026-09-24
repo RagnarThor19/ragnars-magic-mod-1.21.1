@@ -56,5 +56,7 @@ public enum SpellId {
     SWORDS,
     LEVITATION,
     TELEKINESIS,
-    CONTROLLING
+    CONTROLLING,
+    QUIVER,
+    GLACIER
 }

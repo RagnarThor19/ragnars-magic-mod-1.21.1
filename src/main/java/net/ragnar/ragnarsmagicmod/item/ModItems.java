@@ -469,6 +469,16 @@ public class ModItems {
                     TomeTier.ADVANCED, SpellId.CONTROLLING, 40
             ).setCooldown(20 * 100) // 100s, starts when you leave the mob
     );
+    public static final TomeItem TOME_OF_THE_QUIVER = (TomeItem) registerItem("tome_of_the_quiver",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.QUIVER, 20 // paid once, when the arrows are summoned
+            ).setCooldown(20 * 30) // 30s, starts after the seventh arrow is fired
+    );
+    public static final TomeItem TOME_OF_THE_GLACIER = (TomeItem) registerItem("tome_of_the_glacier",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.GLACIER, 16
+            ).setCooldown(20 * 12) // 12 seconds
+    );
     public static final TomeItem TOME_OF_BREATHING = (TomeItem) registerItem("tome_of_breathing",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
                     TomeTier.BEGINNER, SpellId.BREATHING, 8
@@ -716,6 +726,8 @@ public class ModItems {
         putTome(SpellId.LEVITATION, TomeTier.BEGINNER, TOME_OF_LEVITATION);
         putTome(SpellId.TELEKINESIS, TomeTier.MASTER, TOME_OF_TELEKINESIS);
         putTome(SpellId.CONTROLLING, TomeTier.ADVANCED, TOME_OF_CONTROLLING);
+        putTome(SpellId.QUIVER, TomeTier.ADVANCED, TOME_OF_THE_QUIVER);
+        putTome(SpellId.GLACIER, TomeTier.ADVANCED, TOME_OF_THE_GLACIER);
 
 
 
@@ -806,6 +818,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_IGNITION));
             entries.add(new ItemStack(TOME_OF_THE_DEAD));
             entries.add(new ItemStack(TOME_OF_CONTROLLING));
+            entries.add(new ItemStack(TOME_OF_THE_QUIVER));
+            entries.add(new ItemStack(TOME_OF_THE_GLACIER));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

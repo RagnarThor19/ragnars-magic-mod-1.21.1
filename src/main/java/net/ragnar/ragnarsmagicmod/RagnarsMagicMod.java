@@ -92,5 +92,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.LEVITATION, new net.ragnar.ragnarsmagicmod.item.spell.LevitationSpell());
         Spells.register(SpellId.TELEKINESIS, new net.ragnar.ragnarsmagicmod.item.spell.TelekinesisSpell());
         Spells.register(SpellId.CONTROLLING, new net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell());
+        Spells.register(SpellId.QUIVER, new net.ragnar.ragnarsmagicmod.item.spell.QuiverSpell());
+        Spells.register(SpellId.GLACIER, new net.ragnar.ragnarsmagicmod.item.spell.GlacierSpell());
     }
 }
