@@ -459,10 +459,15 @@ public class ModItems {
                     TomeTier.BEGINNER, SpellId.LEVITATION, 6
             ).setCooldown(60) // 3 seconds
     );
+    public static final TomeItem TOME_OF_TELEKINESIS = (TomeItem) registerItem("tome_of_telekinesis",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.TELEKINESIS, 14
+            ).setCooldown(20 * 25) // 25s, starts when you let go
+    );
     public static final TomeItem TOME_OF_CONTROLLING = (TomeItem) registerItem("tome_of_controlling",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
-                    TomeTier.ADVANCED, SpellId.CONTROLLING, 14
-            ).setCooldown(20 * 25) // 25s, starts when you let go
+                    TomeTier.ADVANCED, SpellId.CONTROLLING, 40
+            ).setCooldown(20 * 100) // 100s, starts when you leave the mob
     );
     public static final TomeItem TOME_OF_BREATHING = (TomeItem) registerItem("tome_of_breathing",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
@@ -709,6 +714,7 @@ public class ModItems {
         putTome(SpellId.DEAD, TomeTier.ADVANCED, TOME_OF_THE_DEAD);
         putTome(SpellId.SWORDS, TomeTier.MASTER, TOME_OF_SWORDS);
         putTome(SpellId.LEVITATION, TomeTier.BEGINNER, TOME_OF_LEVITATION);
+        putTome(SpellId.TELEKINESIS, TomeTier.MASTER, TOME_OF_TELEKINESIS);
         putTome(SpellId.CONTROLLING, TomeTier.ADVANCED, TOME_OF_CONTROLLING);
 
 
@@ -813,6 +819,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_FREEZING));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_CLOUDS));
             entries.add(new ItemStack(TOME_OF_SWORDS));
+            entries.add(new ItemStack(TOME_OF_TELEKINESIS));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);

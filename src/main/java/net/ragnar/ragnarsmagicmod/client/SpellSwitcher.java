@@ -13,13 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.ragnar.ragnarsmagicmod.item.custom.StaffItem;
-import net.ragnar.ragnarsmagicmod.network.ControlPayloads;
+import net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads;
 import net.ragnar.ragnarsmagicmod.network.SelectSpellPayload;
 import org.lwjgl.glfw.GLFW;
 
 /**
  * Client-side spell selection: hold the modifier and scroll, or tap the next/previous keys.
- * Also routes the wheel to the Tome of Controlling while it is holding something.
+ * Also routes the wheel to the Tome of Telekinesis while it is holding something.
  */
 public final class SpellSwitcher {
     private static final String CATEGORY = "key.category.ragnarsmagicmod";
@@ -29,8 +29,8 @@ public final class SpellSwitcher {
     private static KeyBinding previousSpell;
 
     private static double scrollAccumulator;
-    // Set by the server while the Tome of Controlling is holding something
-    private static boolean controlling;
+    // Set by the server while the Tome of Telekinesis is holding something
+    private static boolean telekinesis;
 
     private SpellSwitcher() {}
 
@@ -42,11 +42,11 @@ public final class SpellSwitcher {
         previousSpell = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.ragnarsmagicmod.previous_spell", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, CATEGORY));
 
-        ClientPlayNetworking.registerGlobalReceiver(ControlPayloads.Holding.ID, (payload, context) -> {
-            controlling = payload.active();
+        ClientPlayNetworking.registerGlobalReceiver(TelekinesisPayloads.Holding.ID, (payload, context) -> {
+            telekinesis = payload.active();
             scrollAccumulator = 0;
         });
-        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> controlling = false);
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> telekinesis = false);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (nextSpell.wasPressed()) cycle(client, 1);
@@ -69,12 +69,12 @@ public final class SpellSwitcher {
     public static boolean onScroll(double vertical) {
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;
-        if (player != null && controlling && client.currentScreen == null && client.getOverlay() == null) {
-            // While holding something with the Tome of Controlling, the wheel pushes it away / reels it in
+        if (player != null && telekinesis && client.currentScreen == null && client.getOverlay() == null) {
+            // While holding something with the Tome of Telekinesis, the wheel pushes it away / reels it in
             scrollAccumulator += vertical;
             int steps = (int) scrollAccumulator;
             scrollAccumulator -= steps;
-            if (steps != 0) ClientPlayNetworking.send(new ControlPayloads.Scroll(steps));
+            if (steps != 0) ClientPlayNetworking.send(new TelekinesisPayloads.Scroll(steps));
             return true;
         }
         if (player == null || player.isSpectator() || client.currentScreen != null || client.getOverlay() != null

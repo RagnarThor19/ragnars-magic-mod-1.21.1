@@ -13,5 +13,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.STEVE, SteveRenderer::new);
         net.ragnar.ragnarsmagicmod.client.SpellSwitcher.init();
         net.ragnar.ragnarsmagicmod.client.SpellHud.init();
+        net.ragnar.ragnarsmagicmod.client.PossessionClient.init();
     }
 }

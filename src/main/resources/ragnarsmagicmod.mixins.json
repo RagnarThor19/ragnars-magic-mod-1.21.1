@@ -4,12 +4,19 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"ExampleMixin",
-		"MobEntityAccessor"
+		"LivingEntityMixin",
+		"MobEntityAccessor",
+		"MobEntityMixin"
 	],
 	"client": [
 		"client.DrawContextMixin",
 		"client.HeldItemRendererMixin",
 		"client.InGameHudMixin",
+		"client.CameraMixin",
+		"client.EntityRenderDispatcherMixin",
+		"client.GameRendererMixin",
+		"client.KeyboardInputMixin",
+		"client.MinecraftClientMixin",
 		"client.MouseMixin"
 	],
 	"injectors": {

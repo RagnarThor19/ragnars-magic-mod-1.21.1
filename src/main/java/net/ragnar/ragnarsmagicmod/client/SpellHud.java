@@ -69,7 +69,7 @@ public final class SpellHud {
     private static void render(DrawContext context, RenderTickCounter tickCounter) {
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;
-        if (player == null || client.options.hudHidden || player.isSpectator()) return;
+        if (player == null || client.options.hudHidden || player.isSpectator() || PossessionClient.isPossessing()) return;
 
         Hand hand = SpellSwitcher.findStaffHand(player);
         if (hand == null) {

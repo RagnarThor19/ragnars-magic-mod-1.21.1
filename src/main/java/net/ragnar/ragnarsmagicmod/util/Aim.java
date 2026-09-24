@@ -1,7 +1,6 @@
 package net.ragnar.ragnarsmagicmod.util;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
@@ -12,7 +11,7 @@ import net.minecraft.world.RaycastContext;
 
 import java.util.function.Predicate;
 
-/** Picking the entity a player is aiming at. */
+/** Picking the entity a player (or a possessed mob) is aiming at. */
 public final class Aim {
     private Aim() {}
 
@@ -20,7 +19,7 @@ public final class Aim {
      * The entity under the crosshair within {@code range}, or failing that the visible one closest to the
      * crosshair inside a {@code coneDegrees} cone (a little aim assist). Walls block both.
      */
-    public static Entity target(ServerWorld world, PlayerEntity player, double range, double coneDegrees, Predicate<Entity> filter) {
+    public static Entity target(ServerWorld world, Entity player, double range, double coneDegrees, Predicate<Entity> filter) {
         Vec3d eye = player.getEyePos();
         Vec3d look = player.getRotationVector().normalize();
         Predicate<Entity> valid = e -> e != player && e.isAlive() && !e.isSpectator() && filter.test(e);

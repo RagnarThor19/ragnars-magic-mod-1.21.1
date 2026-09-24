@@ -25,10 +25,12 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.sound.ModSoundEvents.init();
         ModEntities.registerModEntities();
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
-        net.ragnar.ragnarsmagicmod.network.ControlPayloads.register();
+        net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
+        net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
+        net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell.register();
 
         // Register Loot Table Modifiers
         ModLootTableModifiers.modifyLootTables();
@@ -88,6 +90,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.DEAD, new net.ragnar.ragnarsmagicmod.item.spell.DeadSpell());
         Spells.register(SpellId.SWORDS, new net.ragnar.ragnarsmagicmod.item.spell.SwordsSpell());
         Spells.register(SpellId.LEVITATION, new net.ragnar.ragnarsmagicmod.item.spell.LevitationSpell());
+        Spells.register(SpellId.TELEKINESIS, new net.ragnar.ragnarsmagicmod.item.spell.TelekinesisSpell());
         Spells.register(SpellId.CONTROLLING, new net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell());
     }
 }

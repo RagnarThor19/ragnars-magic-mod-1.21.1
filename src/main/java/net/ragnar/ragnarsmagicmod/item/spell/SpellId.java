@@ -55,5 +55,6 @@ public enum SpellId {
     DEAD,
     SWORDS,
     LEVITATION,
+    TELEKINESIS,
     CONTROLLING
 }

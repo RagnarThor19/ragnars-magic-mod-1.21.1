@@ -9,15 +9,15 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.ragnar.ragnarsmagicmod.RagnarsMagicMod;
-import net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell;
+import net.ragnar.ragnarsmagicmod.item.spell.TelekinesisSpell;
 
-/** Packets for the Tome of Controlling's hold-and-scroll. */
-public final class ControlPayloads {
-    private ControlPayloads() {}
+/** Packets for the Tome of Telekinesis's hold-and-scroll. */
+public final class TelekinesisPayloads {
+    private TelekinesisPayloads() {}
 
     /** Server -> client: whether the player is currently holding something, so the wheel moves it. */
     public record Holding(boolean active) implements CustomPayload {
-        public static final Id<Holding> ID = new Id<>(Identifier.of(RagnarsMagicMod.MOD_ID, "control_holding"));
+        public static final Id<Holding> ID = new Id<>(Identifier.of(RagnarsMagicMod.MOD_ID, "telekinesis_holding"));
         public static final PacketCodec<RegistryByteBuf, Holding> CODEC =
                 PacketCodec.tuple(PacketCodecs.BOOL, Holding::active, Holding::new);
 
@@ -29,7 +29,7 @@ public final class ControlPayloads {
 
     /** Client -> server: mouse wheel steps while holding (positive pushes away). */
     public record Scroll(int steps) implements CustomPayload {
-        public static final Id<Scroll> ID = new Id<>(Identifier.of(RagnarsMagicMod.MOD_ID, "control_scroll"));
+        public static final Id<Scroll> ID = new Id<>(Identifier.of(RagnarsMagicMod.MOD_ID, "telekinesis_scroll"));
         public static final PacketCodec<RegistryByteBuf, Scroll> CODEC =
                 PacketCodec.tuple(PacketCodecs.VAR_INT, Scroll::steps, Scroll::new);
 
@@ -43,7 +43,7 @@ public final class ControlPayloads {
         PayloadTypeRegistry.playS2C().register(Holding.ID, Holding.CODEC);
         PayloadTypeRegistry.playC2S().register(Scroll.ID, Scroll.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(Scroll.ID, (payload, context) ->
-                ControllingSpell.onScroll(context.player(), payload.steps()));
+                TelekinesisSpell.onScroll(context.player(), payload.steps()));
     }
 
     public static void sendHolding(ServerPlayerEntity player, boolean active) {
