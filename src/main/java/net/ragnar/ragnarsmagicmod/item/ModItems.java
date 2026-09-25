@@ -509,6 +509,16 @@ public class ModItems {
                     TomeTier.ADVANCED, SpellId.ILLUSION, 8
             ).setCooldown(20 * 25) // 25 seconds
     );
+    public static final TomeItem TOME_OF_DIMENSION_SPLIT = (TomeItem) registerItem("tome_of_dimension_split",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.DIMENSION_SPLIT, 50
+            ).setCooldown(20 * 60) // 60 seconds
+    );
+    public static final TomeItem TOME_OF_VINES = (TomeItem) registerItem("tome_of_vines",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.VINES, 14
+            ).setCooldown(20 * 14) // 14 seconds
+    );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
                     TomeTier.BEGINNER, SpellId.HOME, 3
@@ -770,6 +780,8 @@ public class ModItems {
         putTome(SpellId.SHARP_LEAVES, TomeTier.BEGINNER, TOME_OF_SHARP_LEAVES);
         putTome(SpellId.AIR_CUT, TomeTier.ADVANCED, TOME_OF_THE_AIR_CUT);
         putTome(SpellId.ILLUSION, TomeTier.ADVANCED, TOME_OF_ILLUSION);
+        putTome(SpellId.DIMENSION_SPLIT, TomeTier.MASTER, TOME_OF_DIMENSION_SPLIT);
+        putTome(SpellId.VINES, TomeTier.ADVANCED, TOME_OF_VINES);
 
 
 
@@ -869,6 +881,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_SLASHING));
             entries.add(new ItemStack(TOME_OF_THE_AIR_CUT));
             entries.add(new ItemStack(TOME_OF_ILLUSION));
+            entries.add(new ItemStack(TOME_OF_VINES));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
@@ -883,6 +896,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_CLOUDS));
             entries.add(new ItemStack(TOME_OF_SWORDS));
             entries.add(new ItemStack(TOME_OF_TELEKINESIS));
+            entries.add(new ItemStack(TOME_OF_DIMENSION_SPLIT));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);

@@ -65,5 +65,7 @@ public enum SpellId {
     DEFLECTION,
     SHARP_LEAVES,
     AIR_CUT,
-    ILLUSION
+    ILLUSION,
+    DIMENSION_SPLIT,
+    VINES
 }

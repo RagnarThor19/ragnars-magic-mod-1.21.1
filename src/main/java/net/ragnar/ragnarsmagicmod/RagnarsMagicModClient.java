@@ -16,5 +16,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.PossessionClient.init();
         net.ragnar.ragnarsmagicmod.client.CloudClient.init();
         net.ragnar.ragnarsmagicmod.client.IllusionClient.init();
+        net.ragnar.ragnarsmagicmod.client.DimensionSplitClient.init();
     }
 }

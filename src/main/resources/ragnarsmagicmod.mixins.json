@@ -3,6 +3,7 @@
 	"package": "net.ragnar.ragnarsmagicmod.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"CreeperEntityMixin",
 		"ExampleMixin",
 		"LivingEntityMixin",
 		"MobEntityAccessor",

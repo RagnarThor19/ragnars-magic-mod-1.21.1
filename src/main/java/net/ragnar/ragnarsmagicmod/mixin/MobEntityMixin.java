@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell;
 import net.ragnar.ragnarsmagicmod.item.spell.IllusionSpell;
+import net.ragnar.ragnarsmagicmod.item.spell.VinesSpell;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,6 +16,8 @@ public class MobEntityMixin {
     @Inject(method = "tickNewAi", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$possessedBrain(CallbackInfo ci) {
         if (ControllingSpell.drive((MobEntity) (Object) this)) ci.cancel();
+        // Wrapped up by the Tome of Vines: no goals, no brain, no attacks
+        else if (VinesSpell.isHeld((MobEntity) (Object) this)) ci.cancel();
     }
 
     @Inject(method = "checkDespawn", at = @At("HEAD"), cancellable = true)
