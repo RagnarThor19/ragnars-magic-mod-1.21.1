@@ -58,6 +58,16 @@ public class ModEntities {
                     .build()
     );
 
+    public static final EntityType<CobwebProjectileEntity> COBWEB_PROJECTILE = Registry.register(
+            Registries.ENTITY_TYPE,
+            Identifier.of(RagnarsMagicMod.MOD_ID, "cobweb_projectile"),
+            FabricEntityTypeBuilder.<CobwebProjectileEntity>create(SpawnGroup.MISC, CobwebProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.3f, 0.3f))
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(10)
+                    .build()
+    );
+
     public static void registerModEntities() {
         FabricDefaultAttributeRegistry.register(STEVE, SteveEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ILLUSION, IllusionEntity.createAttributes());

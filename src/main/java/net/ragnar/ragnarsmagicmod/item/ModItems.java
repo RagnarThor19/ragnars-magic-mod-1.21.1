@@ -352,7 +352,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.TORCHES,
                     3
-            ).setCooldown(15) // Fast cast
+            ).setCooldown(20) // 1 second
     );
     public static final Item TOME_IMPALING = registerItem("tome_impaling",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -496,8 +496,8 @@ public class ModItems {
     );
     public static final TomeItem TOME_OF_SHARP_LEAVES = (TomeItem) registerItem("tome_of_sharp_leaves",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
-                    TomeTier.BEGINNER, SpellId.SHARP_LEAVES, 3
-            ).setCooldown(40) // 2 seconds
+                    TomeTier.BEGINNER, SpellId.SHARP_LEAVES, 1
+            ).setCooldown(14) // 0.7 seconds
     );
     public static final TomeItem TOME_OF_THE_AIR_CUT = (TomeItem) registerItem("tome_of_the_air_cut",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
@@ -518,6 +518,36 @@ public class ModItems {
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.VINES, 14
             ).setCooldown(20 * 14) // 14 seconds
+    );
+    public static final TomeItem TOME_OF_WINGS = (TomeItem) registerItem("tome_of_wings",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.WINGS, 8
+            ).setCooldown(90) // 4.5 seconds
+    );
+    public static final TomeItem TOME_OF_WATERWALKING = (TomeItem) registerItem("tome_of_waterwalking",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.WATERWALKING, 10
+            ).setCooldown(20 * 8) // 8 seconds
+    );
+    public static final TomeItem TOME_OF_COBWEBS = (TomeItem) registerItem("tome_of_cobwebs",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.COBWEBS, 3
+            ).setCooldown(20) // 1 second
+    );
+    public static final TomeItem TOME_OF_SMELTING = (TomeItem) registerItem("tome_of_smelting",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.SMELTING, 1
+            ).setCooldown(3) // 0.15 seconds
+    );
+    public static final TomeItem TOME_OF_SPEED = (TomeItem) registerItem("tome_of_speed",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.SPEED, 3
+            ).setCooldown(60) // 3 seconds
+    );
+    public static final TomeItem TOME_OF_BLOOM = (TomeItem) registerItem("tome_of_bloom",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.BLOOM, 5
+            ).setCooldown(200) // 10 seconds
     );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
@@ -782,6 +812,12 @@ public class ModItems {
         putTome(SpellId.ILLUSION, TomeTier.ADVANCED, TOME_OF_ILLUSION);
         putTome(SpellId.DIMENSION_SPLIT, TomeTier.MASTER, TOME_OF_DIMENSION_SPLIT);
         putTome(SpellId.VINES, TomeTier.ADVANCED, TOME_OF_VINES);
+        putTome(SpellId.WINGS, TomeTier.ADVANCED, TOME_OF_WINGS);
+        putTome(SpellId.WATERWALKING, TomeTier.BEGINNER, TOME_OF_WATERWALKING);
+        putTome(SpellId.COBWEBS, TomeTier.BEGINNER, TOME_OF_COBWEBS);
+        putTome(SpellId.SMELTING, TomeTier.BEGINNER, TOME_OF_SMELTING);
+        putTome(SpellId.SPEED, TomeTier.BEGINNER, TOME_OF_SPEED);
+        putTome(SpellId.BLOOM, TomeTier.BEGINNER, TOME_OF_BLOOM);
 
 
 
@@ -852,6 +888,11 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_HOME));
             entries.add(new ItemStack(TOME_OF_DEFLECTION));
             entries.add(new ItemStack(TOME_OF_SHARP_LEAVES));
+            entries.add(new ItemStack(TOME_OF_WATERWALKING));
+            entries.add(new ItemStack(TOME_OF_COBWEBS));
+            entries.add(new ItemStack(TOME_OF_SMELTING));
+            entries.add(new ItemStack(TOME_OF_SPEED));
+            entries.add(new ItemStack(TOME_OF_BLOOM));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
@@ -882,6 +923,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_THE_AIR_CUT));
             entries.add(new ItemStack(TOME_OF_ILLUSION));
             entries.add(new ItemStack(TOME_OF_VINES));
+            entries.add(new ItemStack(TOME_OF_WINGS));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

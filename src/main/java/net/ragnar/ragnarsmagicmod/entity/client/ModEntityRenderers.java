@@ -9,5 +9,6 @@ public class ModEntityRenderers {
         EntityRendererRegistry.register(ModEntities.ICE_SHARD, ctx -> new FlyingItemEntityRenderer<>(ctx));
         EntityRendererRegistry.register(ModEntities.BOULDER_PROJECTILE, ctx -> new FlyingItemEntityRenderer<>(ctx));
         EntityRendererRegistry.register(ModEntities.ILLUSION, IllusionRenderer::new);
+        EntityRendererRegistry.register(ModEntities.COBWEB_PROJECTILE, ctx -> new FlyingItemEntityRenderer<>(ctx));
     }
 }

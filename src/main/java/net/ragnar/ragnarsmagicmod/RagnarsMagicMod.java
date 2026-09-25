@@ -30,6 +30,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.CloudPayload.register();
         net.ragnar.ragnarsmagicmod.network.IllusionPayload.register();
         net.ragnar.ragnarsmagicmod.network.DimensionSplitPayload.register();
+        net.ragnar.ragnarsmagicmod.network.WingsPayload.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
@@ -106,5 +107,11 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.ILLUSION, new net.ragnar.ragnarsmagicmod.item.spell.IllusionSpell());
         Spells.register(SpellId.DIMENSION_SPLIT, new net.ragnar.ragnarsmagicmod.item.spell.DimensionSplitSpell());
         Spells.register(SpellId.VINES, new net.ragnar.ragnarsmagicmod.item.spell.VinesSpell());
+        Spells.register(SpellId.WINGS, new net.ragnar.ragnarsmagicmod.item.spell.WingsSpell());
+        Spells.register(SpellId.WATERWALKING, new net.ragnar.ragnarsmagicmod.item.spell.WaterwalkingSpell());
+        Spells.register(SpellId.COBWEBS, new net.ragnar.ragnarsmagicmod.item.spell.CobwebSpell());
+        Spells.register(SpellId.SMELTING, new net.ragnar.ragnarsmagicmod.item.spell.SmeltingSpell());
+        Spells.register(SpellId.SPEED, new net.ragnar.ragnarsmagicmod.item.spell.SpeedSpell());
+        Spells.register(SpellId.BLOOM, new net.ragnar.ragnarsmagicmod.item.spell.BloomSpell());
     }
 }

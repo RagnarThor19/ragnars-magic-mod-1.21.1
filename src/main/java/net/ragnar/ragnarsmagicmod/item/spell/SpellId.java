@@ -67,5 +67,11 @@ public enum SpellId {
     AIR_CUT,
     ILLUSION,
     DIMENSION_SPLIT,
-    VINES
+    VINES,
+    WINGS,
+    WATERWALKING,
+    COBWEBS,
+    SMELTING,
+    SPEED,
+    BLOOM
 }
