@@ -360,7 +360,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.IMPALING,
                     16 // XP cost
-            ).setCooldown(80) // 4 seconds
+            ).setCooldown(120) // 6 seconds
     );
     public static final Item TOME_INVISIBILITY = registerItem("tome_invisibility",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -478,6 +478,11 @@ public class ModItems {
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.GLACIER, 16
             ).setCooldown(20 * 12) // 12 seconds
+    );
+    public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.HOME, 3
+            ).setCooldown(60) // 3 seconds
     );
     public static final TomeItem TOME_OF_BREATHING = (TomeItem) registerItem("tome_of_breathing",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
@@ -728,6 +733,7 @@ public class ModItems {
         putTome(SpellId.CONTROLLING, TomeTier.ADVANCED, TOME_OF_CONTROLLING);
         putTome(SpellId.QUIVER, TomeTier.ADVANCED, TOME_OF_THE_QUIVER);
         putTome(SpellId.GLACIER, TomeTier.ADVANCED, TOME_OF_THE_GLACIER);
+        putTome(SpellId.HOME, TomeTier.BEGINNER, TOME_OF_HOME);
 
 
 
@@ -795,6 +801,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_PULLING));
             entries.add(new ItemStack(TOME_OF_BREATHING));
             entries.add(new ItemStack(TOME_OF_LEVITATION));
+            entries.add(new ItemStack(TOME_OF_HOME));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));

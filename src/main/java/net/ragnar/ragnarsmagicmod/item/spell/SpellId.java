@@ -58,5 +58,6 @@ public enum SpellId {
     TELEKINESIS,
     CONTROLLING,
     QUIVER,
-    GLACIER
+    GLACIER,
+    HOME
 }

@@ -134,23 +134,6 @@ public final class SpikeWave {
         }
     }
 
-    /** Impaling: height custom, lift custom, damage custom */
-    public static void queueSingleSpike(ServerWorld world, double x, double z, double startY,
-                                        double dirX, double dirZ, int delayTicks, int lifetimeTicks,
-                                        UUID casterId, int height, double lift, float damage) {
-        ensureRegistered();
-        SPAWNS.add(new PendingSpawn(
-                world, x, z, startY,
-                dirX, dirZ,
-                delayTicks,
-                lifetimeTicks,
-                casterId,
-                height,
-                lift,
-                damage
-        ));
-    }
-
     private static void spawnSpike(PendingSpawn p) {
         int startYInt = MathHelper.floor(p.startY());
         BlockPos ground = findGround(p.w(), MathHelper.floor(p.x()), MathHelper.floor(p.z()), startYInt);
