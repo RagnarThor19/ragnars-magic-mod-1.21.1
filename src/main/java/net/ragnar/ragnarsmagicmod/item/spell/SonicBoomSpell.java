@@ -3,36 +3,41 @@ package net.ragnar.ragnarsmagicmod.item.spell;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.joml.Vector3f;
 
 import java.util.*;
 
+/**
+ * The warden's sonic boom (vanilla {@code SonicBoomTask}) with a master-tier wind-up: the charge sound,
+ * a 34-tick wind-up, then a line of shockwave rings - one every block - that passes through
+ * walls, ignores armour and shields, and flings whatever it hits.
+ */
 public class SonicBoomSpell implements Spell {
 
     // --- tuning ---
     private static final double RANGE = 25.0;
     private static final float DAMAGE = 20.0f;
-    private static final double WIDTH = 0.3;
-    private static final int CHARGE_TIME = 40; // 2s
-    private static final int COOLDOWN = 60;    // total lifetime
-    private static final int RING_COUNT = 8;   // number of sonic rings
-    private static final double RING_SPACING = 3.0; // distance between rings
-    private static final int POINTS_PER_RING = 36;  // how many particles per ring
-    private static final double RING_GROWTH = 0.05; // ring size growth per unit distance
-    private static final double RECOIL_STRENGTH = 1.2; // How hard it pushes you back
+    private static final double HIT_RADIUS = 0.5;       // how far from the line an entity's hitbox still counts
+    private static final int CHARGE_TIME = 34;          // same wind-up as the warden (SonicBoomTask.SOUND_DELAY)
+    private static final double KNOCKBACK_HORIZONTAL = 2.5; // warden values
+    private static final double KNOCKBACK_VERTICAL = 0.5;
+    private static final double RECOIL_STRENGTH = 1.2;  // How hard it pushes you back
 
     private static final Map<RegistryKey<World>, List<Beam>> ACTIVE = new HashMap<>();
     private static boolean TICK_REGISTERED = false;
@@ -49,14 +54,11 @@ public class SonicBoomSpell implements Spell {
         ensureTicker();
 
         ServerWorld sw = (ServerWorld) world;
-        long now = sw.getTime();
-
         ACTIVE.computeIfAbsent(sw.getRegistryKey(), k -> new ArrayList<>())
-                .add(new Beam(player.getUuid(), now, Beam.State.CHARGING));
+                .add(new Beam(player.getUuid(), sw.getTime()));
 
-        world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_WARDEN_SONIC_CHARGE,
-                SoundCategory.PLAYERS, 2.0f, 1.0f);
+        world.playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.ENTITY_WARDEN_SONIC_CHARGE, SoundCategory.PLAYERS, 3.0f, 1.0f);
         return true;
     }
 
@@ -65,113 +67,129 @@ public class SonicBoomSpell implements Spell {
         if (beams == null || beams.isEmpty()) return;
 
         long now = world.getTime();
-        Random rand = world.getRandom();
-
         Iterator<Beam> it = beams.iterator();
         while (it.hasNext()) {
             Beam b = it.next();
             PlayerEntity owner = world.getPlayerByUuid(b.owner);
-            if (owner == null) { it.remove(); continue; }
+            if (owner == null || !owner.isAlive()) { it.remove(); continue; }
 
-            long age = now - b.startTick;
-            if (age > COOLDOWN) { it.remove(); continue; }
-
-            if (b.state == Beam.State.CHARGING) {
-                // --- improved sparse multi-color charge-up ---
-                Vec3d center = owner.getCameraPosVec(0);
-                for (int i = 0; i < 8; i++) { // fewer, slower particles
-                    double angle = rand.nextDouble() * 2 * Math.PI;
-                    double dist = 0.7 + rand.nextDouble() * 0.8;
-                    double yOffset = (rand.nextDouble() - 0.5) * 1.0;
-                    Vec3d pos = center.add(Math.cos(angle) * dist, yOffset, Math.sin(angle) * dist);
-
-                    // Pick a random blue tone
-                    Vector3f color = switch (rand.nextInt(3)) {
-                        case 0 -> new Vector3f(0.1f, 0.3f, 0.9f); // deep blue
-                        case 1 -> new Vector3f(0.2f, 0.8f, 1.0f); // cyan
-                        default -> new Vector3f(0.4f, 0.9f, 1.0f); // pale blue
-                    };
-                    world.spawnParticles(new DustParticleEffect(color, 1.3f),
-                            pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
-                }
-
-                if (age >= CHARGE_TIME) {
-                    b.state = Beam.State.FIRING;
-                    world.playSound(null, owner.getBlockPos(),
-                            SoundEvents.ENTITY_WARDEN_SONIC_BOOM,
-                            SoundCategory.PLAYERS, 3.0f, 1.0f);
-
-                    // --- APPLY RECOIL ---
-                    Vec3d look = owner.getRotationVector().normalize();
-                    // Push opposite to look direction
-                    // If looking slightly down, this will launch you slightly up + back
-                    owner.addVelocity(-look.x * RECOIL_STRENGTH, -look.y * RECOIL_STRENGTH * 0.5, -look.z * RECOIL_STRENGTH);
-                    owner.velocityModified = true;
-
-                    fireRings(world, owner);
-                }
+            int age = (int) (now - b.startTick);
+            if (age >= CHARGE_TIME) {
+                fire(world, owner);
+                it.remove();
+            } else {
+                chargeFx(world, owner, age);
             }
         }
     }
 
-    // --- visual + damage for beam ---
-    private static void fireRings(ServerWorld world, PlayerEntity player) {
-        Vec3d origin = player.getCameraPosVec(0);
-        Vec3d dir = player.getRotationVector().normalize();
+    // Heartbeats that speed up as the boom builds
+    private static final int[] HEARTBEATS = {0, 12, 21, 27, 31};
 
-        // Create multiple expanding rings along direction
-        for (int r = 0; r < RING_COUNT; r++) {
-            double dist = r * RING_SPACING;
-            Vec3d ringCenter = origin.add(dir.multiply(dist));
-            double ringRadius = 0.2 + dist * RING_GROWTH; // rings get slightly larger
-            spawnRing(world, ringCenter, dir, ringRadius);
-        }
-
-        // Damage all entities along beam corridor
-        Vec3d end = origin.add(dir.multiply(RING_COUNT * RING_SPACING));
-        Box box = new Box(origin, end).expand(WIDTH);
-        List<Entity> targets = world.getOtherEntities(player, box,
-                e -> e instanceof LivingEntity && e.isAttackable() && !e.isTeammate(player));
-        for (Entity e : targets) {
-            if (e instanceof LivingEntity le) {
-                le.damage(world.getDamageSources().sonicBoom(player), DAMAGE);
-                Vec3d push = e.getPos().subtract(origin).normalize().multiply(1.0);
-                le.addVelocity(push.x, 0.3, push.z);
-                le.velocityDirty = true;
-            }
-        }
-    }
-
-    private static void spawnRing(ServerWorld world, Vec3d center, Vec3d forward, double radius) {
+    /** The wind-up: sculk energy is drawn into a point in front of the caster's chest, faster and faster. */
+    private static void chargeFx(ServerWorld world, PlayerEntity player, int age) {
         Random rand = world.getRandom();
-        // pick two perpendicular vectors to forward for ring plane
-        Vec3d up = new Vec3d(0, 1, 0);
-        Vec3d right = forward.crossProduct(up).normalize();
-        Vec3d upVec = right.crossProduct(forward).normalize();
+        float t = age / (float) CHARGE_TIME;
+        Vec3d look = player.getRotationVector().normalize();
+        Vec3d core = chargeCore(player, look);
 
-        for (int i = 0; i < POINTS_PER_RING; i++) {
-            double theta = (2 * Math.PI * i) / POINTS_PER_RING;
-            Vec3d offset = right.multiply(Math.cos(theta)).add(upVec.multiply(Math.sin(theta))).multiply(radius);
-            Vec3d pos = center.add(offset);
-            // soft light-blue gradient
-            float r = 0.2f + rand.nextFloat() * 0.2f;
-            float g = 0.8f + rand.nextFloat() * 0.15f;
-            float b = 1.0f;
-            world.spawnParticles(new DustParticleEffect(new Vector3f(r, g, b), 1.5f),
-                    pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+        // Soul energy streaming in from all around; more of it, from further out, as it builds
+        int streams = 2 + (int) (t * 7);
+        for (int i = 0; i < streams; i++) {
+            Vec3d dir = new Vec3d(rand.nextGaussian(), rand.nextGaussian(), rand.nextGaussian()).normalize();
+            double r = 1.4 + t * 1.4 + rand.nextDouble() * 0.6;
+            Vec3d from = core.add(dir.multiply(r));
+            // Slowing particles travel ~25x their start speed, so this lands them on the core
+            Vec3d vel = dir.multiply(-r * 0.042);
+            world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, from.x, from.y, from.z, 0, vel.x, vel.y, vel.z, 1.0);
+        }
+        if (rand.nextFloat() < 0.25f + t * 0.5f) {
+            Vec3d dir = new Vec3d(rand.nextGaussian(), rand.nextGaussian(), rand.nextGaussian()).normalize();
+            Vec3d from = core.add(dir.multiply(1.8));
+            world.spawnParticles(ParticleTypes.SCULK_SOUL, from.x, from.y, from.z, 0, -dir.x, -dir.y, -dir.z, 0.06);
+        }
+
+        // A ring that closes in on the core, pulsing faster near the end
+        int ringEvery = t < 0.5f ? 6 : t < 0.8f ? 4 : 2;
+        if (age % ringEvery == 0) {
+            spawnRing(world, core, look, 1.1 - t * 0.8, 20);
+        }
+
+        // The core itself: a dense, crackling knot once it's nearly ready
+        if (t > 0.45f) {
+            world.spawnParticles(ParticleTypes.SCULK_CHARGE_POP, core.x, core.y, core.z, 1 + (int) (t * 3), 0.08, 0.08, 0.08, 0.01);
+        }
+        world.spawnParticles(new DustParticleEffect(CORE_COLOR, 0.6f + t * 1.4f), core.x, core.y, core.z, 1, 0.03, 0.03, 0.03, 0);
+
+        for (int beat : HEARTBEATS) {
+            if (age == beat) {
+                world.playSound(null, player.getX(), player.getY(), player.getZ(),
+                        SoundEvents.ENTITY_WARDEN_HEARTBEAT, SoundCategory.PLAYERS, 1.5f, 0.8f + t * 0.6f);
+            }
         }
     }
 
-    // --- helpers ---
-    private static class Beam {
-        final UUID owner;
-        final long startTick;
-        State state;
-        Beam(UUID owner, long startTick, State state) {
-            this.owner = owner;
-            this.startTick = startTick;
-            this.state = state;
-        }
-        enum State { CHARGING, FIRING }
+    private static final Vector3f CORE_COLOR = new Vector3f(0.15f, 0.85f, 0.95f); // warden's glowing cyan
+
+    private static Vec3d chargeCore(PlayerEntity player, Vec3d look) {
+        return player.getPos().add(0, player.getHeight() * 0.65, 0).add(look.multiply(1.3));
     }
+
+    private static void spawnRing(ServerWorld world, Vec3d center, Vec3d forward, double radius, int points) {
+        Vec3d helper = Math.abs(forward.y) > 0.9 ? new Vec3d(1, 0, 0) : new Vec3d(0, 1, 0);
+        Vec3d u = forward.crossProduct(helper).normalize();
+        Vec3d v = forward.crossProduct(u).normalize();
+        DustParticleEffect dust = new DustParticleEffect(CORE_COLOR, 0.7f);
+        for (int i = 0; i < points; i++) {
+            double a = 2 * Math.PI * i / points;
+            Vec3d p = center.add(u.multiply(Math.cos(a) * radius)).add(v.multiply(Math.sin(a) * radius));
+            world.spawnParticles(dust, p.x, p.y, p.z, 1, 0, 0, 0, 0);
+        }
+    }
+
+    private static void fire(ServerWorld world, PlayerEntity player) {
+        // The warden fires from its chest; do the same, aimed so the line runs into the crosshair
+        Vec3d eye = player.getEyePos();
+        Vec3d look = player.getRotationVector().normalize();
+        Vec3d origin = player.getPos().add(0, player.getHeight() * 0.65, 0);
+        Vec3d dir = eye.add(look.multiply(RANGE)).subtract(origin).normalize();
+        Vec3d end = origin.add(dir.multiply(RANGE));
+
+        // One shockwave ring per block, exactly like SonicBoomTask
+        int steps = MathHelper.floor(RANGE);
+        for (int j = 1; j <= steps; j++) {
+            Vec3d p = origin.add(dir.multiply(j));
+            world.spawnParticles(ParticleTypes.SONIC_BOOM, p.x, p.y, p.z, 1, 0, 0, 0, 0);
+        }
+        world.playSound(null, player.getX(), player.getY(), player.getZ(),
+                SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 3.0f, 1.0f);
+
+        // Recoil
+        player.addVelocity(-look.x * RECOIL_STRENGTH, -look.y * RECOIL_STRENGTH * 0.5, -look.z * RECOIL_STRENGTH);
+        player.velocityModified = true;
+
+        // Everything whose hitbox touches the line is hit - walls don't stop it
+        Box area = new Box(origin, end).expand(HIT_RADIUS + 1.0);
+        List<Entity> targets = world.getOtherEntities(player, area,
+                e -> e instanceof LivingEntity && e.isAlive() && e.isAttackable() && !e.isTeammate(player)
+                        && e.getBoundingBox().expand(HIT_RADIUS).raycast(origin, end).isPresent());
+        for (Entity e : targets) {
+            LivingEntity le = (LivingEntity) e;
+            if (!le.damage(world.getDamageSources().sonicBoom(player), DAMAGE)) continue;
+            double resist = 1.0 - le.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+            le.addVelocity(dir.x * KNOCKBACK_HORIZONTAL * resist,
+                    dir.y * KNOCKBACK_VERTICAL * resist,
+                    dir.z * KNOCKBACK_HORIZONTAL * resist);
+            le.velocityModified = true;
+            le.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 60, 0), player);
+            Vec3d c = le.getBoundingBox().getCenter();
+            world.spawnParticles(ParticleTypes.SCULK_SOUL, c.x, c.y, c.z, 8, 0.3, 0.4, 0.3, 0.05);
+        }
+
+        // The released core bursts at the muzzle
+        Vec3d core = chargeCore(player, look);
+        world.spawnParticles(ParticleTypes.SCULK_CHARGE_POP, core.x, core.y, core.z, 20, 0.25, 0.25, 0.25, 0.08);
+    }
+
+    private record Beam(UUID owner, long startTick) {}
 }

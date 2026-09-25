@@ -504,6 +504,11 @@ public class ModItems {
                     TomeTier.ADVANCED, SpellId.AIR_CUT, 6
             ).setCooldown(46) // 2.3 seconds
     );
+    public static final TomeItem TOME_OF_ILLUSION = (TomeItem) registerItem("tome_of_illusion",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.ILLUSION, 8
+            ).setCooldown(20 * 25) // 25 seconds
+    );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
                     TomeTier.BEGINNER, SpellId.HOME, 3
@@ -764,6 +769,7 @@ public class ModItems {
         putTome(SpellId.DEFLECTION, TomeTier.BEGINNER, TOME_OF_DEFLECTION);
         putTome(SpellId.SHARP_LEAVES, TomeTier.BEGINNER, TOME_OF_SHARP_LEAVES);
         putTome(SpellId.AIR_CUT, TomeTier.ADVANCED, TOME_OF_THE_AIR_CUT);
+        putTome(SpellId.ILLUSION, TomeTier.ADVANCED, TOME_OF_ILLUSION);
 
 
 
@@ -862,6 +868,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_THE_STONE_CANNON));
             entries.add(new ItemStack(TOME_OF_SLASHING));
             entries.add(new ItemStack(TOME_OF_THE_AIR_CUT));
+            entries.add(new ItemStack(TOME_OF_ILLUSION));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

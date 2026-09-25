@@ -64,5 +64,6 @@ public enum SpellId {
     SLASHING,
     DEFLECTION,
     SHARP_LEAVES,
-    AIR_CUT
+    AIR_CUT,
+    ILLUSION
 }

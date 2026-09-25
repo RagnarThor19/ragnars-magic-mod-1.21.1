@@ -27,6 +27,8 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();
+        net.ragnar.ragnarsmagicmod.network.CloudPayload.register();
+        net.ragnar.ragnarsmagicmod.network.IllusionPayload.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
@@ -100,5 +102,6 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.DEFLECTION, new net.ragnar.ragnarsmagicmod.item.spell.DeflectionSpell());
         Spells.register(SpellId.SHARP_LEAVES, new net.ragnar.ragnarsmagicmod.item.spell.SharpLeavesSpell());
         Spells.register(SpellId.AIR_CUT, new net.ragnar.ragnarsmagicmod.item.spell.AirCutSpell());
+        Spells.register(SpellId.ILLUSION, new net.ragnar.ragnarsmagicmod.item.spell.IllusionSpell());
     }
 }

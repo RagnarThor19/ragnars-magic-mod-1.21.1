@@ -47,8 +47,20 @@ public class ModEntities {
                     .build()
     );
 
+    public static final EntityType<IllusionEntity> ILLUSION = Registry.register(
+            Registries.ENTITY_TYPE,
+            Identifier.of(RagnarsMagicMod.MOD_ID, "illusion"),
+            FabricEntityTypeBuilder.<IllusionEntity>create(SpawnGroup.MISC, IllusionEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.6F, 1.8F)) // player size
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(3)
+                    .disableSaving()
+                    .build()
+    );
+
     public static void registerModEntities() {
         FabricDefaultAttributeRegistry.register(STEVE, SteveEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ILLUSION, IllusionEntity.createAttributes());
     }
     public static void register() {
         RagnarsMagicMod.LOGGER.info("Registered entities");

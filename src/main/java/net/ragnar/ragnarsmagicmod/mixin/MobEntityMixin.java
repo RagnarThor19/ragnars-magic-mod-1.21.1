@@ -3,6 +3,7 @@ package net.ragnar.ragnarsmagicmod.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell;
+import net.ragnar.ragnarsmagicmod.item.spell.IllusionSpell;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,6 +24,6 @@ public class MobEntityMixin {
 
     @Inject(method = "setTarget", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$ignoreEmptyBody(LivingEntity target, CallbackInfo ci) {
-        if (target != null && ControllingSpell.isPossessing(target)) ci.cancel();
+        if (target != null && (ControllingSpell.isPossessing(target) || IllusionSpell.isGhost(target))) ci.cancel();
     }
 }
