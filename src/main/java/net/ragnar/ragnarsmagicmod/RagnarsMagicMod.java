@@ -95,5 +95,10 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.QUIVER, new net.ragnar.ragnarsmagicmod.item.spell.QuiverSpell());
         Spells.register(SpellId.GLACIER, new net.ragnar.ragnarsmagicmod.item.spell.GlacierSpell());
         Spells.register(SpellId.HOME, new net.ragnar.ragnarsmagicmod.item.spell.HomeSpell());
+        Spells.register(SpellId.STONE_CANNON, new net.ragnar.ragnarsmagicmod.item.spell.StoneCannonSpell());
+        Spells.register(SpellId.SLASHING, new net.ragnar.ragnarsmagicmod.item.spell.SlashingSpell());
+        Spells.register(SpellId.DEFLECTION, new net.ragnar.ragnarsmagicmod.item.spell.DeflectionSpell());
+        Spells.register(SpellId.SHARP_LEAVES, new net.ragnar.ragnarsmagicmod.item.spell.SharpLeavesSpell());
+        Spells.register(SpellId.AIR_CUT, new net.ragnar.ragnarsmagicmod.item.spell.AirCutSpell());
     }
 }

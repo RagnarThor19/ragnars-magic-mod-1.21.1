@@ -29,12 +29,16 @@ public final class WitherSkullSpell implements Spell {
 
         // FX
         if (world instanceof ServerWorld sw) {
-            sw.spawnParticles(ParticleTypes.SMOKE, player.getX(), player.getY() + 1.0, player.getZ(),
-                    12, 0.25, 0.15, 0.25, 0.02);
+            // Dark smoke and a few souls at the staff
+            Vec3d m = net.ragnar.ragnarsmagicmod.util.CastFx.muzzle(player);
+            sw.spawnParticles(ParticleTypes.SMOKE, m.x, m.y, m.z, 8, 0.15, 0.15, 0.15, 0.03);
+            sw.spawnParticles(ParticleTypes.SOUL, m.x, m.y, m.z, 3, 0.15, 0.15, 0.15, 0.03);
         }
 
         world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.PLAYERS, 0.8f, 1.1f + world.random.nextFloat() * 0.15f);
+        world.playSound(null, player.getBlockPos(),
+                SoundEvents.PARTICLE_SOUL_ESCAPE.value(), SoundCategory.PLAYERS, 1.2f, 0.8f);
 
         return true;
     }

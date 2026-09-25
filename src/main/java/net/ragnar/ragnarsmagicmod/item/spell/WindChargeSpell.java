@@ -25,12 +25,16 @@ public final class WindChargeSpell implements Spell {
         world.spawnEntity(proj);
 
         if (world instanceof ServerWorld sw) {
-            sw.spawnParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 1.0, player.getZ(),
-                    10, 0.25, 0.15, 0.25, 0.04);
+            // A small gust bursting off the staff
+            Vec3d m = net.ragnar.ragnarsmagicmod.util.CastFx.muzzle(player);
+            sw.spawnParticles(ParticleTypes.SMALL_GUST, m.x, m.y, m.z, 1, 0, 0, 0, 0);
+            sw.spawnParticles(ParticleTypes.CLOUD, m.x, m.y, m.z, 0, look.x, look.y, look.z, 0.3);
         }
 
         world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_ENDER_DRAGON_FLAP, SoundCategory.PLAYERS, 0.9f, 1.25f);
+                SoundEvents.ENTITY_WIND_CHARGE_THROW, SoundCategory.PLAYERS, 1.0f, 0.9f + world.random.nextFloat() * 0.2f);
+        world.playSound(null, player.getBlockPos(),
+                SoundEvents.ENTITY_BREEZE_SHOOT, SoundCategory.PLAYERS, 0.4f, 1.3f);
 
         proj.setVelocity(look.multiply(SPEED * 1.3)); // manually override internal cap
         proj.velocityModified = true; // ensures it updates server-side

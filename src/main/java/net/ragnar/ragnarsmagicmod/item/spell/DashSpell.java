@@ -25,14 +25,20 @@ public final class DashSpell implements Spell {
     public boolean cast(World world, PlayerEntity player, ItemStack staff) {
         if (world.isClient) return true;
 
-        // SFX: strong whoosh + sweep
+        // SFX: a sharp burst of wind + whoosh
         world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_ENDER_DRAGON_FLAP, SoundCategory.PLAYERS, 0.9f, 1.15f);
+                SoundEvents.ENTITY_BREEZE_JUMP, SoundCategory.PLAYERS, 0.8f, 1.3f + world.random.nextFloat() * 0.15f);
         world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 0.8f, 1.35f);
+                SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 0.5f, 1.5f);
 
         // Set forward velocity (dash)
         Vec3d dir = player.getRotationVec(1.0f).normalize();
+
+        // A puff of wind kicked out behind you as you launch
+        if (world instanceof ServerWorld sw) {
+            Vec3d back = player.getPos().add(0, 0.6, 0).subtract(new Vec3d(dir.x, 0, dir.z).multiply(0.6));
+            sw.spawnParticles(net.minecraft.particle.ParticleTypes.SMALL_GUST, back.x, back.y, back.z, 1, 0, 0, 0, 0);
+        }
         Vec3d vel = new Vec3d(dir.x * SPEED, player.getVelocity().y + LIFT, dir.z * SPEED);
         player.setVelocity(vel);
         player.velocityModified = true;

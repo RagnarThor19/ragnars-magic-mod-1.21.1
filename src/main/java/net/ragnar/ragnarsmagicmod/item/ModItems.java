@@ -479,6 +479,31 @@ public class ModItems {
                     TomeTier.ADVANCED, SpellId.GLACIER, 16
             ).setCooldown(20 * 12) // 12 seconds
     );
+    public static final TomeItem TOME_OF_THE_STONE_CANNON = (TomeItem) registerItem("tome_of_the_stone_cannon",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.STONE_CANNON, 15
+            ).setCooldown(20 * 12) // 12 seconds
+    );
+    public static final TomeItem TOME_OF_SLASHING = (TomeItem) registerItem("tome_of_slashing",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.SLASHING, 13
+            ).setCooldown(20 * 5) // 5 seconds
+    );
+    public static final TomeItem TOME_OF_DEFLECTION = (TomeItem) registerItem("tome_of_deflection",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.DEFLECTION, 4
+            ).setCooldown(20 * 3) // 3 seconds
+    );
+    public static final TomeItem TOME_OF_SHARP_LEAVES = (TomeItem) registerItem("tome_of_sharp_leaves",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.SHARP_LEAVES, 3
+            ).setCooldown(40) // 2 seconds
+    );
+    public static final TomeItem TOME_OF_THE_AIR_CUT = (TomeItem) registerItem("tome_of_the_air_cut",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.AIR_CUT, 6
+            ).setCooldown(46) // 2.3 seconds
+    );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
                     TomeTier.BEGINNER, SpellId.HOME, 3
@@ -734,6 +759,11 @@ public class ModItems {
         putTome(SpellId.QUIVER, TomeTier.ADVANCED, TOME_OF_THE_QUIVER);
         putTome(SpellId.GLACIER, TomeTier.ADVANCED, TOME_OF_THE_GLACIER);
         putTome(SpellId.HOME, TomeTier.BEGINNER, TOME_OF_HOME);
+        putTome(SpellId.STONE_CANNON, TomeTier.ADVANCED, TOME_OF_THE_STONE_CANNON);
+        putTome(SpellId.SLASHING, TomeTier.ADVANCED, TOME_OF_SLASHING);
+        putTome(SpellId.DEFLECTION, TomeTier.BEGINNER, TOME_OF_DEFLECTION);
+        putTome(SpellId.SHARP_LEAVES, TomeTier.BEGINNER, TOME_OF_SHARP_LEAVES);
+        putTome(SpellId.AIR_CUT, TomeTier.ADVANCED, TOME_OF_THE_AIR_CUT);
 
 
 
@@ -802,6 +832,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_BREATHING));
             entries.add(new ItemStack(TOME_OF_LEVITATION));
             entries.add(new ItemStack(TOME_OF_HOME));
+            entries.add(new ItemStack(TOME_OF_DEFLECTION));
+            entries.add(new ItemStack(TOME_OF_SHARP_LEAVES));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
@@ -827,6 +859,9 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_CONTROLLING));
             entries.add(new ItemStack(TOME_OF_THE_QUIVER));
             entries.add(new ItemStack(TOME_OF_THE_GLACIER));
+            entries.add(new ItemStack(TOME_OF_THE_STONE_CANNON));
+            entries.add(new ItemStack(TOME_OF_SLASHING));
+            entries.add(new ItemStack(TOME_OF_THE_AIR_CUT));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

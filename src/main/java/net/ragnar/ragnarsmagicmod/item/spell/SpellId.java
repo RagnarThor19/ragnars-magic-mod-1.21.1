@@ -59,5 +59,10 @@ public enum SpellId {
     CONTROLLING,
     QUIVER,
     GLACIER,
-    HOME
+    HOME,
+    STONE_CANNON,
+    SLASHING,
+    DEFLECTION,
+    SHARP_LEAVES,
+    AIR_CUT
 }

@@ -58,11 +58,15 @@ public final class DashRunner {
                 PlayerEntity p = d.world.getPlayerByUuid(d.playerId());
                 if (p == null || p.isRemoved() || !p.isAlive()) { it.remove(); continue; }
 
-                // Trail particles
-                world.spawnParticles(ParticleTypes.CLOUD, p.getX(), p.getY() + 0.1, p.getZ(),
-                        10, 0.25, 0.12, 0.25, 0.04);
-                world.spawnParticles(ParticleTypes.SWEEP_ATTACK, p.getX(), p.getY() + 0.9, p.getZ(),
-                        1, 0, 0, 0, 0);
+                // Trail: thin wind streaks peeling off backwards at waist and shoulder height
+                for (double h : new double[]{0.5, 1.3}) {
+                    double sx = (world.random.nextDouble() - 0.5) * 0.5;
+                    double sz = (world.random.nextDouble() - 0.5) * 0.5;
+                    world.spawnParticles(ParticleTypes.CLOUD, p.getX() + sx, p.getY() + h, p.getZ() + sz,
+                            0, -d.dir.x, 0.02, -d.dir.z, 0.35);
+                }
+                world.spawnParticles(ParticleTypes.CRIT, p.getX(), p.getY() + 0.9, p.getZ(),
+                        1, 0.3, 0.4, 0.3, 0.0);
 
                 // Hit entities around current player position
                 Box box = p.getBoundingBox().expand(d.hitRadius, 0.8, d.hitRadius);
@@ -72,7 +76,9 @@ public final class DashRunner {
                         le.damage(world.getDamageSources().playerAttack(p), d.damage);
                         le.addVelocity(d.dir.x * d.knock, d.knockUp, d.dir.z * d.knock);
                         le.velocityDirty = true;
-                        // little impact sound once in a while
+                        // the sweep shows where you actually clip someone
+                        world.spawnParticles(ParticleTypes.SWEEP_ATTACK, le.getX(), le.getBodyY(0.5), le.getZ(),
+                                1, 0, 0, 0, 0);
                         world.playSound(null, e.getBlockPos(),
                                 SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 0.5f, 1.35f);
                     }

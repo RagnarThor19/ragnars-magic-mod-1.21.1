@@ -30,14 +30,18 @@ public final class FireballSpell implements Spell {
         fireball.setPosition(player.getX(), player.getEyeY() - 0.1, player.getZ());
 
         world.spawnEntity(fireball);
-        world.playSound(
-                null,
-                player.getBlockPos(),
-                SoundEvents.ITEM_FIRECHARGE_USE,
-                SoundCategory.PLAYERS,
-                0.3f,
-                0.8f
-        );
+        world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.PLAYERS,
+                0.5f, 0.9f + world.random.nextFloat() * 0.2f);
+        world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 0.35f, 1.3f);
+
+        if (world instanceof net.minecraft.server.world.ServerWorld sw) {
+            // A little puff of flame at the staff
+            Vec3d m = net.ragnar.ragnarsmagicmod.util.CastFx.muzzle(player);
+            Vec3d d = player.getRotationVector();
+            sw.spawnParticles(net.minecraft.particle.ParticleTypes.FLAME, m.x, m.y, m.z, 0, d.x, d.y, d.z, 0.15);
+            sw.spawnParticles(net.minecraft.particle.ParticleTypes.FLAME, m.x, m.y, m.z, 6, 0.1, 0.1, 0.1, 0.03);
+            sw.spawnParticles(net.minecraft.particle.ParticleTypes.SMOKE, m.x, m.y, m.z, 3, 0.1, 0.1, 0.1, 0.02);
+        }
 
         return true;
     }

@@ -27,27 +27,33 @@ public final class WindPushSpell implements Spell {
     public boolean cast(World world, PlayerEntity player, ItemStack staff) {
         if (world.isClient) return true;
 
-        // sound: fast whoosh + flap
+        // sound: a gust bursting out, with a lighter whoosh on top
         world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 0.9f, 1.2f);
+                SoundEvents.ENTITY_WIND_CHARGE_WIND_BURST.value(), SoundCategory.PLAYERS, 0.8f, 0.9f + world.random.nextFloat() * 0.15f);
         world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_ENDER_DRAGON_FLAP, SoundCategory.PLAYERS, 0.6f, 1.35f);
+                SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 0.5f, 1.3f);
 
         Vec3d origin = player.getPos().add(0, player.getStandingEyeHeight() * 0.6, 0);
         Vec3d dir = player.getRotationVec(1.0f).normalize();
         double cosLimit = Math.cos(Math.toRadians(ANGLE_DEG));
 
-        // particles along the cone
+        // particles: wind streaks fanning out through the cone, and a gust swirl in front
         if (world instanceof ServerWorld sw) {
-            int steps = 10;
-            for (int i = 1; i <= steps; i++) {
-                double t = (i / (double) steps) * RANGE;
-                Vec3d p = origin.add(dir.multiply(t));
-                sw.spawnParticles(ParticleTypes.CLOUD, p.x, p.y, p.z, 7, 0.35, 0.22, 0.35, 0.05);
-                if (i % 2 == 0) {
-                    sw.spawnParticles(ParticleTypes.POOF, p.x, p.y, p.z, 4, 0.25, 0.15, 0.25, 0.02);
-                }
+            Vec3d flat = new Vec3d(dir.x, 0, dir.z);
+            Vec3d side = flat.lengthSquared() > 1.0e-4 ? new Vec3d(-flat.z, 0, flat.x).normalize() : new Vec3d(1, 0, 0);
+            int streaks = 9;
+            for (int i = 0; i < streaks; i++) {
+                // Spread across the cone's width; each streak is a particle that flies outward along its own line
+                double spread = (i / (double) (streaks - 1) - 0.5) * 2.0 * Math.tan(Math.toRadians(ANGLE_DEG)) * 0.6;
+                Vec3d line = dir.add(side.multiply(spread)).normalize();
+                Vec3d from = origin.add(line.multiply(0.8)).add(0, (sw.random.nextDouble() - 0.5) * 0.6, 0);
+                sw.spawnParticles(ParticleTypes.CLOUD, from.x, from.y, from.z, 0, line.x, line.y, line.z, 0.9);
+                if (i % 2 == 0) sw.spawnParticles(ParticleTypes.CLOUD, from.x, from.y, from.z, 0, line.x, line.y, line.z, 0.55);
             }
+            Vec3d gust = origin.add(dir.multiply(2.0));
+            sw.spawnParticles(ParticleTypes.GUST, gust.x, gust.y, gust.z, 1, 0, 0, 0, 0);
+            Vec3d far = origin.add(dir.multiply(4.5));
+            sw.spawnParticles(ParticleTypes.SMALL_GUST, far.x, far.y, far.z, 2, 0.4, 0.3, 0.4, 0);
         }
 
         // affect entities in front of the player
