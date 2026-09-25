@@ -73,5 +73,6 @@ public enum SpellId {
     COBWEBS,
     SMELTING,
     SPEED,
-    BLOOM
+    BLOOM,
+    TNT
 }

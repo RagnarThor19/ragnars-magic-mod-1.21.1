@@ -54,8 +54,7 @@ public class SmeltingSpell implements Spell {
 
         // A breath of furnace heat from your hand
         Vec3d hand = handPos(player, other);
-        sw.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.PLAYERS, 0.9f, 1.3f);
-        sw.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.PLAYERS, 0.15f, 1.8f);
+        sw.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.PLAYERS, 0.25f, 1.3f);
         sw.spawnParticles(ParticleTypes.FLAME, hand.x, hand.y, hand.z, 4, 0.08, 0.08, 0.08, 0.01);
         sw.spawnParticles(ParticleTypes.SMOKE, hand.x, hand.y + 0.1, hand.z, 2, 0.05, 0.05, 0.05, 0.01);
         return true;

@@ -549,6 +549,11 @@ public class ModItems {
                     TomeTier.BEGINNER, SpellId.BLOOM, 5
             ).setCooldown(200) // 10 seconds
     );
+    public static final TomeItem TOME_OF_TNT = (TomeItem) registerItem("tome_of_tnt",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.TNT, 15
+            ).setCooldown(20 * 15) // 15 seconds
+    );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
                     TomeTier.BEGINNER, SpellId.HOME, 3
@@ -818,6 +823,7 @@ public class ModItems {
         putTome(SpellId.SMELTING, TomeTier.BEGINNER, TOME_OF_SMELTING);
         putTome(SpellId.SPEED, TomeTier.BEGINNER, TOME_OF_SPEED);
         putTome(SpellId.BLOOM, TomeTier.BEGINNER, TOME_OF_BLOOM);
+        putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
 
 
 
@@ -859,6 +865,20 @@ public class ModItems {
             entries.add(GOLDEN_STAFF);
             entries.add(DIAMOND_STAFF);
             entries.add(NETHERITE_STAFF);
+
+            // Every level of the staff enchantments as books
+            entries.getContext().lookup().getOptionalWrapper(net.minecraft.registry.RegistryKeys.ENCHANTMENT).ifPresent(enchantments -> {
+                for (var key : java.util.List.of(net.ragnar.ragnarsmagicmod.enchantment.ModEnchantments.RESERVE,
+                        net.ragnar.ragnarsmagicmod.enchantment.ModEnchantments.QUICKCAST,
+                        net.ragnar.ragnarsmagicmod.enchantment.ModEnchantments.ATTUNEMENT)) {
+                    enchantments.getOptional(key).ifPresent(entry -> {
+                        for (int level = 1; level <= entry.value().getMaxLevel(); level++) {
+                            entries.add(net.minecraft.item.EnchantedBookItem.forEnchantment(
+                                    new net.minecraft.enchantment.EnchantmentLevelEntry(entry, level)));
+                        }
+                    });
+                }
+            });
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(FALSE_TOME);
@@ -924,6 +944,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_ILLUSION));
             entries.add(new ItemStack(TOME_OF_VINES));
             entries.add(new ItemStack(TOME_OF_WINGS));
+            entries.add(new ItemStack(TOME_OF_TNT));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

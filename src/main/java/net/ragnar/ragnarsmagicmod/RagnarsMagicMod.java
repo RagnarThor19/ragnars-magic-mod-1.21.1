@@ -31,6 +31,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.IllusionPayload.register();
         net.ragnar.ragnarsmagicmod.network.DimensionSplitPayload.register();
         net.ragnar.ragnarsmagicmod.network.WingsPayload.register();
+        net.ragnar.ragnarsmagicmod.network.TntPayloads.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
@@ -113,5 +114,6 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.SMELTING, new net.ragnar.ragnarsmagicmod.item.spell.SmeltingSpell());
         Spells.register(SpellId.SPEED, new net.ragnar.ragnarsmagicmod.item.spell.SpeedSpell());
         Spells.register(SpellId.BLOOM, new net.ragnar.ragnarsmagicmod.item.spell.BloomSpell());
+        Spells.register(SpellId.TNT, new net.ragnar.ragnarsmagicmod.item.spell.TntSpell());
     }
 }

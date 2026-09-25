@@ -26,6 +26,12 @@ public class ModEnchantmentTagProvider extends FabricTagProvider.EnchantmentTagP
                 .add(ModEnchantments.QUICKCAST)
                 .add(ModEnchantments.ATTUNEMENT);
 
+        // Lets them turn up on enchanted books in chests and fishing treasure
+        getOrCreateTagBuilder(EnchantmentTags.ON_RANDOM_LOOT)
+                .add(ModEnchantments.RESERVE)
+                .add(ModEnchantments.QUICKCAST)
+                .add(ModEnchantments.ATTUNEMENT);
+
         // Also add to CURSE tag if you wanted curses, but we don't.
         // Adding to NON_TREASURE helps ensure they show up in tables too (vs strictly chest loot)
         getOrCreateTagBuilder(EnchantmentTags.NON_TREASURE)

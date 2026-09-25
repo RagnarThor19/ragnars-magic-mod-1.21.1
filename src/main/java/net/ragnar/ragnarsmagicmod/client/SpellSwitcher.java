@@ -67,6 +67,8 @@ public final class SpellSwitcher {
      * spells and must not also scroll the hotbar.
      */
     public static boolean onScroll(double vertical) {
+        // While aiming the Tome of TNT, the wheel throws nearer or further
+        if (TntClient.onScroll(vertical)) return true;
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;
         if (player != null && telekinesis && client.currentScreen == null && client.getOverlay() == null) {

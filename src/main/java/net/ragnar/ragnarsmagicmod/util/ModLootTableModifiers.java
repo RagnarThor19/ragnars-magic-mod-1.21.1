@@ -1,7 +1,12 @@
 package net.ragnar.ragnarsmagicmod.util;
 
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
+import net.minecraft.loot.function.EnchantRandomlyLootFunction;
+import net.minecraft.registry.RegistryWrapper;
+import net.ragnar.ragnarsmagicmod.enchantment.ModEnchantments;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
@@ -35,6 +40,7 @@ public class ModLootTableModifiers {
 
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
+            addStaffBooks(key, tableBuilder, registries);
 
             // ============================================================
             // FISHING (Treasure category is best for "good loot")
@@ -223,6 +229,31 @@ public class ModLootTableModifiers {
                 buildTomePool(tableBuilder, TomeTier.MASTER, 0.04f);   // M: 4%
             }
         });
+    }
+
+    /** Where staff enchantment books (Reserve, Quickcast, Attunement) can turn up, and how often. */
+    private static void addStaffBooks(RegistryKey<LootTable> key, LootTable.Builder tableBuilder, RegistryWrapper.WrapperLookup registries) {
+        float chance;
+        if (key.equals(LootTables.STRONGHOLD_LIBRARY_CHEST)) chance = 0.20f;
+        else if (key.equals(LootTables.ANCIENT_CITY_CHEST) || key.equals(LootTables.BASTION_TREASURE_CHEST)) chance = 0.10f;
+        else if (key.equals(LootTables.WOODLAND_MANSION_CHEST) || key.equals(LootTables.END_CITY_TREASURE_CHEST)) chance = 0.08f;
+        else if (key.equals(LootTables.SIMPLE_DUNGEON_CHEST) || key.equals(LootTables.ABANDONED_MINESHAFT_CHEST)
+                || key.equals(LootTables.NETHER_BRIDGE_CHEST) || key.equals(LootTables.DESERT_PYRAMID_CHEST)
+                || key.equals(LootTables.JUNGLE_TEMPLE_CHEST)) chance = 0.04f;
+        else if (key.equals(LootTables.FISHING_TREASURE_GAMEPLAY)) chance = 0.03f;
+        else return;
+
+        RegistryWrapper.Impl<Enchantment> enchantments = registries.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+        LootPool.Builder pool = LootPool.builder()
+                .rolls(ConstantLootNumberProvider.create(1))
+                .conditionally(RandomChanceLootCondition.builder(chance))
+                // Reserve and Quickcast are the usual finds; Attunement is the rare one
+                .with(ItemEntry.builder(Items.BOOK).weight(4).apply(new EnchantRandomlyLootFunction.Builder()
+                        .option(enchantments.getOrThrow(ModEnchantments.RESERVE))
+                        .option(enchantments.getOrThrow(ModEnchantments.QUICKCAST))))
+                .with(ItemEntry.builder(Items.BOOK).weight(1).apply(new EnchantRandomlyLootFunction.Builder()
+                        .option(enchantments.getOrThrow(ModEnchantments.ATTUNEMENT))));
+        tableBuilder.pool(pool);
     }
 
     /**
