@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
+import net.ragnar.ragnarsmagicmod.client.DayShiftClient;
 import net.ragnar.ragnarsmagicmod.client.DimensionSplitClient;
 import net.ragnar.ragnarsmagicmod.client.PossessionClient;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * While possessing a mob, the view turns with your mouse right away instead of waiting on the server.
- * Also shakes the camera for the Tome of Dimension Split.
+ * Also shakes the camera for the Tome of Dimension Split and the Tome of Dusk and Dawn.
  */
 @Mixin(Camera.class)
 public abstract class CameraMixin {
@@ -31,7 +32,7 @@ public abstract class CameraMixin {
     @Inject(method = "update", at = @At("TAIL"))
     private void ragnarsmagicmod$splitShake(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView,
                                              float tickDelta, CallbackInfo ci) {
-        float k = DimensionSplitClient.shake(tickDelta);
+        float k = Math.max(DimensionSplitClient.shake(tickDelta), DayShiftClient.shake(tickDelta));
         if (k <= 0f || focusedEntity == null) return;
         float t = (focusedEntity.age + tickDelta) * 2.7f;
         float yaw = k * 2.4f * (MathHelper.sin(t * 1.9f) + 0.5f * MathHelper.sin(t * 4.7f + 1.3f));

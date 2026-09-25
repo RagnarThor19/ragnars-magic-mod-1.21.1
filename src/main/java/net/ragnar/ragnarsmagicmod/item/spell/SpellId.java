@@ -74,5 +74,7 @@ public enum SpellId {
     SMELTING,
     SPEED,
     BLOOM,
-    TNT
+    TNT,
+    DUSK_AND_DAWN,
+    REWIND
 }

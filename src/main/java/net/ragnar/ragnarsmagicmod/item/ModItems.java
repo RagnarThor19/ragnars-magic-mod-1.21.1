@@ -554,6 +554,16 @@ public class ModItems {
                     TomeTier.ADVANCED, SpellId.TNT, 15
             ).setCooldown(20 * 15) // 15 seconds
     );
+    public static final TomeItem TOME_OF_DUSK_AND_DAWN = (TomeItem) registerItem("tome_of_dusk_and_dawn",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.DUSK_AND_DAWN, 50
+            ).setCooldown(20 * 240) // 4 minutes
+    );
+    public static final TomeItem TOME_OF_REWIND = (TomeItem) registerItem("tome_of_rewind",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.REWIND, 40
+            ).setCooldown(20 * 60) // 60 seconds, starting when the rewind ends
+    );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
                     TomeTier.BEGINNER, SpellId.HOME, 3
@@ -824,6 +834,8 @@ public class ModItems {
         putTome(SpellId.SPEED, TomeTier.BEGINNER, TOME_OF_SPEED);
         putTome(SpellId.BLOOM, TomeTier.BEGINNER, TOME_OF_BLOOM);
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
+        putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
+        putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
 
 
 
@@ -960,6 +972,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_SWORDS));
             entries.add(new ItemStack(TOME_OF_TELEKINESIS));
             entries.add(new ItemStack(TOME_OF_DIMENSION_SPLIT));
+            entries.add(new ItemStack(TOME_OF_DUSK_AND_DAWN));
+            entries.add(new ItemStack(TOME_OF_REWIND));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);

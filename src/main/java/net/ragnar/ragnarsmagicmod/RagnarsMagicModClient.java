@@ -19,5 +19,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.DimensionSplitClient.init();
         net.ragnar.ragnarsmagicmod.client.WingsClient.init();
         net.ragnar.ragnarsmagicmod.client.TntClient.init();
+        net.ragnar.ragnarsmagicmod.client.DayShiftClient.init();
+        net.ragnar.ragnarsmagicmod.client.RewindClient.init();
     }
 }
