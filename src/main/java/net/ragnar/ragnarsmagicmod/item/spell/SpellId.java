@@ -76,5 +76,6 @@ public enum SpellId {
     BLOOM,
     TNT,
     DUSK_AND_DAWN,
-    REWIND
+    REWIND,
+    JUDGEMENT
 }

@@ -564,6 +564,11 @@ public class ModItems {
                     TomeTier.MASTER, SpellId.REWIND, 40
             ).setCooldown(20 * 60) // 60 seconds, starting when the rewind ends
     );
+    public static final TomeItem TOME_OF_JUDGEMENT = (TomeItem) registerItem("tome_of_judgement",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.JUDGEMENT, 40
+            ).setCooldown(20 * 40) // 40 seconds
+    );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
                     TomeTier.BEGINNER, SpellId.HOME, 3
@@ -836,6 +841,7 @@ public class ModItems {
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
         putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
         putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
+        putTome(SpellId.JUDGEMENT, TomeTier.MASTER, TOME_OF_JUDGEMENT);
 
 
 
@@ -974,6 +980,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_DIMENSION_SPLIT));
             entries.add(new ItemStack(TOME_OF_DUSK_AND_DAWN));
             entries.add(new ItemStack(TOME_OF_REWIND));
+            entries.add(new ItemStack(TOME_OF_JUDGEMENT));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);

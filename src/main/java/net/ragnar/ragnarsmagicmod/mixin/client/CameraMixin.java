@@ -11,6 +11,7 @@ import net.minecraft.world.BlockView;
 import net.ragnar.ragnarsmagicmod.client.DayShiftClient;
 import net.ragnar.ragnarsmagicmod.client.DimensionSplitClient;
 import net.ragnar.ragnarsmagicmod.client.PossessionClient;
+import net.ragnar.ragnarsmagicmod.client.ScreenShake;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +33,8 @@ public abstract class CameraMixin {
     @Inject(method = "update", at = @At("TAIL"))
     private void ragnarsmagicmod$splitShake(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView,
                                              float tickDelta, CallbackInfo ci) {
-        float k = Math.max(DimensionSplitClient.shake(tickDelta), DayShiftClient.shake(tickDelta));
+        float k = Math.max(Math.max(DimensionSplitClient.shake(tickDelta), DayShiftClient.shake(tickDelta)),
+                ScreenShake.current(tickDelta));
         if (k <= 0f || focusedEntity == null) return;
         float t = (focusedEntity.age + tickDelta) * 2.7f;
         float yaw = k * 2.4f * (MathHelper.sin(t * 1.9f) + 0.5f * MathHelper.sin(t * 4.7f + 1.3f));

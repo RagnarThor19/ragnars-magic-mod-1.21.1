@@ -24,13 +24,17 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
- * A huge dark blade appears over your right shoulder and cleaves diagonally down across the space in front of you,
- * hitting everything in the arc hard and throwing the whole crowd back and to the side of the swing.
+ * A huge dark blade appears and cuts in a three-part combo, one move per cast: a diagonal cleave from over your
+ * right shoulder, the same cleave mirrored from over your left, then a straight thrust where you're looking. The
+ * cleaves hit everything in the arc and throw the crowd to the side of the swing; the thrust reaches further,
+ * hits harder along a narrow line and drives straight back.
  */
 public class SlashingSpell implements Spell {
     private static final int SWING_TICKS = 6;
@@ -48,28 +52,56 @@ public class SlashingSpell implements Spell {
     private static final Vector3f TIP_LOCAL = new Vector3f(1, 1, 0).normalize();
     private static final Vector3f SIDE_LOCAL = new Vector3f(-1, 1, 0).normalize();
     private static final Vector3f FACE_LOCAL = new Vector3f(0, 0, 1);
+    // The item display renderer turns the model 180 degrees about Y before drawing it, so the blade's real
+    // point is at (-1, +1) and its face toward -Z. The cleaves keep the frame above (their look is tuned to it);
+    // the thrust needs the true point so the blade leads with its tip.
+    private static final Vector3f STAB_TIP_LOCAL = new Vector3f(-1, 1, 0).normalize();
+    private static final Vector3f STAB_SIDE_LOCAL = new Vector3f(1, 1, 0).normalize();
+    private static final Vector3f STAB_FACE_LOCAL = new Vector3f(0, 0, -1);
 
-    private static final DustParticleEffect SHADOW = new DustParticleEffect(new Vector3f(0.08f, 0.05f, 0.12f), 1.6f);
+    // The thrust
+    private static final int STAB_TICKS = 5;
+    private static final double STAB_REACH = 7.0;
+    private static final double STAB_WIDTH = 1.1;          // how far off the line a creature can be and still get run through
+    private static final float STAB_DAMAGE = 16.0f;
+    private static final double STAB_KNOCKBACK = 2.0;
+    private static final float STAB_DRAW = -0.9f;          // how far back the blade is drawn before the thrust
+    private static final float STAB_LUNGE = 2.4f;          // how far forward it drives
+
+    // Casts this far apart still continue the combo; after that it starts again with the first cleave
+    private static final long COMBO_WINDOW = 20 * 9;
+
+    private enum Move { CLEAVE, MIRRORED_CLEAVE, THRUST }
+
+    private record Combo(int next, long lastCast) {}
+    private static final Map<UUID, Combo> COMBOS = new HashMap<>();
+
+    private static final DustParticleEffect SHADOW =new DustParticleEffect(new Vector3f(0.08f, 0.05f, 0.12f), 1.6f);
     private static final DustParticleEffect EDGE = new DustParticleEffect(new Vector3f(0.55f, 0.25f, 0.85f), 1.0f);
 
     private static final class Slash {
         final ServerWorld world;
         final UUID owner;
         final DisplayEntity.ItemDisplayEntity sword;
+        final Move move;
         // The swing's frame, fixed when cast
         final Vec3d forward;
-        final Vec3d diagonal;      // from pivot toward the upper right
+        final Vec3d diagonal;      // from pivot toward the shoulder the cleave starts over
         final Vec3d normal;        // the swing plane's normal
+        final Vec3d aim;           // the thrust's direction (where you were looking)
         int age = 0;
         boolean struck = false;
 
-        Slash(ServerWorld world, UUID owner, DisplayEntity.ItemDisplayEntity sword, Vec3d forward, Vec3d diagonal, Vec3d normal) {
+        Slash(ServerWorld world, UUID owner, DisplayEntity.ItemDisplayEntity sword, Move move, Vec3d forward,
+              Vec3d diagonal, Vec3d normal, Vec3d aim) {
             this.world = world;
             this.owner = owner;
             this.sword = sword;
+            this.move = move;
             this.forward = forward;
             this.diagonal = diagonal;
             this.normal = normal;
+            this.aim = aim;
         }
     }
 
@@ -97,11 +129,21 @@ public class SlashingSpell implements Spell {
         ensureRegistered();
         ServerWorld sw = (ServerWorld) world;
 
+        // Which move of the combo this is
+        long now = sw.getTime();
+        Combo combo = COMBOS.get(player.getUuid());
+        int index = combo != null && now - combo.lastCast() <= COMBO_WINDOW ? combo.next() : 0;
+        Move move = Move.values()[index];
+        COMBOS.put(player.getUuid(), new Combo((index + 1) % Move.values().length, now));
+
         double yaw = Math.toRadians(player.getYaw());
         Vec3d forward = new Vec3d(-Math.sin(yaw), 0, Math.cos(yaw));
         Vec3d right = new Vec3d(-forward.z, 0, forward.x);
-        Vec3d diagonal = right.add(0, 1, 0).normalize();
+        // The mirrored cleave starts over the left shoulder instead
+        Vec3d shoulder = move == Move.MIRRORED_CLEAVE ? right.negate() : right;
+        Vec3d diagonal = shoulder.add(0, 1, 0).normalize();
         Vec3d normal = diagonal.crossProduct(forward).normalize();
+        Vec3d aim = player.getRotationVector().normalize();
 
         DisplayEntity.ItemDisplayEntity sword = EntityType.ITEM_DISPLAY.create(sw);
         if (sword == null) return false;
@@ -111,13 +153,14 @@ public class SlashingSpell implements Spell {
         sword.setViewRange(3.0f);
         Vec3d pivot = pivot(player);
         sword.refreshPositionAndAngles(pivot.x, pivot.y, pivot.z, 0f, 0f);
-        Slash slash = new Slash(sw, player.getUuid(), sword, forward, diagonal, normal);
-        sword.setTransformation(swordTransform(slash, START_ANGLE, 0.3f));
+        Slash slash = new Slash(sw, player.getUuid(), sword, move, forward, diagonal, normal, aim);
+        sword.setTransformation(move == Move.THRUST ? stabTransform(slash, STAB_DRAW, 0.3f) : swordTransform(slash, START_ANGLE, 0.3f));
         TempEntities.track(sword);
         sw.spawnEntity(sword);
         ACTIVE.add(slash);
 
-        sw.spawnParticles(SHADOW, pivot.x + diagonal.x * 2, pivot.y + diagonal.y * 2, pivot.z + diagonal.z * 2, 20, 0.4, 0.4, 0.4, 0);
+        Vec3d gather = move == Move.THRUST ? pivot.add(aim.multiply(1.5)) : pivot.add(diagonal.multiply(2));
+        sw.spawnParticles(SHADOW, gather.x, gather.y, gather.z, 20, 0.4, 0.4, 0.4, 0);
         sw.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE.value(), SoundCategory.PLAYERS, 1.2f, 0.6f);
         sw.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.PLAYERS, 0.4f, 0.5f);
         return true;
@@ -130,6 +173,7 @@ public class SlashingSpell implements Spell {
         s.age++;
         Vec3d pivot = pivot(player);
         s.sword.setPosition(pivot.x, pivot.y, pivot.z);
+        if (s.move == Move.THRUST) return tickThrust(s, player, pivot);
 
         if (s.age <= SWING_TICKS) {
             double t = s.age / (double) SWING_TICKS;
@@ -168,6 +212,88 @@ public class SlashingSpell implements Spell {
             return true;
         }
         return false;
+    }
+
+    /** The thrust: drawn back, driven forward hard, a moment's hold, then gone. */
+    private static boolean tickThrust(Slash s, PlayerEntity player, Vec3d pivot) {
+        if (s.age <= STAB_TICKS) {
+            double t = s.age / (double) STAB_TICKS;
+            // Snaps forward almost at once, then settles at full reach
+            double eased = 1 - Math.pow(1 - Math.min(1.0, t * 1.6), 3);
+            float reach = (float) MathHelper.lerp(eased, STAB_DRAW, STAB_LUNGE);
+            s.sword.setTransformation(stabTransform(s, reach, 1f));
+            s.sword.setStartInterpolation(0);
+            s.sword.setInterpolationDuration(1);
+
+            if (s.age == 1) {
+                s.world.playSound(null, pivot.x, pivot.y, pivot.z, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.4f, 0.6f);
+                s.world.playSound(null, pivot.x, pivot.y, pivot.z, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1.0f, 1.4f);
+            }
+            // A dark streak along the line of the thrust
+            for (double d = 1.5; d <= reach + 4.5; d += 0.5) {
+                Vec3d p = pivot.add(s.aim.multiply(d));
+                s.world.spawnParticles(d > reach + 3.5 ? EDGE : SHADOW, p.x, p.y, p.z, 1, 0.04, 0.04, 0.04, 0);
+            }
+            if (!s.struck && s.age >= 2) {
+                s.struck = true;
+                thrust(s, player, pivot);
+            }
+            return true;
+        }
+        int fade = s.age - STAB_TICKS;
+        if (fade <= FADE_TICKS) {
+            float size = 1f - fade / (float) FADE_TICKS;
+            s.sword.setTransformation(stabTransform(s, STAB_LUNGE, Math.max(size, 0.01f)));
+            s.sword.setStartInterpolation(0);
+            s.sword.setInterpolationDuration(1);
+            return true;
+        }
+        return false;
+    }
+
+    /** The blade pointing where you looked, edge leading, pushed {@code reach} blocks along that line. */
+    private static AffineTransformation stabTransform(Slash s, float reach, float size) {
+        Vector3f tip = s.aim.toVector3f().normalize();
+        Vector3f up = Math.abs(tip.y) > 0.95f ? new Vector3f(1, 0, 0) : new Vector3f(0, 1, 0);
+        Vector3f face = new Vector3f(tip).cross(up).normalize(); // flat of the blade faces sideways
+        Vector3f side = new Vector3f(face).cross(tip).normalize();
+        Matrix3f target = new Matrix3f(tip, side, face);
+        Matrix3f local = new Matrix3f(STAB_TIP_LOCAL, STAB_SIDE_LOCAL, STAB_FACE_LOCAL);
+        Matrix3f rotation = target.mul(local.transpose());
+        float scale = SCALE * size;
+        Vector3f out = new Vector3f(tip).mul(scale * 0.62f + reach);
+        return new AffineTransformation(new Matrix4f()
+                .translate(out)
+                .mul(new Matrix4f(rotation))
+                .scale(scale));
+    }
+
+    /** Runs through everything along the line in front of you. */
+    private static void thrust(Slash s, PlayerEntity player, Vec3d pivot) {
+        ServerWorld world = s.world;
+        Vec3d end = pivot.add(s.aim.multiply(STAB_REACH));
+        boolean hitAny = false;
+        for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, new Box(pivot, end).expand(STAB_WIDTH + 1.0),
+                e -> e != player && e.isAlive() && !e.isSpectator())) {
+            Vec3d c = e.getBoundingBox().getCenter();
+            Vec3d rel = c.subtract(pivot);
+            double along = rel.dotProduct(s.aim);
+            if (along < 0 || along > STAB_REACH + e.getWidth() * 0.5) continue;
+            double off = rel.subtract(s.aim.multiply(along)).length();
+            if (off > STAB_WIDTH + e.getWidth() * 0.5) continue;
+
+            e.damage(world.getDamageSources().playerAttack(player), STAB_DAMAGE);
+            e.addVelocity(s.aim.x * STAB_KNOCKBACK, 0.3 + Math.max(0, s.aim.y) * STAB_KNOCKBACK, s.aim.z * STAB_KNOCKBACK);
+            e.velocityModified = true;
+            world.spawnParticles(ParticleTypes.CRIT, c.x, c.y, c.z, 16, 0.2, 0.3, 0.2, 0.5);
+            world.spawnParticles(ParticleTypes.ENCHANTED_HIT, c.x, c.y, c.z, 8, 0.2, 0.3, 0.2, 0.3);
+            world.spawnParticles(SHADOW, c.x, c.y, c.z, 10, 0.25, 0.35, 0.25, 0);
+            hitAny = true;
+        }
+        if (hitAny) {
+            world.playSound(null, pivot.x, pivot.y, pivot.z, SoundEvents.ITEM_TRIDENT_HIT, SoundCategory.PLAYERS, 1.3f, 0.6f);
+            world.playSound(null, pivot.x, pivot.y, pivot.z, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, SoundCategory.PLAYERS, 1.3f, 0.7f);
+        }
     }
 
     private static Vec3d pivot(PlayerEntity player) {
@@ -215,9 +341,10 @@ public class SlashingSpell implements Spell {
     private static void strike(Slash s, PlayerEntity player, Vec3d pivot) {
         ServerWorld world = s.world;
         double minCos = Math.cos(Math.toRadians(ARC_DEGREES));
-        // The cut travels right to left, so the crowd is thrown back and toward your left
+        // The crowd is thrown back and toward the side the cut travels to: your left, or your right when mirrored
         Vec3d left = new Vec3d(s.forward.z, 0, -s.forward.x);
-        Vec3d throwDir = s.forward.multiply(0.8).add(left.multiply(0.6)).normalize();
+        Vec3d away = s.move == Move.MIRRORED_CLEAVE ? left.negate() : left;
+        Vec3d throwDir = s.forward.multiply(0.8).add(away.multiply(0.6)).normalize();
         boolean hitAny = false;
 
         for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, new Box(pivot, pivot).expand(REACH),

@@ -34,6 +34,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.TntPayloads.register();
         net.ragnar.ragnarsmagicmod.network.DayShiftPayload.register();
         net.ragnar.ragnarsmagicmod.network.RewindPayload.register();
+        net.ragnar.ragnarsmagicmod.network.ShakePayload.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
@@ -119,6 +120,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.TNT, new net.ragnar.ragnarsmagicmod.item.spell.TntSpell());
         Spells.register(SpellId.DUSK_AND_DAWN, new net.ragnar.ragnarsmagicmod.item.spell.DuskAndDawnSpell());
         Spells.register(SpellId.REWIND, new net.ragnar.ragnarsmagicmod.item.spell.RewindSpell());
+        Spells.register(SpellId.JUDGEMENT, new net.ragnar.ragnarsmagicmod.item.spell.JudgementSpell());
         net.ragnar.ragnarsmagicmod.item.spell.RewindSpell.register();
     }
 }
