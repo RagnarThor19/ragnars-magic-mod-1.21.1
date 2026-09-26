@@ -8,7 +8,8 @@ public class ModEntityRenderers {
     public static void register() {
         EntityRendererRegistry.register(ModEntities.ICE_SHARD, ctx -> new FlyingItemEntityRenderer<>(ctx));
         EntityRendererRegistry.register(ModEntities.BOULDER_PROJECTILE, ctx -> new FlyingItemEntityRenderer<>(ctx));
-        EntityRendererRegistry.register(ModEntities.ILLUSION, IllusionRenderer::new);
+        EntityRendererRegistry.register(ModEntities.ILLUSION, ctx -> new PlayerCopyRenderer<>(ctx));
+        EntityRendererRegistry.register(ModEntities.CLONE, ctx -> new PlayerCopyRenderer<>(ctx));
         EntityRendererRegistry.register(ModEntities.COBWEB_PROJECTILE, ctx -> new FlyingItemEntityRenderer<>(ctx));
     }
 }

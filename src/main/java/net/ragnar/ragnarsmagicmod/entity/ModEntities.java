@@ -58,6 +58,17 @@ public class ModEntities {
                     .build()
     );
 
+    public static final EntityType<CloneEntity> CLONE = Registry.register(
+            Registries.ENTITY_TYPE,
+            Identifier.of(RagnarsMagicMod.MOD_ID, "clone"),
+            FabricEntityTypeBuilder.<CloneEntity>create(SpawnGroup.MISC, CloneEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.6F, 1.8F)) // player size
+                    .trackRangeBlocks(64)
+                    .trackedUpdateRate(2)
+                    .disableSaving()
+                    .build()
+    );
+
     public static final EntityType<CobwebProjectileEntity> COBWEB_PROJECTILE = Registry.register(
             Registries.ENTITY_TYPE,
             Identifier.of(RagnarsMagicMod.MOD_ID, "cobweb_projectile"),
@@ -71,6 +82,7 @@ public class ModEntities {
     public static void registerModEntities() {
         FabricDefaultAttributeRegistry.register(STEVE, SteveEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ILLUSION, IllusionEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(CLONE, CloneEntity.createAttributes());
     }
     public static void register() {
         RagnarsMagicMod.LOGGER.info("Registered entities");

@@ -23,7 +23,7 @@ import java.util.UUID;
  * The Tome of Illusion decoy: a still copy of its caster (skin, armour, held items, name) that
  * mobs go after. The first real hit shatters it.
  */
-public class IllusionEntity extends MobEntity {
+public class IllusionEntity extends MobEntity implements PlayerCopy {
     private static final TrackedData<Optional<UUID>> OWNER =
             DataTracker.registerData(IllusionEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
 
@@ -66,6 +66,7 @@ public class IllusionEntity extends MobEntity {
         this.setCustomNameVisible(true);
     }
 
+    @Override
     public Optional<UUID> getOwnerUuid() {
         return this.dataTracker.get(OWNER);
     }

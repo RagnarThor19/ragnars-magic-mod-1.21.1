@@ -80,8 +80,11 @@
   "item.ragnarsmagicmod.tome_of_dusk_and_dawn": "Tome of Dusk and Dawn",
   "item.ragnarsmagicmod.tome_of_rewind": "Tome of Rewind",
   "item.ragnarsmagicmod.tome_of_judgement": "Tome of Judgement",
+  "item.ragnarsmagicmod.tome_of_kindling": "Tome of Kindling",
+  "item.ragnarsmagicmod.tome_of_clones": "Tome of Clones",
   "entity.ragnarsmagicmod.cobweb_projectile": "Cobweb",
   "entity.ragnarsmagicmod.illusion": "Illusion",
+  "entity.ragnarsmagicmod.clone": "Clone",
 
   "item.ragnarsmagicmod.boulder": "Boulder",
   "enchantment.ragnarsmagicmod.reserve": "Reserve",

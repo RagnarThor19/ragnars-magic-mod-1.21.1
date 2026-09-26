@@ -334,13 +334,13 @@ public class StaffItem extends Item {
             return TypedActionResult.pass(staff);
         }
 
-        // Cooldowns live on the tome items, so swapping spells never resets them
-        if (player.getItemCooldownManager().isCoolingDown(tome)) {
-            return TypedActionResult.fail(staff);
-        }
-
         net.ragnar.ragnarsmagicmod.item.spell.Spell spell = net.ragnar.ragnarsmagicmod.item.spell.Spells.get(tome.getSpell());
         if (spell == null) return TypedActionResult.pass(staff);
+
+        // Cooldowns live on the tome items, so swapping spells never resets them
+        if (player.getItemCooldownManager().isCoolingDown(tome) && !spell.ignoresCooldown(player)) {
+            return TypedActionResult.fail(staff);
+        }
 
         // --- RESERVE LOGIC ---
         int baseCost = spell.xpCost(player, tome.getXpCost());

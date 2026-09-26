@@ -77,5 +77,7 @@ public enum SpellId {
     TNT,
     DUSK_AND_DAWN,
     REWIND,
-    JUDGEMENT
+    JUDGEMENT,
+    KINDLING,
+    CLONES
 }

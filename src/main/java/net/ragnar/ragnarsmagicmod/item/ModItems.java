@@ -549,6 +549,16 @@ public class ModItems {
                     TomeTier.BEGINNER, SpellId.BLOOM, 5
             ).setCooldown(200) // 10 seconds
     );
+    public static final TomeItem TOME_OF_KINDLING = (TomeItem) registerItem("tome_of_kindling",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.KINDLING, 2
+            ).setCooldown(10) // 0.5 seconds
+    );
+    public static final TomeItem TOME_OF_CLONES = (TomeItem) registerItem("tome_of_clones",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.CLONES, 20
+            ).setCooldown(20 * 30) // 30 seconds
+    );
     public static final TomeItem TOME_OF_TNT = (TomeItem) registerItem("tome_of_tnt",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.TNT, 15
@@ -838,6 +848,8 @@ public class ModItems {
         putTome(SpellId.SMELTING, TomeTier.BEGINNER, TOME_OF_SMELTING);
         putTome(SpellId.SPEED, TomeTier.BEGINNER, TOME_OF_SPEED);
         putTome(SpellId.BLOOM, TomeTier.BEGINNER, TOME_OF_BLOOM);
+        putTome(SpellId.KINDLING, TomeTier.BEGINNER, TOME_OF_KINDLING);
+        putTome(SpellId.CLONES, TomeTier.ADVANCED, TOME_OF_CLONES);
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
         putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
         putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
@@ -931,6 +943,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_SMELTING));
             entries.add(new ItemStack(TOME_OF_SPEED));
             entries.add(new ItemStack(TOME_OF_BLOOM));
+            entries.add(new ItemStack(TOME_OF_KINDLING));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
@@ -963,6 +976,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_VINES));
             entries.add(new ItemStack(TOME_OF_WINGS));
             entries.add(new ItemStack(TOME_OF_TNT));
+            entries.add(new ItemStack(TOME_OF_CLONES));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

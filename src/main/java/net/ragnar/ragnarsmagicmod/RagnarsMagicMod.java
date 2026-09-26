@@ -35,10 +35,13 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.DayShiftPayload.register();
         net.ragnar.ragnarsmagicmod.network.RewindPayload.register();
         net.ragnar.ragnarsmagicmod.network.ShakePayload.register();
+        net.ragnar.ragnarsmagicmod.network.CloneSwapPayload.register();
+        net.ragnar.ragnarsmagicmod.network.CloneTimerPayload.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell.register();
+        net.ragnar.ragnarsmagicmod.item.spell.ClonesSpell.register();
 
         // Register Loot Table Modifiers
         ModLootTableModifiers.modifyLootTables();
@@ -121,6 +124,8 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.DUSK_AND_DAWN, new net.ragnar.ragnarsmagicmod.item.spell.DuskAndDawnSpell());
         Spells.register(SpellId.REWIND, new net.ragnar.ragnarsmagicmod.item.spell.RewindSpell());
         Spells.register(SpellId.JUDGEMENT, new net.ragnar.ragnarsmagicmod.item.spell.JudgementSpell());
+        Spells.register(SpellId.KINDLING, new net.ragnar.ragnarsmagicmod.item.spell.KindlingSpell());
+        Spells.register(SpellId.CLONES, new net.ragnar.ragnarsmagicmod.item.spell.ClonesSpell());
         net.ragnar.ragnarsmagicmod.item.spell.RewindSpell.register();
     }
 }
