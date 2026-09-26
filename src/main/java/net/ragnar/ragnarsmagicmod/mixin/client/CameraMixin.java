@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
-import net.ragnar.ragnarsmagicmod.client.CloneClient;
+import net.ragnar.ragnarsmagicmod.client.CameraGlide;
 import net.ragnar.ragnarsmagicmod.client.DayShiftClient;
 import net.ragnar.ragnarsmagicmod.client.DimensionSplitClient;
 import net.ragnar.ragnarsmagicmod.client.PossessionClient;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * While possessing a mob, the view turns with your mouse right away instead of waiting on the server.
- * Glides the camera into your new body after a Tome of Clones swap. Also shakes the camera for the Tome of Dimension Split and the Tome of Dusk and Dawn.
+ * Glides the camera to your new spot after a teleport (Tome of Clones swap, Tome of Blinking). Also shakes the camera for the Tome of Dimension Split and the Tome of Dusk and Dawn.
  */
 @Mixin(Camera.class)
 public abstract class CameraMixin {
@@ -35,7 +35,7 @@ public abstract class CameraMixin {
     private void ragnarsmagicmod$splitShake(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView,
                                              float tickDelta, CallbackInfo ci) {
         if (focusedEntity != null && focusedEntity == MinecraftClient.getInstance().player) {
-            setPos(CloneClient.glide(getPos(), tickDelta));
+            setPos(CameraGlide.apply(getPos(), tickDelta));
         }
         float k = Math.max(Math.max(DimensionSplitClient.shake(tickDelta), DayShiftClient.shake(tickDelta)),
                 ScreenShake.current(tickDelta));

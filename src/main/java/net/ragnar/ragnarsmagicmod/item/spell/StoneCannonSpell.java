@@ -47,7 +47,7 @@ public class StoneCannonSpell implements Spell {
     private static final double SPEED = 4.0;               // blocks per tick
     private static final double RANGE = 90.0;
     private static final int PIERCE_LIMIT = 6;
-    private static final float DIRECT_DAMAGE = 20.0f;
+    private static final float DIRECT_DAMAGE = 24.0f;
     // Near misses: how far the spike's path can pass from a hitbox and still clip it, and for how much
     private static final double DIRECT_MARGIN = 0.15;     // a little forgiveness around the hitbox still counts as clean
     private static final double GRAZE_CLOSE = 0.45;

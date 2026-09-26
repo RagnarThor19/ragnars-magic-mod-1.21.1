@@ -1,133 +1,133 @@
 package net.ragnar.ragnarsmagicmod.item.spell;
 
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import net.ragnar.ragnarsmagicmod.network.BlinkPayload;
 
+/**
+ * Tome of Blinking: vanish and reappear exactly where you're aiming, up to {@link #MAX_RANGE} blocks away.
+ * Aim at the top of something and you land on it; aim at a wall near its top edge and you pull yourself up onto it;
+ * aim at a wall and you end up right in front of it; aim at open air and you appear out there, mid-air. You keep
+ * your momentum (plus a little shove forward), so blinks can be chained through the air. The camera zips across and
+ * a streak of End particles marks the path.
+ */
 public final class BlinkSpell implements Spell {
-    private static final double MAX_RANGE = 24.0;
+    private static final double MAX_RANGE = 32.0;
+    private static final double MANTLE_REACH = 1.2; // how close to a wall's top edge counts as "grab the ledge"
+    private static final double PUSH = 0.25;
 
     @Override
     public boolean cast(World world, PlayerEntity player, ItemStack staff) {
-        if (world.isClient) return true;
+        if (!(world instanceof ServerWorld sw) || !(player instanceof ServerPlayerEntity sp)) return false;
 
-        // 1) Raycast where the player is looking (up to MAX_RANGE)
-        HitResult hr = player.raycast(MAX_RANGE, 0f, false);
         Vec3d eye = player.getEyePos();
-        Vec3d dest;
+        Vec3d dir = player.getRotationVector();
+        BlockHitResult hit = world.raycast(new RaycastContext(eye, eye.add(dir.multiply(MAX_RANGE)),
+                RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, player));
 
-        if (hr.getType() == HitResult.Type.BLOCK) {
-            // If we hit a block, step back a little from the face so we don't clip in
-            Vec3d hit = ((BlockHitResult) hr).getPos();
-            Vec3d dir = player.getRotationVec(1.0f).normalize();
-            dest = hit.subtract(dir.multiply(0.6));
-        } else {
-            // Miss → end of the ray
-            Vec3d dir = player.getRotationVec(1.0f).normalize().multiply(MAX_RANGE);
-            dest = eye.add(dir);
+        Vec3d dest = landing(sw, player, eye, dir, hit);
+        if (dest == null) {
+            sw.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_RESPAWN_ANCHOR_DEPLETE.value(), SoundCategory.PLAYERS, 0.6f, 1.6f);
+            return false;
         }
 
-        // 2) Find a safe landing spot (2-block headroom). Try slight vertical adjustments.
-        Vec3d safe = findSafeSpot(world, dest, 4);
-        if (safe == null) {
-            // Try from just before the block along the ray as a fallback
-            Vec3d dir = player.getRotationVec(1.0f).normalize();
-            Vec3d fallback = eye.add(dir.multiply(MAX_RANGE - 1.0));
-            safe = findSafeSpot(world, fallback, 4);
-        }
-        if (safe == null) {
-            // Last resort: try current spot (small step forward). If still null, fail cast.
-            Vec3d dir = player.getRotationVec(1.0f).normalize();
-            safe = findSafeSpot(world, player.getPos().add(dir.multiply(0.8)), 2);
-            if (safe == null) return false; // no valid blink
+        Vec3d from = player.getPos();
+        Vec3d momentum = player.getVelocity();
+
+        // Leaving: the air snaps shut where you stood
+        sw.spawnParticles(ParticleTypes.REVERSE_PORTAL, from.x, from.y + 1.0, from.z, 50, 0.3, 0.6, 0.3, 0.05);
+        sw.spawnParticles(ParticleTypes.POOF, from.x, from.y + 1.0, from.z, 6, 0.2, 0.4, 0.2, 0.01);
+        sw.playSound(null, from.x, from.y, from.z, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0f, 0.8f);
+
+        // The path: a streak of End particles from where you were to where you are
+        Vec3d span = dest.subtract(from);
+        int steps = (int) Math.min(64, span.length() * 2);
+        for (int i = 1; i < steps; i++) {
+            Vec3d p = from.add(span.multiply(i / (double) steps)).add(0, 1.0, 0);
+            sw.spawnParticles(ParticleTypes.PORTAL, p.x, p.y, p.z, 2, 0.1, 0.2, 0.1, 0.1);
+            if (i % 3 == 0) sw.spawnParticles(ParticleTypes.REVERSE_PORTAL, p.x, p.y, p.z, 1, 0.05, 0.05, 0.05, 0.01);
         }
 
-        // 3) FX at origin
-        if (world instanceof ServerWorld sw) {
-            spawnBlinkParticles(sw, player.getX(), player.getY() + 0.1, player.getZ());
-        }
-        world.playSound(null, player.getBlockPos(),
-                SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
-
-        // 4) Teleport
-        player.requestTeleport(safe.x, safe.y, safe.z);
-
-        // 5) FX at destination
-        if (world instanceof ServerWorld sw2) {
-            spawnBlinkParticles(sw2, safe.x, safe.y, safe.z);
-        }
-        world.playSound(null, BlockPos.ofFloored(safe),
-                SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
-
-        // 6) QoL: no fall damage from blink; tiny resistance so you don't get frame-1 deleted
+        player.stopRiding();
+        sp.networkHandler.requestTeleport(dest.x, dest.y, dest.z, player.getYaw(), player.getPitch());
+        // Carry your momentum through, with a little shove the way you're facing
+        player.setVelocity(momentum.add(dir.multiply(PUSH)));
+        player.velocityModified = true;
         player.fallDistance = 0.0f;
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10, 0, false, false));
+        BlinkPayload.send(sp);
 
+        // Arriving: a burst of End light and a clear ding
+        sw.spawnParticles(ParticleTypes.PORTAL, dest.x, dest.y + 1.0, dest.z, 60, 0.4, 0.7, 0.4, 0.6);
+        sw.spawnParticles(ParticleTypes.REVERSE_PORTAL, dest.x, dest.y + 1.0, dest.z, 25, 0.2, 0.5, 0.2, 0.08);
+        sw.spawnParticles(ParticleTypes.END_ROD, dest.x, dest.y + 1.0, dest.z, 8, 0.2, 0.4, 0.2, 0.06);
+        sw.playSound(null, dest.x, dest.y, dest.z, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.3f);
+        sw.playSound(null, dest.x, dest.y, dest.z, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.PLAYERS, 1.0f, 1.5f);
         return true;
     }
 
-    private static void spawnBlinkParticles(ServerWorld sw, double x, double y, double z) {
-        // Purple end vibes
-        sw.spawnParticles(ParticleTypes.REVERSE_PORTAL, x, y, z, 40, 0.6, 1.0, 0.6, 0.02);
-        sw.spawnParticles(ParticleTypes.PORTAL,         x, y, z, 25, 0.5, 0.8, 0.5, 0.02);
-        sw.spawnParticles(ParticleTypes.DRAGON_BREATH,  x, y, z, 10, 0.4, 0.3, 0.4, 0.0);
-    }
-
-    /**
-     * Try to find a safe spot near 'pos' with up to 'verticalTries' adjustments.
-     * We require: two non-solid blocks for feet+head. We allow blinking midair.
-     */
-    private static Vec3d findSafeSpot(World world, Vec3d pos, int verticalTries) {
-        int baseX = MathHelper.floor(pos.x);
-        int baseZ = MathHelper.floor(pos.z);
-        double y = pos.y;
-
-        // Try small vertical adjustments: first current Y, then up to 3 blocks up, then 1 down.
-        int[] offsets = new int[Math.max(1, verticalTries)];
-        // e.g., [0, 1, 2, 3] then [-1]
-        int idx = 0;
-        offsets[idx++] = 0;
-        if (verticalTries > 1) offsets[idx++] = 1;
-        if (verticalTries > 2) offsets[idx++] = 2;
-        if (verticalTries > 3) offsets[idx++] = 3;
-
-        for (int off : offsets) {
-            int yi = MathHelper.floor(y) + off;
-            BlockPos feet = new BlockPos(baseX, yi, baseZ);
-            BlockPos head = feet.up();
-
-            if (isAiry(world, feet) && isAiry(world, head)) {
-                // good enough; return centered on the block
-                return new Vec3d(baseX + 0.5, yi, baseZ + 0.5);
+    /** Where your feet should end up, or null if there's nowhere to go. */
+    private static Vec3d landing(ServerWorld world, PlayerEntity player, Vec3d eye, Vec3d dir, BlockHitResult hit) {
+        double eyeHeight = player.getStandingEyeHeight();
+        Vec3d target;
+        if (hit.getType() != HitResult.Type.BLOCK) {
+            // Open air: appear where you were looking, mid-air
+            target = eye.add(dir.multiply(MAX_RANGE)).subtract(0, eyeHeight, 0);
+        } else {
+            Vec3d p = hit.getPos();
+            BlockPos block = hit.getBlockPos();
+            Direction side = hit.getSide();
+            Vec3d normal = Vec3d.of(side.getVector());
+            if (side == Direction.UP) {
+                target = p;                                                // stand on it
+            } else if (side == Direction.DOWN) {
+                target = p.subtract(0, player.getHeight() + 0.01, 0);     // hang right under it
+            } else {
+                double top = block.getY() + 1.0;
+                if (top - p.y <= MANTLE_REACH && fits(world, player, new Vec3d(p.x, top, p.z).subtract(normal.multiply(0.4)))) {
+                    // Near a wall's top edge: pull yourself up onto it
+                    target = new Vec3d(p.x, top, p.z).subtract(normal.multiply(0.4));
+                } else {
+                    // Otherwise, right in front of the wall at the height you aimed
+                    target = p.add(normal.multiply(player.getWidth() / 2 + 0.05)).subtract(0, eyeHeight * 0.5, 0);
+                }
             }
         }
-        // small try below
-        {
-            int yi = MathHelper.floor(y) - 1;
-            BlockPos feet = new BlockPos(baseX, yi, baseZ);
-            BlockPos head = feet.up();
-            if (isAiry(world, feet) && isAiry(world, head)) {
-                return new Vec3d(baseX + 0.5, yi, baseZ + 0.5);
+
+        // Nudge into a spot you fit: a little up or down first, then back along the way you came
+        double[] lifts = {0.0, 0.5, 1.0, -0.5, 1.5, -1.0};
+        for (double back = 0; back <= MAX_RANGE; back += 0.5) {
+            Vec3d base = target.subtract(dir.multiply(back));
+            for (double lift : lifts) {
+                Vec3d at = base.add(0, lift, 0);
+                if (fits(world, player, at)) return at;
             }
+            if (base.squaredDistanceTo(player.getPos()) < 1.0) break;
         }
         return null;
     }
 
-    private static boolean isAiry(World world, BlockPos pos) {
-        var state = world.getBlockState(pos);
-        // Safe if no collision box (player won’t suffocate)
-        return state.isAir() || state.getCollisionShape(world, pos).isEmpty();
+    /** Room to stand, and never into lava. */
+    private static boolean fits(ServerWorld world, PlayerEntity player, Vec3d feet) {
+        Box box = player.getDimensions(EntityPose.STANDING).getBoxAt(feet);
+        if (!world.isSpaceEmpty(player, box)) return false;
+        return BlockPos.stream(box.contract(0.05)).noneMatch(p -> world.getFluidState(p).isIn(FluidTags.LAVA));
     }
 }

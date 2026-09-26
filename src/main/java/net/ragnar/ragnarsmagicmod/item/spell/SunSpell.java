@@ -25,8 +25,10 @@ import net.minecraft.world.World;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -51,6 +53,9 @@ public class SunSpell implements Spell {
     private static final double FIRE_CHANCE = 0.25;
     private static final int FIRE_SAMPLES = 18;
     private static final int LIGHT_LEVEL = 15;
+    // 30 damage a second to anything inside: 15 every half second
+    private static final float BURN_DAMAGE = 15.0f;
+    private static final int BURN_INTERVAL = 10;
     private static final double VIEW_RANGE = 160.0;     // a sun should be visible from far away
 
     // --- Look ---
@@ -68,6 +73,7 @@ public class SunSpell implements Spell {
         double radius = START_RADIUS;
         int age = 0;
         BlockPos light;
+        final Map<UUID, Integer> lastBurn = new HashMap<>(); // victim -> sun age of its last burn
 
         Sun(ServerWorld world, UUID owner, Vec3d pos, Vec3d forward) {
             this.world = world;
@@ -138,7 +144,7 @@ public class SunSpell implements Spell {
             if (CAN_IGNITE) tryIgniteAirOnShell(world, sun.pos, sun.radius);
         }
 
-        burnEntities(world, owner, oldPos, sun.pos, prevRadius, sun.radius);
+        burnEntities(sun, world, owner, oldPos, sun.pos, prevRadius, sun.radius);
         moveLight(sun);
         renderSun(sun);
         playAmbience(sun);
@@ -187,8 +193,11 @@ public class SunSpell implements Spell {
     // Damage
     // ---------------------------------------------------------------------
 
-    /** Anything the sun's sphere sweeps through this tick is burned away. */
-    private static void burnEntities(ServerWorld world, PlayerEntity owner, Vec3d oldPos, Vec3d newPos, double prevRadius, double radius) {
+    /**
+     * Anything inside the sun's sphere (or swept by it this tick) burns: set alight, and {@link #BURN_DAMAGE} every
+     * {@link #BURN_INTERVAL} ticks for as long as it stays in - 30 damage a second, so even a boss takes a while.
+     */
+    private static void burnEntities(Sun sun, ServerWorld world, PlayerEntity owner, Vec3d oldPos, Vec3d newPos, double prevRadius, double radius) {
         double maxR = Math.max(prevRadius, radius);
         Box sweep = new Box(oldPos, newPos).expand(maxR);
         for (Entity e : world.getOtherEntities(owner, sweep, e -> e instanceof LivingEntity && e.isAlive())) {
@@ -200,8 +209,13 @@ public class SunSpell implements Spell {
 
             LivingEntity le = (LivingEntity) e;
             le.setOnFireFor(6);
-            if (owner != null) le.damage(world.getDamageSources().playerAttack(owner), 1_000_000.0f);
-            else le.damage(world.getDamageSources().magic(), 1_000_000.0f);
+            Integer last = sun.lastBurn.get(le.getUuid());
+            if (last != null && sun.age - last < BURN_INTERVAL) continue;
+            sun.lastBurn.put(le.getUuid(), sun.age);
+            // Its own steady rate, whatever else has just hurt the target
+            le.timeUntilRegen = 0;
+            if (owner != null) le.damage(world.getDamageSources().playerAttack(owner), BURN_DAMAGE);
+            else le.damage(world.getDamageSources().magic(), BURN_DAMAGE);
         }
     }
 

@@ -74,11 +74,11 @@ import java.util.UUID;
 public class IceBeamSpell implements Spell {
     public static final int CHARGE_TICKS = 24;  // 1.2s
     public static final int FIRE_TICKS = 40;    // 2.0s
-    public static final double RANGE = 40.0;
+    public static final double RANGE = 48.0;
 
     private static final double HIT_RADIUS = 0.2;  // how close the beam has to pass to a hitbox
-    private static final float DAMAGE = 9.0f;      // per hit; hurt cooldowns let one through every half second
-    private static final float SHATTER_DAMAGE = 4.0f;
+    private static final float DAMAGE = 12.0f;     // per hit; hurt cooldowns let one through every half second
+    private static final float SHATTER_DAMAGE = 6.0f;
     private static final int FROZEN_TICKS = 80;    // held for 4s after the beam last touched them
     private static final int FROST_TICKS = 120;    // frozen blocks thaw back after 6-8s
     private static final int MAX_FROST = 400;

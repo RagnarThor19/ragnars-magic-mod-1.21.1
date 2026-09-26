@@ -83,5 +83,6 @@ public enum SpellId {
     MENDING,
     TOWERING,
     REACHING,
-    FAIRY
+    FAIRY,
+    SPRAYING
 }

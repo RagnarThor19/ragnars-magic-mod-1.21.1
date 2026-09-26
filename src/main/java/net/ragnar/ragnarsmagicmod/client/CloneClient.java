@@ -16,7 +16,7 @@ import net.ragnar.ragnarsmagicmod.network.CloneTimerPayload;
 
 /**
  * Tome of Clones, client side. The body swap: instead of snapping to the clone's spot, the camera glides from where
- * you were into your new body (read by CameraMixin), with a cold flash around the edges of the screen.
+ * you were into your new body (see CameraGlide), with a cold flash around the edges of the screen.
  * Also a small countdown under the crosshair for how long the clones have left.
  */
 public final class CloneClient {
@@ -26,8 +26,6 @@ public final class CloneClient {
     private static final int GLIDE_TICKS = 6;
     private static final int FLASH_TICKS = 12;
 
-    private static Vec3d from;
-    private static int glide = -1; // ticks since the swap, -1 when not gliding
     private static int flash;
 
     private static final int TIMER_FADE_TICKS = 6;
@@ -37,8 +35,7 @@ public final class CloneClient {
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(CloneSwapPayload.ID, (payload, context) -> {
             // The camera hasn't been moved since the last frame, so it's still where the old body was
-            from = context.client().gameRenderer.getCamera().getPos();
-            glide = 0;
+            CameraGlide.start(GLIDE_TICKS);
             flash = FLASH_TICKS;
         });
         ClientPlayNetworking.registerGlobalReceiver(CloneTimerPayload.ID, (payload, context) -> {
@@ -46,14 +43,12 @@ public final class CloneClient {
             if (payload.ticks() > 0) timerTotal = payload.ticks();
         });
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            glide = -1;
             flash = 0;
             timerLeft = 0;
             timerAlpha = prevTimerAlpha = 0;
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.isPaused()) return;
-            if (glide >= 0 && ++glide >= GLIDE_TICKS) glide = -1;
             if (flash > 0) flash--;
             if (timerLeft > 0) timerLeft--;
             prevTimerAlpha = timerAlpha;
@@ -63,14 +58,6 @@ public final class CloneClient {
         });
         HudRenderCallback.EVENT.register(CloneClient::render);
         HudRenderCallback.EVENT.register(CloneClient::renderTimer);
-    }
-
-    /** Where the camera should be this frame, given where it would normally be. */
-    public static Vec3d glide(Vec3d cameraPos, float tickDelta) {
-        if (glide < 0 || from == null) return cameraPos;
-        float t = MathHelper.clamp((glide + tickDelta) / GLIDE_TICKS, 0f, 1f);
-        float eased = 1f - (1f - t) * (1f - t) * (1f - t);
-        return from.lerp(cameraPos, eased);
     }
 
     /** A thin draining bar and the seconds left, just under the crosshair. Red and blinking for the last 3 seconds. */
