@@ -7,7 +7,8 @@
 		"ExampleMixin",
 		"LivingEntityMixin",
 		"MobEntityAccessor",
-		"MobEntityMixin"
+		"MobEntityMixin",
+		"PlayerEntityMixin"
 	],
 	"client": [
 		"client.DrawContextMixin",
@@ -19,7 +20,8 @@
 		"client.GameRendererMixin",
 		"client.KeyboardInputMixin",
 		"client.MinecraftClientMixin",
-		"client.MouseMixin"
+		"client.MouseMixin",
+		"client.PlayerTravelMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

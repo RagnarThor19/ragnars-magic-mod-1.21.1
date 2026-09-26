@@ -38,6 +38,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.CloneSwapPayload.register();
         net.ragnar.ragnarsmagicmod.network.CloneTimerPayload.register();
         net.ragnar.ragnarsmagicmod.network.IceBeamPayload.register();
+        net.ragnar.ragnarsmagicmod.network.FairyPayload.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
@@ -45,6 +46,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.item.spell.ClonesSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.ToweringSpell.register();
+        net.ragnar.ragnarsmagicmod.item.spell.FairySpell.register();
 
         // Register Loot Table Modifiers
         ModLootTableModifiers.modifyLootTables();
@@ -132,6 +134,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.MENDING, new net.ragnar.ragnarsmagicmod.item.spell.MendingSpell());
         Spells.register(SpellId.TOWERING, new net.ragnar.ragnarsmagicmod.item.spell.ToweringSpell());
         Spells.register(SpellId.REACHING, new net.ragnar.ragnarsmagicmod.item.spell.ReachingSpell());
+        Spells.register(SpellId.FAIRY, new net.ragnar.ragnarsmagicmod.item.spell.FairySpell());
         net.ragnar.ragnarsmagicmod.item.spell.RewindSpell.register();
     }
 }

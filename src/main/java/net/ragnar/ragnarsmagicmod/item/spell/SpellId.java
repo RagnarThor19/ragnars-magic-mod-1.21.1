@@ -82,5 +82,6 @@ public enum SpellId {
     CLONES,
     MENDING,
     TOWERING,
-    REACHING
+    REACHING,
+    FAIRY
 }

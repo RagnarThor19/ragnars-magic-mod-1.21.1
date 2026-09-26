@@ -24,5 +24,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.ScreenShake.init();
         net.ragnar.ragnarsmagicmod.client.CloneClient.init();
         net.ragnar.ragnarsmagicmod.client.IceBeamClient.init();
+        net.ragnar.ragnarsmagicmod.client.FairyClient.init();
     }
 }

@@ -574,6 +574,11 @@ public class ModItems {
                     TomeTier.BEGINNER, SpellId.REACHING, 1
             ).setCooldown(6) // 0.3 seconds
     );
+    public static final TomeItem TOME_OF_THE_FAIRY = (TomeItem) registerItem("tome_of_the_fairy",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.FAIRY, 16
+            ).setCooldown(20 * 18) // 18 seconds, starting when you turn back
+    );
     public static final TomeItem TOME_OF_TNT = (TomeItem) registerItem("tome_of_tnt",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.TNT, 15
@@ -868,6 +873,7 @@ public class ModItems {
         putTome(SpellId.MENDING, TomeTier.ADVANCED, TOME_OF_MENDING);
         putTome(SpellId.TOWERING, TomeTier.BEGINNER, TOME_OF_TOWERING);
         putTome(SpellId.REACHING, TomeTier.BEGINNER, TOME_OF_REACHING);
+        putTome(SpellId.FAIRY, TomeTier.ADVANCED, TOME_OF_THE_FAIRY);
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
         putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
         putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
@@ -998,6 +1004,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_TNT));
             entries.add(new ItemStack(TOME_OF_CLONES));
             entries.add(new ItemStack(TOME_OF_MENDING));
+            entries.add(new ItemStack(TOME_OF_THE_FAIRY));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
