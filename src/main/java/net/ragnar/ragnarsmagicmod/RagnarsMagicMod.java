@@ -37,11 +37,14 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.ShakePayload.register();
         net.ragnar.ragnarsmagicmod.network.CloneSwapPayload.register();
         net.ragnar.ragnarsmagicmod.network.CloneTimerPayload.register();
+        net.ragnar.ragnarsmagicmod.network.IceBeamPayload.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.ClonesSpell.register();
+        net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell.register();
+        net.ragnar.ragnarsmagicmod.item.spell.ToweringSpell.register();
 
         // Register Loot Table Modifiers
         ModLootTableModifiers.modifyLootTables();
@@ -126,6 +129,9 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.JUDGEMENT, new net.ragnar.ragnarsmagicmod.item.spell.JudgementSpell());
         Spells.register(SpellId.KINDLING, new net.ragnar.ragnarsmagicmod.item.spell.KindlingSpell());
         Spells.register(SpellId.CLONES, new net.ragnar.ragnarsmagicmod.item.spell.ClonesSpell());
+        Spells.register(SpellId.MENDING, new net.ragnar.ragnarsmagicmod.item.spell.MendingSpell());
+        Spells.register(SpellId.TOWERING, new net.ragnar.ragnarsmagicmod.item.spell.ToweringSpell());
+        Spells.register(SpellId.REACHING, new net.ragnar.ragnarsmagicmod.item.spell.ReachingSpell());
         net.ragnar.ragnarsmagicmod.item.spell.RewindSpell.register();
     }
 }

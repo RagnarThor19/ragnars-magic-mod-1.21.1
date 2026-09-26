@@ -3,6 +3,7 @@ package net.ragnar.ragnarsmagicmod.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell;
+import net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell;
 import net.ragnar.ragnarsmagicmod.item.spell.IllusionSpell;
 import net.ragnar.ragnarsmagicmod.item.spell.VinesSpell;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +19,8 @@ public class MobEntityMixin {
         if (ControllingSpell.drive((MobEntity) (Object) this)) ci.cancel();
         // Wrapped up by the Tome of Vines: no goals, no brain, no attacks
         else if (VinesSpell.isHeld((MobEntity) (Object) this)) ci.cancel();
+        // Frozen solid by the Tome of Ice Beam
+        else if (IceBeamSpell.isFrozen((MobEntity) (Object) this)) ci.cancel();
     }
 
     @Inject(method = "checkDespawn", at = @At("HEAD"), cancellable = true)

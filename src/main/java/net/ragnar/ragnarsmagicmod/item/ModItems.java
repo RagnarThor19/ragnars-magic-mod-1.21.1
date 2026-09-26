@@ -237,8 +237,8 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.MINING,
-                    10 // XP cost
-            ).setCooldown(20)
+                    1 // XP cost: cheap enough to use instead of a pickaxe
+            ).setCooldown(8) // 0.4 seconds
     );
 
     public static final net.minecraft.item.Item TOME_DRAGON_BREATH = registerItem("tome_dragon_breath",
@@ -559,6 +559,21 @@ public class ModItems {
                     TomeTier.ADVANCED, SpellId.CLONES, 20
             ).setCooldown(20 * 30) // 30 seconds
     );
+    public static final TomeItem TOME_OF_MENDING = (TomeItem) registerItem("tome_of_mending",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.MENDING, 12
+            ).setCooldown(10) // 0.5 seconds
+    );
+    public static final TomeItem TOME_OF_TOWERING = (TomeItem) registerItem("tome_of_towering",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.TOWERING, 4
+            ).setCooldown(60) // 3 seconds
+    );
+    public static final TomeItem TOME_OF_REACHING = (TomeItem) registerItem("tome_of_reaching",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.REACHING, 1
+            ).setCooldown(6) // 0.3 seconds
+    );
     public static final TomeItem TOME_OF_TNT = (TomeItem) registerItem("tome_of_tnt",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.TNT, 15
@@ -850,6 +865,9 @@ public class ModItems {
         putTome(SpellId.BLOOM, TomeTier.BEGINNER, TOME_OF_BLOOM);
         putTome(SpellId.KINDLING, TomeTier.BEGINNER, TOME_OF_KINDLING);
         putTome(SpellId.CLONES, TomeTier.ADVANCED, TOME_OF_CLONES);
+        putTome(SpellId.MENDING, TomeTier.ADVANCED, TOME_OF_MENDING);
+        putTome(SpellId.TOWERING, TomeTier.BEGINNER, TOME_OF_TOWERING);
+        putTome(SpellId.REACHING, TomeTier.BEGINNER, TOME_OF_REACHING);
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
         putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
         putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
@@ -944,6 +962,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_SPEED));
             entries.add(new ItemStack(TOME_OF_BLOOM));
             entries.add(new ItemStack(TOME_OF_KINDLING));
+            entries.add(new ItemStack(TOME_OF_TOWERING));
+            entries.add(new ItemStack(TOME_OF_REACHING));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
@@ -977,6 +997,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_WINGS));
             entries.add(new ItemStack(TOME_OF_TNT));
             entries.add(new ItemStack(TOME_OF_CLONES));
+            entries.add(new ItemStack(TOME_OF_MENDING));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

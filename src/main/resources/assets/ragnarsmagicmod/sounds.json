@@ -2,19 +2,33 @@
   "zap_cast": {
     "subtitle": "subtitle.ragnarsmagicmod.zap_cast",
     "sounds": [
-      { "name": "ragnarsmagicmod:zap_cast", "stream": false, "volume": 1.0, "pitch": 1.0 }
+      {
+        "name": "ragnarsmagicmod:zap_cast",
+        "stream": false,
+        "volume": 1.0,
+        "pitch": 1.0
+      }
     ]
   },
   "zap_impact": {
     "subtitle": "subtitle.ragnarsmagicmod.zap_impact",
     "sounds": [
-      { "name": "ragnarsmagicmod:zap_impact", "stream": false, "volume": 1.0, "pitch": 1.0 }
+      {
+        "name": "ragnarsmagicmod:zap_impact",
+        "stream": false,
+        "volume": 1.0,
+        "pitch": 1.0
+      }
     ]
   },
   "ice_beam": {
     "sounds": [
-      { "name": "ragnarsmagicmod:ice_beam", "stream": true }
-    ]
+      {
+        "name": "ragnarsmagicmod:ice_beam",
+        "stream": true
+      }
+    ],
+    "subtitle": "subtitle.ragnarsmagicmod.ice_beam"
   },
   "oof": {
     "sounds": [
@@ -25,7 +39,49 @@
   },
   "steve_aura": {
     "sounds": [
-      { "name": "ragnarsmagicmod:aura" }
+      {
+        "name": "ragnarsmagicmod:aura"
+      }
+    ]
+  },
+  "ice_beam_charge": {
+    "subtitle": "subtitle.ragnarsmagicmod.ice_beam_charge",
+    "sounds": [
+      {
+        "name": "ragnarsmagicmod:ice_beam_charge"
+      }
+    ]
+  },
+  "ice_beam_fire": {
+    "subtitle": "subtitle.ragnarsmagicmod.ice_beam_fire",
+    "sounds": [
+      {
+        "name": "ragnarsmagicmod:ice_beam_fire"
+      }
+    ]
+  },
+  "ice_beam_sustain": {
+    "subtitle": "subtitle.ragnarsmagicmod.ice_beam_sustain",
+    "sounds": [
+      {
+        "name": "ragnarsmagicmod:ice_beam_sustain"
+      }
+    ]
+  },
+  "ice_beam_freeze": {
+    "subtitle": "subtitle.ragnarsmagicmod.ice_beam_freeze",
+    "sounds": [
+      {
+        "name": "ragnarsmagicmod:ice_beam_freeze"
+      }
+    ]
+  },
+  "ice_beam_end": {
+    "subtitle": "subtitle.ragnarsmagicmod.ice_beam_end",
+    "sounds": [
+      {
+        "name": "ragnarsmagicmod:ice_beam_end"
+      }
     ]
   }
 }

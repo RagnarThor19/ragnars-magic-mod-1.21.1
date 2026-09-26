@@ -79,5 +79,8 @@ public enum SpellId {
     REWIND,
     JUDGEMENT,
     KINDLING,
-    CLONES
+    CLONES,
+    MENDING,
+    TOWERING,
+    REACHING
 }

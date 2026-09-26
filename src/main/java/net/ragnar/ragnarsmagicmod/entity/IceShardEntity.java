@@ -1,113 +1,101 @@
 package net.ragnar.ragnarsmagicmod.entity;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
+import net.ragnar.ragnarsmagicmod.item.spell.IceShardsSpell;
 
+/**
+ * A Tome of Ice Shards projectile: fast and nearly flat. Each one lands its own damage even if another shard just
+ * hit the same target, and without knocking it out of the way of the next one.
+ */
 public class IceShardEntity extends ThrownItemEntity {
-    // Fabric’s builder needs this ctor (type, world)
+    private static final int MAX_AGE = 30;
+
+    private int volley;
+
+    // Fabric's builder needs this ctor (type, world)
     public IceShardEntity(EntityType<? extends IceShardEntity> type, World world) {
         super(type, world);
     }
 
-    // Convenience ctor for spawning from a player/owner
     public IceShardEntity(World world, LivingEntity owner) {
         super(ModEntities.ICE_SHARD, owner, world);
     }
 
-    // Optional: spawn from coords
     public IceShardEntity(World world, double x, double y, double z) {
         super(ModEntities.ICE_SHARD, x, y, z, world);
     }
 
-    // What item the renderer shows (use snowball for now, swap to your own later)
+    /** Which cast this shard came from, so three from the same volley can be counted together. */
+    public void setVolley(int volley) {
+        this.volley = volley;
+    }
+
+    public int getVolley() {
+        return volley;
+    }
+
     @Override
     protected Item getDefaultItem() {
         return ModItems.ICE_SHARD_ITEM;
     }
 
-
-
+    @Override
+    protected double getGravity() {
+        return 0.008;
+    }
 
     @Override
-    protected void onEntityHit(net.minecraft.util.hit.EntityHitResult hit) {
+    public void tick() {
+        super.tick();
+        if (getWorld().isClient) {
+            // A thin trail of snow behind it
+            Vec3d v = getVelocity();
+            getWorld().addParticle(ParticleTypes.SNOWFLAKE, getX() - v.x * 0.5, getY() - v.y * 0.5, getZ() - v.z * 0.5, 0, 0, 0);
+        } else if (age > MAX_AGE) {
+            discard();
+        }
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult hit) {
         super.onEntityHit(hit);
+        if (!(getWorld() instanceof ServerWorld sw) || !(hit.getEntity() instanceof LivingEntity target)) return;
+        LivingEntity owner = getOwner() instanceof LivingEntity le ? le : null;
 
-        if (!(hit.getEntity() instanceof net.minecraft.entity.LivingEntity target)) return;
+        // Every shard counts: skip the hurt cooldown, and keep the target where it was for the next one
+        Vec3d before = target.getVelocity();
+        target.timeUntilRegen = 0;
+        target.damage(getDamageSources().thrown(this, owner), IceShardsSpell.SHARD_DAMAGE);
+        target.setVelocity(before.add(getVelocity().normalize().multiply(0.05)));
+        target.velocityModified = true;
 
-        // --- damage (2 hearts) ---
-        net.minecraft.entity.LivingEntity owner = (this.getOwner() instanceof net.minecraft.entity.LivingEntity le) ? le : null;
-        target.damage(this.getDamageSources().thrown(this, owner), 6.0F);
-
-        // --- heavy slow for 2s + freeze for 1s ---
-        target.addStatusEffect(new net.minecraft.entity.effect.StatusEffectInstance(
-                net.minecraft.entity.effect.StatusEffects.SLOWNESS, 50, 100, false, true));
-        target.setFrozenTicks(target.getFrozenTicks() + 20);
-
-        // --- impact sound ---
-        this.getWorld().playSound(
-                null,
-                target.getBlockPos(),
-                net.minecraft.sound.SoundEvents.BLOCK_GLASS_BREAK,    // ice shatter
-                net.minecraft.sound.SoundCategory.PLAYERS,
-                0.6f,
-                1.2f
-        );
-
-        // --- ice block shards particles ---
-        if (!this.getWorld().isClient) {
-            net.minecraft.server.world.ServerWorld sw = (net.minecraft.server.world.ServerWorld) this.getWorld();
-            var effect = new net.minecraft.particle.BlockStateParticleEffect(
-                    net.minecraft.particle.ParticleTypes.BLOCK,
-                    net.minecraft.block.Blocks.ICE.getDefaultState()
-            );
-            sw.spawnParticles(
-                    effect,
-                    target.getX(), target.getBodyY(0.5), target.getZ(),
-                    12,           // count
-                    0.25, 0.25, 0.25, // spread xyz
-                    0.08          // speed
-            );
-        }
-
-        this.discard();
+        IceShardsSpell.onShardHit(sw, this, target, owner);
+        discard();
     }
 
     @Override
-    protected void onBlockHit(net.minecraft.util.hit.BlockHitResult hit) {
+    protected void onBlockHit(BlockHitResult hit) {
         super.onBlockHit(hit);
-
-        // sound
-        this.getWorld().playSound(
-                null,
-                hit.getBlockPos(),
-                net.minecraft.sound.SoundEvents.BLOCK_GLASS_BREAK,
-                net.minecraft.sound.SoundCategory.PLAYERS,
-                0.5f,
-                1.1f
-        );
-
-        // particles at impact point
-        if (!this.getWorld().isClient) {
-            net.minecraft.server.world.ServerWorld sw = (net.minecraft.server.world.ServerWorld) this.getWorld();
-            var effect = new net.minecraft.particle.BlockStateParticleEffect(
-                    net.minecraft.particle.ParticleTypes.BLOCK,
-                    net.minecraft.block.Blocks.ICE.getDefaultState()
-            );
-            var p = hit.getPos();
-            sw.spawnParticles(effect, p.x, p.y, p.z, 10, 0.2, 0.2, 0.2, 0.08);
+        if (getWorld() instanceof ServerWorld sw) {
+            Vec3d p = hit.getPos();
+            sw.playSound(null, p.x, p.y, p.z, SoundEvents.BLOCK_GLASS_HIT, SoundCategory.PLAYERS, 0.6f, 1.4f);
+            sw.spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.ICE.getDefaultState()),
+                    p.x, p.y, p.z, 8, 0.1, 0.1, 0.1, 0.06);
         }
-
-        this.discard();
+        discard();
     }
-
-
 }

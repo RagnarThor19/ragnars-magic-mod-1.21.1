@@ -9,6 +9,11 @@ public final class ModSoundEvents {
     public static final SoundEvent ZAP_CAST   = register("zap_cast");
     public static final SoundEvent ZAP_IMPACT = register("zap_impact");
     public static final SoundEvent ICE_BEAM = register("ice_beam");
+    public static final SoundEvent ICE_BEAM_CHARGE = register("ice_beam_charge");
+    public static final SoundEvent ICE_BEAM_FIRE = register("ice_beam_fire");
+    public static final SoundEvent ICE_BEAM_SUSTAIN = register("ice_beam_sustain");
+    public static final SoundEvent ICE_BEAM_FREEZE = register("ice_beam_freeze");
+    public static final SoundEvent ICE_BEAM_END = register("ice_beam_end");
     public static final SoundEvent STEVE_OOF = register("oof");
     public static final SoundEvent STEVE_AURA = register("steve_aura");
 
