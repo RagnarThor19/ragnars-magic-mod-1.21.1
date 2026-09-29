@@ -31,5 +31,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.SlipperyClient.init();
         net.ragnar.ragnarsmagicmod.client.TestEntityClient.init();
         net.ragnar.ragnarsmagicmod.client.GrappleClient.init();
+        net.ragnar.ragnarsmagicmod.client.StaffModels.init();
     }
 }
