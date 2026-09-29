@@ -44,6 +44,8 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.SlipperyPayload.register();
         net.ragnar.ragnarsmagicmod.network.TestEntityPayload.register();
         net.ragnar.ragnarsmagicmod.network.GrapplePayloads.register();
+        net.ragnar.ragnarsmagicmod.network.PortalPayloads.register();
+        net.ragnar.ragnarsmagicmod.util.PortalNetwork.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
@@ -147,6 +149,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.SORTING, new net.ragnar.ragnarsmagicmod.item.spell.SortingSpell());
         Spells.register(SpellId.ENDER_CHEST, new net.ragnar.ragnarsmagicmod.item.spell.EnderChestSpell());
         Spells.register(SpellId.GRAPPLING, new net.ragnar.ragnarsmagicmod.item.spell.GrapplingSpell());
+        Spells.register(SpellId.PORTALS, new net.ragnar.ragnarsmagicmod.item.spell.PortalsSpell());
         net.ragnar.ragnarsmagicmod.item.spell.RewindSpell.register();
     }
 }

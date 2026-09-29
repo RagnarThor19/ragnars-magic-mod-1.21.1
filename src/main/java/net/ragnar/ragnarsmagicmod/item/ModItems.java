@@ -609,6 +609,11 @@ public class ModItems {
                     TomeTier.MASTER, SpellId.SPRAYING, 30
             ).setCooldown(20 * 17) // 17 seconds, starting when the barrage ends
     );
+    public static final TomeItem TOME_OF_PORTALS = (TomeItem) registerItem("tome_of_portals",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.PORTALS, 50
+            ).setCooldown(20 * 60) // 60 seconds, starting once both portals are open
+    );
     public static final TomeItem TOME_OF_TNT = (TomeItem) registerItem("tome_of_tnt",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.TNT, 15
@@ -910,6 +915,7 @@ public class ModItems {
         putTome(SpellId.GRAPPLING, TomeTier.ADVANCED, TOME_OF_GRAPPLING);
         putTome(SpellId.FAIRY, TomeTier.ADVANCED, TOME_OF_THE_FAIRY);
         putTome(SpellId.SPRAYING, TomeTier.MASTER, TOME_OF_SPRAYING);
+        putTome(SpellId.PORTALS, TomeTier.MASTER, TOME_OF_PORTALS);
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
         putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
         putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
@@ -1065,6 +1071,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_REWIND));
             entries.add(new ItemStack(TOME_OF_JUDGEMENT));
             entries.add(new ItemStack(TOME_OF_SPRAYING));
+            entries.add(new ItemStack(TOME_OF_PORTALS));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);

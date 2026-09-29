@@ -89,5 +89,6 @@ public enum SpellId {
     PARANOIA,
     SORTING,
     ENDER_CHEST,
-    GRAPPLING
+    GRAPPLING,
+    PORTALS
 }
