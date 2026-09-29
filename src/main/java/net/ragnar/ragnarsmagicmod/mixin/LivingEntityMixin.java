@@ -1,6 +1,11 @@
 package net.ragnar.ragnarsmagicmod.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.Vec3d;
+import net.ragnar.ragnarsmagicmod.util.Slippery;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.entity.effect.StatusEffects;
@@ -17,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * Nothing can pick the empty body of a possessing player, or a Tome of Illusion ghost, as a target.
- * Tome of Wings fliers glide without an elytra.
+ * Tome of Wings fliers glide without an elytra. Tome of Slipperiness targets slide around.
  */
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -44,5 +49,20 @@ public class LivingEntityMixin {
                 || player.hasStatusEffect(StatusEffects.LEVITATION) || player.getAbilities().flying) return;
         player.startFallFlying();
         ci.cancel();
+    }
+
+    /** Tome of Slipperiness: the ground under you feels like it's greased, whatever it is. */
+    @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getSlipperiness()F"))
+    private float ragnarsmagicmod$slipperyGround(Block block, Operation<Float> original) {
+        float slipperiness = original.call(block);
+        return Slippery.isSlippery((LivingEntity) (Object) this) ? Math.max(slipperiness, Slippery.SLIPPERINESS) : slipperiness;
+    }
+
+    /** ...and your feet barely grip it, so you speed up, turn and stop very slowly. */
+    @WrapOperation(method = "travel", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/entity/LivingEntity;applyMovementInput(Lnet/minecraft/util/math/Vec3d;F)Lnet/minecraft/util/math/Vec3d;"))
+    private Vec3d ragnarsmagicmod$slipperyGrip(LivingEntity self, Vec3d movementInput, float slipperiness, Operation<Vec3d> original) {
+        if (self.isOnGround() && Slippery.isSlippery(self)) movementInput = movementInput.multiply(Slippery.INPUT_SCALE);
+        return original.call(self, movementInput, slipperiness);
     }
 }

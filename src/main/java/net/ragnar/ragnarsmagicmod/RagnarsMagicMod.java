@@ -41,6 +41,9 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.FairyPayload.register();
         net.ragnar.ragnarsmagicmod.network.BlinkPayload.register();
         net.ragnar.ragnarsmagicmod.network.SprayPayload.register();
+        net.ragnar.ragnarsmagicmod.network.SlipperyPayload.register();
+        net.ragnar.ragnarsmagicmod.network.TestEntityPayload.register();
+        net.ragnar.ragnarsmagicmod.network.GrapplePayloads.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
@@ -139,6 +142,11 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.REACHING, new net.ragnar.ragnarsmagicmod.item.spell.ReachingSpell());
         Spells.register(SpellId.FAIRY, new net.ragnar.ragnarsmagicmod.item.spell.FairySpell());
         Spells.register(SpellId.SPRAYING, new net.ragnar.ragnarsmagicmod.item.spell.SprayingSpell());
+        Spells.register(SpellId.SLIPPERINESS, new net.ragnar.ragnarsmagicmod.item.spell.SlipperinessSpell());
+        Spells.register(SpellId.PARANOIA, new net.ragnar.ragnarsmagicmod.item.spell.ParanoiaSpell());
+        Spells.register(SpellId.SORTING, new net.ragnar.ragnarsmagicmod.item.spell.SortingSpell());
+        Spells.register(SpellId.ENDER_CHEST, new net.ragnar.ragnarsmagicmod.item.spell.EnderChestSpell());
+        Spells.register(SpellId.GRAPPLING, new net.ragnar.ragnarsmagicmod.item.spell.GrapplingSpell());
         net.ragnar.ragnarsmagicmod.item.spell.RewindSpell.register();
     }
 }

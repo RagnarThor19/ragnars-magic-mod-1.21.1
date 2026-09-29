@@ -574,6 +574,31 @@ public class ModItems {
                     TomeTier.BEGINNER, SpellId.REACHING, 1
             ).setCooldown(6) // 0.3 seconds
     );
+    public static final TomeItem TOME_OF_SLIPPERINESS = (TomeItem) registerItem("tome_of_slipperiness",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.SLIPPERINESS, 8
+            ).setCooldown(400) // 20 seconds
+    );
+    public static final TomeItem TOME_OF_PARANOIA = (TomeItem) registerItem("tome_of_paranoia",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.PARANOIA, 10
+            ).setCooldown(2000) // 100 seconds
+    );
+    public static final TomeItem TOME_OF_SORTING = (TomeItem) registerItem("tome_of_sorting",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.SORTING, 10
+            ).setCooldown(200) // 10 seconds
+    );
+    public static final TomeItem TOME_OF_THE_ENDER_CHEST = (TomeItem) registerItem("tome_of_the_ender_chest",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.ENDER_CHEST, 1
+            ).setCooldown(20) // 1 second
+    );
+    public static final TomeItem TOME_OF_GRAPPLING = (TomeItem) registerItem("tome_of_grappling",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.GRAPPLING, 2
+            ).setCooldown(30) // 1.5 seconds
+    );
     public static final TomeItem TOME_OF_THE_FAIRY = (TomeItem) registerItem("tome_of_the_fairy",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.FAIRY, 16
@@ -878,6 +903,11 @@ public class ModItems {
         putTome(SpellId.MENDING, TomeTier.ADVANCED, TOME_OF_MENDING);
         putTome(SpellId.TOWERING, TomeTier.BEGINNER, TOME_OF_TOWERING);
         putTome(SpellId.REACHING, TomeTier.BEGINNER, TOME_OF_REACHING);
+        putTome(SpellId.SLIPPERINESS, TomeTier.BEGINNER, TOME_OF_SLIPPERINESS);
+        putTome(SpellId.PARANOIA, TomeTier.BEGINNER, TOME_OF_PARANOIA);
+        putTome(SpellId.SORTING, TomeTier.BEGINNER, TOME_OF_SORTING);
+        putTome(SpellId.ENDER_CHEST, TomeTier.BEGINNER, TOME_OF_THE_ENDER_CHEST);
+        putTome(SpellId.GRAPPLING, TomeTier.ADVANCED, TOME_OF_GRAPPLING);
         putTome(SpellId.FAIRY, TomeTier.ADVANCED, TOME_OF_THE_FAIRY);
         putTome(SpellId.SPRAYING, TomeTier.MASTER, TOME_OF_SPRAYING);
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
@@ -976,6 +1006,10 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_KINDLING));
             entries.add(new ItemStack(TOME_OF_TOWERING));
             entries.add(new ItemStack(TOME_OF_REACHING));
+            entries.add(new ItemStack(TOME_OF_SLIPPERINESS));
+            entries.add(new ItemStack(TOME_OF_PARANOIA));
+            entries.add(new ItemStack(TOME_OF_SORTING));
+            entries.add(new ItemStack(TOME_OF_THE_ENDER_CHEST));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
@@ -1011,6 +1045,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_CLONES));
             entries.add(new ItemStack(TOME_OF_MENDING));
             entries.add(new ItemStack(TOME_OF_THE_FAIRY));
+            entries.add(new ItemStack(TOME_OF_GRAPPLING));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));

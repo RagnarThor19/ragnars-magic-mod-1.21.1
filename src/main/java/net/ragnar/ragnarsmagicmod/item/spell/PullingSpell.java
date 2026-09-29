@@ -22,7 +22,10 @@ import java.util.List;
  */
 public class PullingSpell implements Spell {
     private static final double RANGE = 30.0;
-    private static final double PULL_STRENGTH = 1.8;
+    private static final double PULL_BASE = 1.6;
+    private static final double PULL_PER_BLOCK = 0.15;   // farther creatures get yanked harder so they still reach you
+    private static final double PULL_MAX = 4.5;
+    private static final double PULL_LIFT = 0.3;         // hop off the ground so friction doesn't eat the pull
     private static final double CONE_DEGREES = 30.0;     // half-angle around the crosshair
     private static final double LINE_RADIUS = 2.0;       // anything this close to the aim line counts too
 
@@ -49,9 +52,10 @@ public class PullingSpell implements Spell {
             if (!inCone && offLine > LINE_RADIUS + e.getWidth() * 0.5) continue;
             if (!canSee(sw, player, eye, e)) continue;
 
-            // Same launch as before: straight at your eyes
-            Vec3d velocity = eye.subtract(e.getPos()).normalize().multiply(PULL_STRENGTH);
-            e.addVelocity(velocity.x, velocity.y, velocity.z);
+            // Straight at your eyes, harder the farther away it is
+            double strength = Math.min(PULL_MAX, PULL_BASE + dist * PULL_PER_BLOCK);
+            Vec3d velocity = eye.subtract(e.getPos()).normalize().multiply(strength);
+            e.addVelocity(velocity.x, velocity.y + PULL_LIFT, velocity.z);
             e.velocityModified = true;
 
             sw.spawnParticles(ParticleTypes.REVERSE_PORTAL, e.getX(), e.getBodyY(0.5), e.getZ(), 10, 0.3, 0.3, 0.3, 0.1);

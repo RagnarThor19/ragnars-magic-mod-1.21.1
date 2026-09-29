@@ -84,5 +84,10 @@ public enum SpellId {
     TOWERING,
     REACHING,
     FAIRY,
-    SPRAYING
+    SPRAYING,
+    SLIPPERINESS,
+    PARANOIA,
+    SORTING,
+    ENDER_CHEST,
+    GRAPPLING
 }

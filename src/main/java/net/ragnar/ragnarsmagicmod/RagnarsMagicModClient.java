@@ -28,5 +28,8 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.IceBeamClient.init();
         net.ragnar.ragnarsmagicmod.client.FairyClient.init();
         net.ragnar.ragnarsmagicmod.client.SprayingClient.init();
+        net.ragnar.ragnarsmagicmod.client.SlipperyClient.init();
+        net.ragnar.ragnarsmagicmod.client.TestEntityClient.init();
+        net.ragnar.ragnarsmagicmod.client.GrappleClient.init();
     }
 }

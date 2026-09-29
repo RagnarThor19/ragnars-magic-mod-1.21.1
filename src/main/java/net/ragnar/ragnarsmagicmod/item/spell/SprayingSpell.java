@@ -57,7 +57,7 @@ public class SprayingSpell implements Spell {
     public static final int SLOTS = 12;
     public static final int SLOT_STEP = 5;          // firing order around the ring: slot = (shot * 5) % 12
     public static final int SUMMON_TICKS = 10;
-    public static final int FIRE_TICKS = 66;        // 3.3s
+    public static final int FIRE_TICKS = 50;        // 2.5s
     public static final int FIRE_INTERVAL = 1;      // 20 arrows a second
     public static final double HALO_AHEAD = 1.0;
     public static final double HALO_RADIUS = 0.75;
