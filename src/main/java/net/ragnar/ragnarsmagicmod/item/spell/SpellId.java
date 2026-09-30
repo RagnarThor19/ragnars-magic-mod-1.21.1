@@ -90,5 +90,6 @@ public enum SpellId {
     SORTING,
     ENDER_CHEST,
     GRAPPLING,
-    PORTALS
+    PORTALS,
+    BUILDING
 }

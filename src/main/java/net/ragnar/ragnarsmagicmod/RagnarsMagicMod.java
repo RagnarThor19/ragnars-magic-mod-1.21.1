@@ -45,6 +45,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.TestEntityPayload.register();
         net.ragnar.ragnarsmagicmod.network.GrapplePayloads.register();
         net.ragnar.ragnarsmagicmod.network.PortalPayloads.register();
+        net.ragnar.ragnarsmagicmod.network.BuildingPayloads.register();
         net.ragnar.ragnarsmagicmod.util.PortalNetwork.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
@@ -55,6 +56,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.item.spell.ToweringSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.FairySpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.SprayingSpell.register();
+        net.ragnar.ragnarsmagicmod.item.spell.BuildingSpell.register();
 
         // Register Loot Table Modifiers
         ModLootTableModifiers.modifyLootTables();
@@ -150,6 +152,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.ENDER_CHEST, new net.ragnar.ragnarsmagicmod.item.spell.EnderChestSpell());
         Spells.register(SpellId.GRAPPLING, new net.ragnar.ragnarsmagicmod.item.spell.GrapplingSpell());
         Spells.register(SpellId.PORTALS, new net.ragnar.ragnarsmagicmod.item.spell.PortalsSpell());
+        Spells.register(SpellId.BUILDING, new net.ragnar.ragnarsmagicmod.item.spell.BuildingSpell());
         net.ragnar.ragnarsmagicmod.item.spell.RewindSpell.register();
     }
 }

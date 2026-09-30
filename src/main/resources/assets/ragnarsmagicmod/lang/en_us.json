@@ -93,6 +93,7 @@
   "item.ragnarsmagicmod.tome_of_the_ender_chest": "Tome of the Ender Chest",
   "item.ragnarsmagicmod.tome_of_grappling": "Tome of Grappling",
   "item.ragnarsmagicmod.tome_of_portals": "Tome of Portals",
+  "item.ragnarsmagicmod.tome_of_building": "Tome of Building",
   "entity.ragnarsmagicmod.cobweb_projectile": "Cobweb",
   "entity.ragnarsmagicmod.illusion": "Illusion",
   "entity.ragnarsmagicmod.clone": "Clone",
@@ -110,5 +111,7 @@
   "key.category.ragnarsmagicmod": "Ragnar's Magic Mod",
   "key.ragnarsmagicmod.scroll_spells": "Scroll Spells (Hold + Mouse Wheel)",
   "key.ragnarsmagicmod.next_spell": "Next Spell",
-  "key.ragnarsmagicmod.previous_spell": "Previous Spell"
+  "key.ragnarsmagicmod.previous_spell": "Previous Spell",
+  "key.ragnarsmagicmod.building_menu": "Tome of Building: Open Menu",
+  "key.ragnarsmagicmod.building_resize": "Tome of Building: Resize (Hold + Mouse Wheel)"
 }

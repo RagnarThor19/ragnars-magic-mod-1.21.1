@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "ragnarsmagicmod-gametest",
+  "version": "1.0.0",
+  "name": "Ragnars Magic Mod Game Tests",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "net.ragnar.ragnarsmagicmod.gametest.BuildingGameTests"
+    ],
+    "client": [
+      "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke"
+    ]
+  },
+  "depends": {
+    "ragnarsmagicmod": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}
