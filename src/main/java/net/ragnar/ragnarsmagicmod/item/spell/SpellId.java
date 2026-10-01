@@ -96,5 +96,5 @@ public enum SpellId {
     GROWING,
     TRAPPING,
     ASCEND,
-    KNIGHT // Tome of Knight - see knight/Knight.java
+    KNIGHT
 }

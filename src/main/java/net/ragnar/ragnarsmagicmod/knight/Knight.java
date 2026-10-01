@@ -55,8 +55,8 @@ public final class Knight {
             Registries.ITEM,
             Identifier.of(RagnarsMagicMod.MOD_ID, "tome_of_knight"),
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
-                    TomeTier.MASTER, SpellId.KNIGHT, 50
-            ).setCooldown(20 * 25) // 25 seconds, starting when the knight is gone
+                    TomeTier.MASTER, SpellId.KNIGHT, 80
+            ).setCooldown(20 * 35) // 25 seconds, starting when the knight is gone
     );
 
     public static void register() {
