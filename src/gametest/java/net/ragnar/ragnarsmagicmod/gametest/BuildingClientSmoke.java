@@ -76,6 +76,13 @@ public class BuildingClientSmoke implements ClientModInitializer {
         p.setHeadYaw(yaw);
     }
 
+    /** XP points from the level and bar (totalExperience isn't updated when levels are set directly). */
+    private int xp(ClientPlayerEntity p) {
+        int total = 0;
+        for (int i = 0; i < p.experienceLevel; i++) total += i >= 30 ? 112 + 9 * (i - 30) : i >= 15 ? 37 + 5 * (i - 15) : 7 + 2 * i;
+        return total + Math.round(p.experienceProgress * p.getNextLevelExperience());
+    }
+
     private int count(ClientPlayerEntity p, Item item) {
         return BuildPlanner.count(p, item);
     }
@@ -153,7 +160,7 @@ public class BuildingClientSmoke implements ClientModInitializer {
             case 120 -> {
                 int before = count(p, Items.COBBLESTONE) + count(p, Items.STONE_BRICKS) + count(p, Items.MOSSY_STONE_BRICKS);
                 log("blocks before: " + before);
-                xpBefore = p.totalExperience;
+                xpBefore = xp(p);
                 // The real right-click path: staff use -> spell -> request packet -> server build
                 client.interactionManager.interactItem(p, Hand.MAIN_HAND);
             }
@@ -165,8 +172,8 @@ public class BuildingClientSmoke implements ClientModInitializer {
                 log("blocks after: " + after + ", placed in world: " + placed);
                 check(placed == 24, "24 blocks placed");
                 check(after == 148 - 24, "24 blocks taken from the inventory");
-                check(p.totalExperience == xpBefore - 2, "a build costs 2 XP (" + xpBefore + " -> " + p.totalExperience + ")");
-                xpBefore = p.totalExperience;
+                check(xp(p) == xpBefore - 2, "a build costs 2 XP (" + xpBefore + " -> " + xp(p) + ")");
+                xpBefore = xp(p);
                 check(client.world.getBlockState(ORIGIN.add(0, 2, -2)).isOf(Blocks.GOLD_BLOCK), "gold block untouched");
                 shot(client, "4_built");
             }
@@ -190,7 +197,7 @@ public class BuildingClientSmoke implements ClientModInitializer {
             }
             case 200 -> {
                 check(count(p, Items.GLASS) == 10, "no glass used when short");
-                check(p.totalExperience == xpBefore, "a refused build costs no XP");
+                check(xp(p) == xpBefore, "a refused build costs no XP");
                 shot(client, "5b_short_message");
                 check(blocksAround(client, Blocks.GLASS) == 0, "nothing built when short");
             }
@@ -244,7 +251,76 @@ public class BuildingClientSmoke implements ClientModInitializer {
             }
             case 292 -> client.interactionManager.interactItem(p, Hand.MAIN_HAND);
             case 296 -> shot(client, "9_creative_message");
-            case 300 -> {
+            // ---- Tomes of Shrinking, Growing and Invisibility, each on its own staff (cooldowns are shared per staff)
+            case 300 -> onServer(client, (world, sp) -> {
+                sp.changeGameMode(GameMode.SURVIVAL);
+                sp.setExperienceLevel(30);
+                for (BlockPos pos : BlockPos.iterate(ORIGIN.add(-8, 1, -8), ORIGIN.add(8, 12, 8))) world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                // A half-slab "secret entrance": slab in the top half of a floor-level block
+                world.setBlockState(ORIGIN.add(3, 1, 0), Blocks.OAK_SLAB.getDefaultState()
+                        .with(net.minecraft.block.SlabBlock.TYPE, net.minecraft.block.enums.SlabType.TOP));
+                sp.teleport(world, 0.5, ORIGIN.getY() + 1, 0.5, -90f, 10f);
+                sp.getInventory().clear();
+                StaffItem staffItem = (StaffItem) ModItems.DIAMOND_STAFF;
+                ItemStack[] staffs = {new ItemStack(ModItems.DIAMOND_STAFF), new ItemStack(ModItems.DIAMOND_STAFF), new ItemStack(ModItems.DIAMOND_STAFF)};
+                staffItem.insertTome(staffs[0], ModItems.TOME_OF_SHRINKING);
+                staffItem.insertTome(staffs[1], ModItems.TOME_OF_GROWING);
+                staffItem.insertTome(staffs[2], (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) ModItems.TOME_INVISIBILITY);
+                for (int i = 0; i < 3; i++) sp.getInventory().setStack(i, staffs[i]);
+                sp.equipStack(net.minecraft.entity.EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
+                sp.getInventory().selectedSlot = 0;
+            });
+            case 310 -> {
+                p.getInventory().selectedSlot = 0;
+                client.options.setPerspective(net.minecraft.client.option.Perspective.THIRD_PERSON_BACK);
+                xpBefore = xp(p);
+                client.interactionManager.interactItem(p, Hand.MAIN_HAND);
+            }
+            case 335 -> {
+                check(p.getHeight() < 0.5f && p.getHeight() > 0.4f, "tiny: " + p.getHeight() + " blocks tall");
+                check(xp(p) < xpBefore, "shrinking cost XP");
+                onServer(client, (world, sp) -> sp.teleport(world, 3.5, ORIGIN.getY() + 1, 0.5, -90f, 10f));
+            }
+            case 350 -> {
+                check(Math.abs(p.getX() - 3.5) < 0.01 && p.getY() == ORIGIN.getY() + 1, "standing under the slab");
+                check(!p.isInsideWall(), "not suffocating under the slab");
+                shot(client, "10_tiny_under_slab");
+                client.interactionManager.interactItem(p, Hand.MAIN_HAND); // try to grow back: no room
+            }
+            case 370 -> {
+                check(p.getHeight() < 0.5f, "stays tiny under the slab");
+                onServer(client, (world, sp) -> sp.teleport(world, 0.5, ORIGIN.getY() + 1, 0.5, -90f, 10f));
+            }
+            case 395 -> {
+                check(Math.abs(p.getHeight() - 1.8f) < 0.01f, "grew back once out: " + p.getHeight());
+                check(p.getItemCooldownManager().isCoolingDown(ModItems.TOME_OF_SHRINKING), "shrinking cooldown started");
+                p.getInventory().selectedSlot = 1;
+            }
+            case 400 -> client.interactionManager.interactItem(p, Hand.MAIN_HAND);
+            case 425 -> {
+                check(Math.abs(p.getHeight() - 6.0f) < 0.01f, "giant: " + p.getHeight() + " blocks tall");
+                check(p.hasStatusEffect(net.minecraft.entity.effect.StatusEffects.STRENGTH), "giant has strength");
+                shot(client, "11_giant");
+                client.interactionManager.interactItem(p, Hand.MAIN_HAND);
+            }
+            case 445 -> {
+                check(Math.abs(p.getHeight() - 1.8f) < 0.01f, "back from giant: " + p.getHeight());
+                p.getInventory().selectedSlot = 2;
+            }
+            case 450 -> client.interactionManager.interactItem(p, Hand.MAIN_HAND);
+            case 460 -> {
+                check(p.hasStatusEffect(net.minecraft.entity.effect.StatusEffects.INVISIBILITY), "invisible");
+                check(net.ragnar.ragnarsmagicmod.util.AbsoluteInvisibility.CLIENT.contains(p.getId()), "client told we're fully hidden");
+                shot(client, "12_invisible_self_view");
+                client.interactionManager.interactItem(p, Hand.MAIN_HAND);
+            }
+            case 470 -> {
+                check(!p.hasStatusEffect(net.minecraft.entity.effect.StatusEffects.INVISIBILITY), "visible again");
+                check(!net.ragnar.ragnarsmagicmod.util.AbsoluteInvisibility.CLIENT.contains(p.getId()), "client told we're visible");
+                check(p.getItemCooldownManager().isCoolingDown(ModItems.TOME_INVISIBILITY), "invisibility cooldown started");
+            }
+            case 480 -> {
+                client.options.setPerspective(net.minecraft.client.option.Perspective.FIRST_PERSON);
                 log("stats: " + (failures == 0 ? "ALL PASSED" : failures + " FAILED"));
                 client.scheduleStop();
             }

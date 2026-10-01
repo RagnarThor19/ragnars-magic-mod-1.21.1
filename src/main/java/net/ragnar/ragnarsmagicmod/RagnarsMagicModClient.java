@@ -33,6 +33,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.GrappleClient.init();
         net.ragnar.ragnarsmagicmod.client.PortalClient.init();
         net.ragnar.ragnarsmagicmod.client.building.BuildingClient.init();
+        net.ragnar.ragnarsmagicmod.client.InvisibilityClient.init();
         net.ragnar.ragnarsmagicmod.client.StaffModels.init();
     }
 }

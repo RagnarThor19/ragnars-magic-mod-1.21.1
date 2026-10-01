@@ -317,25 +317,20 @@ public class BuildingGameTests implements FabricGameTest {
     @GameTest(templateName = EMPTY_STRUCTURE)
     public void layeredPutsEachBlockInItsLayer(TestContext ctx) {
         PlayerEntity p = player(ctx, GameMode.CREATIVE);
-        BuildSettings s = settings(BuildShape.WALL, 5, 5, 1, false, Items.STONE, Items.ANDESITE, Items.OAK_PLANKS);
-        s.pattern = BlockMixer.Pattern.LAYERED; // stone bottom, andesite middle, planks top
+        // Stone at the bottom, planks at the top (the 3-layer blend is covered statistically by the pure tests)
+        BuildSettings s = settings(BuildShape.WALL, 5, 5, 1, false, Items.STONE, Items.OAK_PLANKS);
+        s.palette.get(1).layer = BlockMixer.Layer.TOP;
+        s.pattern = BlockMixer.Pattern.LAYERED;
         ctx.assertTrue(build(ctx, p, up(ctx), s), "build started");
         ctx.waitAndRun(SETTLE, () -> {
-            // Layers blend, so compare the bottom two rows with the top two rather than expecting hard lines
-            int lowStone = 0, lowPlanks = 0, highStone = 0, highPlanks = 0;
+            // Layers blend a little, so look at the bottom two rows and the top two rather than expecting hard lines
+            int lowStone = 0, highPlanks = 0;
             for (int u = -2; u <= 2; u++) {
-                for (int v : new int[]{0, 1}) {
-                    if (ctx.getBlockState(wallCell(u, v)).isOf(Blocks.STONE)) lowStone++;
-                    if (ctx.getBlockState(wallCell(u, v)).isOf(Blocks.OAK_PLANKS)) lowPlanks++;
-                }
-                for (int v : new int[]{3, 4}) {
-                    if (ctx.getBlockState(wallCell(u, v)).isOf(Blocks.STONE)) highStone++;
-                    if (ctx.getBlockState(wallCell(u, v)).isOf(Blocks.OAK_PLANKS)) highPlanks++;
-                }
+                for (int v : new int[]{0, 1}) if (ctx.getBlockState(wallCell(u, v)).isOf(Blocks.STONE)) lowStone++;
+                for (int v : new int[]{3, 4}) if (ctx.getBlockState(wallCell(u, v)).isOf(Blocks.OAK_PLANKS)) highPlanks++;
             }
-            ctx.assertTrue(lowStone >= 4 && lowStone > lowPlanks + 1, "bottom should be mostly stone: " + lowStone + " stone, " + lowPlanks + " planks");
-            ctx.assertTrue(highPlanks >= 4 && highPlanks > highStone + 1, "top should be mostly planks: " + highPlanks + " planks, " + highStone + " stone");
-            ctx.assertTrue(countIn(ctx, Blocks.ANDESITE) >= 3, "middle block used");
+            ctx.assertTrue(lowStone >= 7, "bottom should be mostly stone: " + lowStone + "/10");
+            ctx.assertTrue(highPlanks >= 7, "top should be mostly planks: " + highPlanks + "/10");
             ctx.complete();
         });
     }

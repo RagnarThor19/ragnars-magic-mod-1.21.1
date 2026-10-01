@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Vec3d;
+import net.ragnar.ragnarsmagicmod.util.AbsoluteInvisibility;
 import net.ragnar.ragnarsmagicmod.util.Slippery;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -26,6 +27,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
+    /** Tome of Invisibility: armor doesn't give you away, mobs spot you as if you wore nothing. */
+    @Inject(method = "getAttackDistanceScalingFactor", at = @At("RETURN"), cancellable = true)
+    private void ragnarsmagicmod$unseenArmor(net.minecraft.entity.Entity looker, CallbackInfoReturnable<Double> cir) {
+        if (AbsoluteInvisibility.isHidden((LivingEntity) (Object) this)) cir.setReturnValue(Math.min(cir.getReturnValue(), 0.07));
+    }
+
     @Inject(method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$ignoreEmptyBody(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
         if (ControllingSpell.isPossessing(target) || IllusionSpell.isGhost(target)) cir.setReturnValue(false);

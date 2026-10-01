@@ -367,8 +367,8 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.UNCOMMON), // Beginner
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.BEGINNER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.INVISIBILITY,
-                    12 // XP Cost
-            ).setCooldown(320) // 16 seconds
+                    10 // XP Cost
+            ).setCooldown(20 * 15) // 15 seconds, starting when you're visible again
     );
     public static final Item TOME_OF_THE_VOID = registerItem("tome_of_the_void",
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
@@ -613,6 +613,16 @@ public class ModItems {
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
                     TomeTier.MASTER, SpellId.PORTALS, 50
             ).setCooldown(20 * 60) // 60 seconds, starting once both portals are open
+    );
+    public static final TomeItem TOME_OF_SHRINKING = (TomeItem) registerItem("tome_of_shrinking",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.SHRINKING, 10
+            ).setCooldown(20 * 15) // 15 seconds, starting when you're back to normal size
+    );
+    public static final TomeItem TOME_OF_GROWING = (TomeItem) registerItem("tome_of_growing",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.GROWING, 10
+            ).setCooldown(20 * 15) // 15 seconds, starting when you're back to normal size
     );
     public static final TomeItem TOME_OF_BUILDING = (TomeItem) registerItem("tome_of_building",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
@@ -922,6 +932,8 @@ public class ModItems {
         putTome(SpellId.SPRAYING, TomeTier.MASTER, TOME_OF_SPRAYING);
         putTome(SpellId.PORTALS, TomeTier.MASTER, TOME_OF_PORTALS);
         putTome(SpellId.BUILDING, TomeTier.MASTER, TOME_OF_BUILDING);
+        putTome(SpellId.SHRINKING, TomeTier.BEGINNER, TOME_OF_SHRINKING);
+        putTome(SpellId.GROWING, TomeTier.BEGINNER, TOME_OF_GROWING);
         putTome(SpellId.TNT, TomeTier.ADVANCED, TOME_OF_TNT);
         putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
         putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
@@ -1022,6 +1034,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_PARANOIA));
             entries.add(new ItemStack(TOME_OF_SORTING));
             entries.add(new ItemStack(TOME_OF_THE_ENDER_CHEST));
+            entries.add(new ItemStack(TOME_OF_SHRINKING));
+            entries.add(new ItemStack(TOME_OF_GROWING));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));

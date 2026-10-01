@@ -91,5 +91,7 @@ public enum SpellId {
     ENDER_CHEST,
     GRAPPLING,
     PORTALS,
-    BUILDING
+    BUILDING,
+    SHRINKING,
+    GROWING
 }
