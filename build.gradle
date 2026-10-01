@@ -120,5 +120,14 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Knight photo shoot: screenshots of each animation into build/clientsmoke/screenshots
+		knightSmoke {
+			client()
+			name "Knight Smoke Test"
+			vmArg "-Dragnarsmagicmod.knightsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 	}
 }

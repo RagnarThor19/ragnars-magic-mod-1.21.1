@@ -36,5 +36,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.InvisibilityClient.init();
         net.ragnar.ragnarsmagicmod.client.AscendClient.init();
         net.ragnar.ragnarsmagicmod.client.StaffModels.init();
+        net.ragnar.ragnarsmagicmod.knight.client.KnightClient.init(); // Tome of Knight
     }
 }

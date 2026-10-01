@@ -8,10 +8,12 @@
     "fabric-gametest": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.SizeAndInvisibilityGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.TrappingAndAscendGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.TrappingAndAscendGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.KnightGameTests"
     ],
     "client": [
-      "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.KnightClientSmoke"
     ]
   },
   "depends": {
