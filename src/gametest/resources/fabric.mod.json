@@ -7,7 +7,8 @@
   "entrypoints": {
     "fabric-gametest": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.SizeAndInvisibilityGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.SizeAndInvisibilityGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.TrappingAndAscendGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke"

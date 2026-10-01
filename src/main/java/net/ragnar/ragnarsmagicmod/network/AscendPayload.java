@@ -1,0 +1,32 @@
+package net.ragnar.ragnarsmagicmod.network;
+
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
+import net.ragnar.ragnarsmagicmod.RagnarsMagicMod;
+
+/** Server -> caster: you're about to ascend; sweep the camera up through the rock over this many ticks. */
+public record AscendPayload(int ticks) implements CustomPayload {
+    public static final Id<AscendPayload> ID = new Id<>(Identifier.of(RagnarsMagicMod.MOD_ID, "ascend"));
+    public static final PacketCodec<RegistryByteBuf, AscendPayload> CODEC =
+            PacketCodec.tuple(PacketCodecs.VAR_INT, AscendPayload::ticks, AscendPayload::new);
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
+    }
+
+    public static void register() {
+        PayloadTypeRegistry.playS2C().register(ID, CODEC);
+    }
+
+    /** Send before the teleport, so the camera glide starts from where you were. */
+    public static void send(ServerPlayerEntity player, int ticks) {
+        if (ServerPlayNetworking.canSend(player, ID)) ServerPlayNetworking.send(player, new AscendPayload(ticks));
+    }
+}

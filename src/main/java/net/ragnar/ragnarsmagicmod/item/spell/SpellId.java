@@ -93,5 +93,7 @@ public enum SpellId {
     PORTALS,
     BUILDING,
     SHRINKING,
-    GROWING
+    GROWING,
+    TRAPPING,
+    ASCEND
 }

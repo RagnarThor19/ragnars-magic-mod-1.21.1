@@ -667,6 +667,16 @@ public class ModItems {
                     6 // Low XP Cost
             ).setCooldown(50) // 2.5 seconds
     );
+    public static final TomeItem TOME_OF_TRAPPING = (TomeItem) registerItem("tome_of_trapping",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
+                    TomeTier.ADVANCED, SpellId.TRAPPING, 15
+            ).setCooldown(20 * 15) // 15 seconds, starting when the trap is sprung
+    );
+    public static final TomeItem TOME_OF_ASCEND = (TomeItem) registerItem("tome_of_ascend",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.ASCEND, 25
+            ).setCooldown(20 * 120) // 2 minutes
+    );
 
     static {
         putTome(SpellId.FIREBALLS, TomeTier.BEGINNER, (TomeItem) TOME_OF_FIREBALLS);
@@ -938,6 +948,8 @@ public class ModItems {
         putTome(SpellId.DUSK_AND_DAWN, TomeTier.MASTER, TOME_OF_DUSK_AND_DAWN);
         putTome(SpellId.REWIND, TomeTier.MASTER, TOME_OF_REWIND);
         putTome(SpellId.JUDGEMENT, TomeTier.MASTER, TOME_OF_JUDGEMENT);
+        putTome(SpellId.TRAPPING, TomeTier.ADVANCED, TOME_OF_TRAPPING);
+        putTome(SpellId.ASCEND, TomeTier.BEGINNER, TOME_OF_ASCEND);
 
 
 
@@ -1036,6 +1048,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_THE_ENDER_CHEST));
             entries.add(new ItemStack(TOME_OF_SHRINKING));
             entries.add(new ItemStack(TOME_OF_GROWING));
+            entries.add(new ItemStack(TOME_OF_ASCEND));
             //ADVANCED
             entries.add(TOME_GHASTFIRE);
             entries.add(new net.minecraft.item.ItemStack(TOME_FALLING_ANVILS));
@@ -1072,6 +1085,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_MENDING));
             entries.add(new ItemStack(TOME_OF_THE_FAIRY));
             entries.add(new ItemStack(TOME_OF_GRAPPLING));
+            entries.add(new ItemStack(TOME_OF_TRAPPING));
             //MASTER
             entries.add(new net.minecraft.item.ItemStack(TOME_METEOR));
             entries.add(new net.minecraft.item.ItemStack(TOME_BLINKING));
