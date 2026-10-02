@@ -49,8 +49,10 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.BuildingPayloads.register();
         net.ragnar.ragnarsmagicmod.network.InvisibilityPayload.register();
         net.ragnar.ragnarsmagicmod.network.AscendPayload.register();
+        net.ragnar.ragnarsmagicmod.network.ReckoningPayload.register();
         net.ragnar.ragnarsmagicmod.util.PortalNetwork.register();
         net.ragnar.ragnarsmagicmod.util.TempEntities.register();
+        net.ragnar.ragnarsmagicmod.util.TomeCooldowns.register(); // tome cooldowns survive leaving and dying
         net.ragnar.ragnarsmagicmod.util.SkyDrop.register();
         net.ragnar.ragnarsmagicmod.item.spell.DeadSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell.register();
@@ -64,6 +66,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.item.spell.SizeSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.TrappingSpell.register();
         net.ragnar.ragnarsmagicmod.item.spell.AscendSpell.register();
+        net.ragnar.ragnarsmagicmod.item.spell.ReckoningSpell.register();
 
         // Register Loot Table Modifiers
         ModLootTableModifiers.modifyLootTables();
@@ -157,6 +160,9 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.PARANOIA, new net.ragnar.ragnarsmagicmod.item.spell.ParanoiaSpell());
         Spells.register(SpellId.SORTING, new net.ragnar.ragnarsmagicmod.item.spell.SortingSpell());
         Spells.register(SpellId.ENDER_CHEST, new net.ragnar.ragnarsmagicmod.item.spell.EnderChestSpell());
+        Spells.register(SpellId.STORAGE, new net.ragnar.ragnarsmagicmod.item.spell.StorageSpell());
+        Spells.register(SpellId.ENDER_PEARLS, new net.ragnar.ragnarsmagicmod.item.spell.EnderPearlSpell());
+        Spells.register(SpellId.RECKONING, new net.ragnar.ragnarsmagicmod.item.spell.ReckoningSpell());
         Spells.register(SpellId.GRAPPLING, new net.ragnar.ragnarsmagicmod.item.spell.GrapplingSpell());
         Spells.register(SpellId.PORTALS, new net.ragnar.ragnarsmagicmod.item.spell.PortalsSpell());
         Spells.register(SpellId.BUILDING, new net.ragnar.ragnarsmagicmod.item.spell.BuildingSpell());

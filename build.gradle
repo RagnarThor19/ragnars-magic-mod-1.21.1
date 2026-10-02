@@ -129,5 +129,14 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Reckoning photo shoot: screenshots into build/clientsmoke/screenshots
+		reckoningSmoke {
+			client()
+			name "Reckoning Smoke Test"
+			vmArg "-Dragnarsmagicmod.reckoningsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 	}
 }

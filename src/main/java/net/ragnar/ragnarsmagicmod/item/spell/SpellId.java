@@ -96,5 +96,8 @@ public enum SpellId {
     GROWING,
     TRAPPING,
     ASCEND,
+    STORAGE,
+    RECKONING,
+    ENDER_PEARLS,
     KNIGHT
 }

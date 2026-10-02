@@ -602,7 +602,7 @@ public class ModItems {
     public static final TomeItem TOME_OF_THE_FAIRY = (TomeItem) registerItem("tome_of_the_fairy",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.FAIRY, 16
-            ).setCooldown(20 * 18) // 18 seconds, starting when you turn back
+            ).setCooldown(20 * 28) // 28 seconds, starting when you turn back
     );
     public static final TomeItem TOME_OF_SPRAYING = (TomeItem) registerItem("tome_of_spraying",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
@@ -648,6 +648,21 @@ public class ModItems {
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
                     TomeTier.MASTER, SpellId.JUDGEMENT, 40
             ).setCooldown(20 * 40) // 40 seconds
+    );
+    public static final TomeItem TOME_OF_RECKONING = (TomeItem) registerItem("tome_of_reckoning",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), // Master
+                    TomeTier.MASTER, SpellId.RECKONING, 35
+            ).setCooldown(20 * 28) // 28 seconds
+    );
+    public static final TomeItem TOME_OF_ENDER_PEARLS = (TomeItem) registerItem("tome_of_ender_pearls",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.ENDER_PEARLS, 5
+            ).setCooldown(20 * 30) // 30 seconds
+    );
+    public static final TomeItem TOME_OF_STORAGE = (TomeItem) registerItem("tome_of_storage",
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
+                    TomeTier.BEGINNER, SpellId.STORAGE, 2
+            ).setCooldown(20) // 1 second
     );
     public static final TomeItem TOME_OF_HOME = (TomeItem) registerItem("tome_of_home",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
@@ -937,6 +952,9 @@ public class ModItems {
         putTome(SpellId.PARANOIA, TomeTier.BEGINNER, TOME_OF_PARANOIA);
         putTome(SpellId.SORTING, TomeTier.BEGINNER, TOME_OF_SORTING);
         putTome(SpellId.ENDER_CHEST, TomeTier.BEGINNER, TOME_OF_THE_ENDER_CHEST);
+        putTome(SpellId.STORAGE, TomeTier.BEGINNER, TOME_OF_STORAGE);
+        putTome(SpellId.ENDER_PEARLS, TomeTier.BEGINNER, TOME_OF_ENDER_PEARLS);
+        putTome(SpellId.RECKONING, TomeTier.MASTER, TOME_OF_RECKONING);
         putTome(SpellId.GRAPPLING, TomeTier.ADVANCED, TOME_OF_GRAPPLING);
         putTome(SpellId.FAIRY, TomeTier.ADVANCED, TOME_OF_THE_FAIRY);
         putTome(SpellId.SPRAYING, TomeTier.MASTER, TOME_OF_SPRAYING);
@@ -959,7 +977,7 @@ public class ModItems {
     public static final Item GOLDEN_STAFF = registerItem(
             "golden_staff",
             new StaffItem(new Item.Settings().maxDamage(128).rarity(Rarity.UNCOMMON),
-                    EnumSet.of(TomeTier.BEGINNER), 3)
+                    EnumSet.of(TomeTier.BEGINNER), 2)
     );
     public static final Item DIAMOND_STAFF = registerItem(
             "diamond_staff",
@@ -1046,6 +1064,8 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_PARANOIA));
             entries.add(new ItemStack(TOME_OF_SORTING));
             entries.add(new ItemStack(TOME_OF_THE_ENDER_CHEST));
+            entries.add(new ItemStack(TOME_OF_STORAGE));
+            entries.add(new ItemStack(TOME_OF_ENDER_PEARLS));
             entries.add(new ItemStack(TOME_OF_SHRINKING));
             entries.add(new ItemStack(TOME_OF_GROWING));
             entries.add(new ItemStack(TOME_OF_ASCEND));
@@ -1107,6 +1127,7 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_SPRAYING));
             entries.add(new ItemStack(TOME_OF_PORTALS));
             entries.add(new ItemStack(TOME_OF_BUILDING));
+            entries.add(new ItemStack(TOME_OF_RECKONING));
 
             //entries.add(TOME_OF_FIREBALLS);
             //entries.add(TOME_GHASTFIRE);

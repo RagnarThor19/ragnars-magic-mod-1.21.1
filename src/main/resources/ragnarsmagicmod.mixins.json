@@ -5,6 +5,8 @@
 	"mixins": [
 		"CreeperEntityMixin",
 		"EntityMixin",
+		"ItemCooldownEntryAccessor",
+		"ItemCooldownManagerAccessor",
 		"ExampleMixin",
 		"LivingEntityMixin",
 		"MobEntityAccessor",

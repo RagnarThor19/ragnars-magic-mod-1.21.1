@@ -9,11 +9,17 @@
       "net.ragnar.ragnarsmagicmod.gametest.BuildingGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.SizeAndInvisibilityGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.TrappingAndAscendGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.KnightGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.KnightGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.StaffHandGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.StorageGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.TomeCooldownGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.ReckoningGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.EnderPearlGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.KnightClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.KnightClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.ReckoningClientSmoke"
     ]
   },
   "depends": {

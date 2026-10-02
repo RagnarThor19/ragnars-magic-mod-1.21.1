@@ -63,8 +63,8 @@ public class KnightGameTests implements FabricGameTest {
     @GameTest(templateName = EMPTY_STRUCTURE, batchId = "knight_registration")
     public void tomeIsAMasterTomeWithTheRightNumbers(TestContext ctx) {
         ctx.assertEquals(TomeTier.MASTER, Knight.TOME_OF_KNIGHT.getTier(), "tier");
-        ctx.assertEquals(50, Knight.TOME_OF_KNIGHT.getXpCost(), "xp");
-        ctx.assertEquals(500, Knight.TOME_OF_KNIGHT.getCooldown(), "cooldown");
+        ctx.assertEquals(80, Knight.TOME_OF_KNIGHT.getXpCost(), "xp");
+        ctx.assertEquals(700, Knight.TOME_OF_KNIGHT.getCooldown(), "cooldown");
         ctx.assertTrue(Spells.get(SpellId.KNIGHT) instanceof KnightSpell, "spell registered");
         ctx.assertTrue(ModItems.getTomeFor(SpellId.KNIGHT, TomeTier.MASTER) == Knight.TOME_OF_KNIGHT, "staff lookup");
         ctx.assertEquals(1200, KnightSpell.LIFETIME_TICKS, "lasts a minute");

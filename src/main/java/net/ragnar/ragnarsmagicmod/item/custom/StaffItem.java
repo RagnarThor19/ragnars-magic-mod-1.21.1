@@ -328,6 +328,12 @@ public class StaffItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack staff = player.getStackInHand(hand);
 
+        // One staff at a time: with a staff in each hand only the main hand casts (the spell switcher picks it too).
+        // Without this, a main-hand cast that passes on the client lets vanilla try the off hand as well.
+        if (hand == Hand.OFF_HAND && player.getMainHandStack().getItem() instanceof StaffItem) {
+            return TypedActionResult.pass(staff);
+        }
+
         TomeItem tome = getSelectedTome(staff);
         if (tome == null) {
             if (!world.isClient) player.sendMessage(Text.literal("No tome equipped."), true);
