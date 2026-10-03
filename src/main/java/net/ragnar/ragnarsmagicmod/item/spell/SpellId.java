@@ -99,5 +99,6 @@ public enum SpellId {
     STORAGE,
     RECKONING,
     ENDER_PEARLS,
-    KNIGHT
+    KNIGHT,
+    JAUNTING
 }

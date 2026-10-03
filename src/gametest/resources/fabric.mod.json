@@ -14,12 +14,14 @@
       "net.ragnar.ragnarsmagicmod.gametest.StorageGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.TomeCooldownGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.ReckoningGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.EnderPearlGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.EnderPearlGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.JauntingGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.KnightClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.ReckoningClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.ReckoningClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.JauntingClientSmoke"
     ]
   },
   "depends": {

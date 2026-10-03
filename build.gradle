@@ -138,5 +138,14 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Jaunting photo shoot: screenshots into build/clientsmoke/screenshots
+		jauntingSmoke {
+			client()
+			name "Jaunting Smoke Test"
+			vmArg "-Dragnarsmagicmod.jauntingsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 	}
 }
