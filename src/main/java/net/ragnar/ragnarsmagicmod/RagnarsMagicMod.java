@@ -40,6 +40,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.CloneSwapPayload.register();
         net.ragnar.ragnarsmagicmod.network.CloneTimerPayload.register();
         net.ragnar.ragnarsmagicmod.network.IceBeamPayload.register();
+        net.ragnar.ragnarsmagicmod.network.ZapPayload.register();
         net.ragnar.ragnarsmagicmod.network.FairyPayload.register();
         net.ragnar.ragnarsmagicmod.network.BlinkPayload.register();
         net.ragnar.ragnarsmagicmod.network.SprayPayload.register();

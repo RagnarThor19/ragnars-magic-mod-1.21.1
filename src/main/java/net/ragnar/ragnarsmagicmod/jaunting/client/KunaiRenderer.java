@@ -27,8 +27,8 @@ import org.joml.Matrix4f;
  * crackling off the blade.
  */
 public class KunaiRenderer extends EntityRenderer<JauntingKunaiEntity> {
-    /** Item model size: the sprite runs corner to corner, so this makes the kunai about a block long. */
-    private static final float SCALE = 0.75f;
+    /** Item model size: the sprite runs corner to corner, so this makes the kunai about three quarters of a block long. */
+    private static final float SCALE = 0.5625f;
 
     private final ItemRenderer items;
     private final ItemStack stack;

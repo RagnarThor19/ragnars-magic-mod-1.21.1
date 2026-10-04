@@ -55,7 +55,7 @@ public class JauntingGameTests implements FabricGameTest {
     public void throwsAndJauntsToTheWall(TestContext ctx) {
         ctx.assertEquals(TomeTier.ADVANCED, Jaunting.TOME_OF_JAUNTING.getTier(), "tier");
         ctx.assertEquals(8, Jaunting.TOME_OF_JAUNTING.getXpCost(), "xp");
-        ctx.assertEquals(240, Jaunting.TOME_OF_JAUNTING.getCooldown(), "cooldown");
+        ctx.assertEquals(300, Jaunting.TOME_OF_JAUNTING.getCooldown(), "cooldown");
         ctx.assertTrue(spell() instanceof JauntingSpell, "spell registered");
 
         floor(ctx);
@@ -65,7 +65,7 @@ public class JauntingGameTests implements FabricGameTest {
 
         ctx.assertEquals(8, spell().xpCost(p, 8), "throwing costs XP");
         ctx.assertTrue(spell().cast(w, p, ItemStack.EMPTY), "throw");
-        ctx.assertEquals(240, spell().cooldownAfterCast(p, 240), "throwing starts the cooldown");
+        ctx.assertEquals(300, spell().cooldownAfterCast(p, 300), "throwing starts the cooldown");
         ctx.assertTrue(kunais(ctx, p).size() == 1, "one kunai out");
         ctx.assertTrue(JauntingMarks.get(w.getServer(), p.getUuid()) != null, "marked");
         ctx.assertTrue(spell().ignoresCooldown(p), "can jaunt during the cooldown");
@@ -78,7 +78,7 @@ public class JauntingGameTests implements FabricGameTest {
             ctx.assertTrue(Math.abs(ks.get(0).getZ() - wallZ) < 0.3, "at the wall face, z=" + ks.get(0).getZ());
 
             ctx.assertTrue(spell().cast(w, p, ItemStack.EMPTY), "jaunt");
-            ctx.assertEquals(0, spell().cooldownAfterCast(p, 240), "jaunting doesn't restart the cooldown");
+            ctx.assertEquals(0, spell().cooldownAfterCast(p, 300), "jaunting doesn't restart the cooldown");
             ctx.assertTrue(p.getZ() > wallZ - 1.2 && p.getZ() < wallZ, "standing at the wall, z=" + p.getZ() + " wall " + wallZ);
             ctx.assertTrue(w.isSpaceEmpty(p), "not stuck in the wall");
             ctx.assertTrue(JauntingMarks.get(w.getServer(), p.getUuid()) == null, "mark used up");

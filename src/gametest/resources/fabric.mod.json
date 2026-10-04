@@ -21,7 +21,8 @@
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.KnightClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.ReckoningClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.JauntingClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.JauntingClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.ZapClientSmoke"
     ]
   },
   "depends": {

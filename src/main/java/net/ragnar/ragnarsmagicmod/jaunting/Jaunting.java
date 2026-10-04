@@ -57,7 +57,7 @@ public final class Jaunting {
             Identifier.of(RagnarsMagicMod.MOD_ID, "tome_of_jaunting"),
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
                     TomeTier.ADVANCED, SpellId.JAUNTING, 8
-            ).setCooldown(20 * 12) // 12 seconds, from the throw
+            ).setCooldown(20 * 15) // 15 seconds, from the throw
     );
 
     public static void register() {
@@ -66,6 +66,6 @@ public final class Jaunting {
         Spells.register(SpellId.JAUNTING, new JauntingSpell());
         JauntingMarks.register();
         JauntPayload.register();
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> entries.addAfter(ModItems.TOME_OF_GRAPPLING, TOME_OF_JAUNTING));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(ModItems.TOME_OF_TRAPPING, TOME_OF_JAUNTING));
     }
 }
