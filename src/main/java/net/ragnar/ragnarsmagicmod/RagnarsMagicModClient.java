@@ -40,5 +40,9 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.StaffModels.init();
         net.ragnar.ragnarsmagicmod.knight.client.KnightClient.init(); // Tome of Knight
         net.ragnar.ragnarsmagicmod.jaunting.client.JauntingClient.init(); // Tome of Jaunting
+        net.ragnar.ragnarsmagicmod.ricochet.client.RicochetClient.init(); // Tome of Ricochet
+        net.ragnar.ragnarsmagicmod.jumping.client.JumpingClient.init(); // Tome of Jumping
+        net.ragnar.ragnarsmagicmod.logs.client.LogsClient.init(); // Tome of Logs
+        net.ragnar.ragnarsmagicmod.balllightning.client.BallLightningClient.init(); // Tome of Ball Lightning
     }
 }

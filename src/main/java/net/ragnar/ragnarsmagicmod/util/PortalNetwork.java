@@ -43,8 +43,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * The portals opened by the Tome of Portals. Each player owns at most one pair: the amber portal and the cyan
- * one. Anything that walks, falls or flies into one comes out of the other with its momentum turned to match,
+ * The portals opened by the Tome of Portals. Each player owns at most one pair: the magenta portal and the
+ * dark purple one. Anything that walks, falls or flies into one comes out of the other with its momentum turned to match,
  * even across dimensions. Pairs are saved with the world and stay until their owner closes them.
  *
  * <p>Kept cheap on purpose: a portal only does anything while its own chunk is ticking, it only looks at the few
@@ -57,8 +57,8 @@ public final class PortalNetwork {
     public static final double HALF_WIDTH = 0.55;
     public static final double HALF_HEIGHT = 1.0;
 
-    /** Amber for the first portal of a pair, cyan for the second. */
-    public static final int[] COLORS = {0xFFA030, 0x3FD8FF};
+    /** Magenta for the first portal of a pair, dark purple for the second. */
+    public static final int[] COLORS = {0xFF2FD2, 0x6A1FC2};
 
     private static final double REACH = 32.0;
     private static final int TRAVEL_COOLDOWN = 10;
@@ -159,7 +159,8 @@ public final class PortalNetwork {
     private static final Map<UUID, Track> TRACKS = new HashMap<>();
     /**
      * The portal an entity last came out of, and until when it can't go through anything. Out of a floor or
-     * ceiling portal it also can't drop straight back into it: it has to step off first.
+     * ceiling portal it also can't drop straight back into it (or it would bounce between two floor portals
+     * forever): it has to get off it first. As soon as it's no longer over the portal it can use it again.
      */
     private record Arrival(Portal exit, long until) {}
 
@@ -294,10 +295,16 @@ public final class PortalNetwork {
     private static void tick(MinecraftServer server) {
         State s = state(server);
         long now = server.getTicks();
-        if (now % 20 == 0) {
-            TRACKS.values().removeIf(t -> t.tick() < now - 2);
-            ARRIVED.values().removeIf(a -> a.until() < now - 20);
-        }
+        if (now % 20 == 0) TRACKS.values().removeIf(t -> t.tick() < now - 2);
+        // Done travelling: forget it, unless it's still over the floor or ceiling portal it came out of
+        ARRIVED.entrySet().removeIf(entry -> {
+            Arrival a = entry.getValue();
+            if (a.until() > now) return false;
+            if (!a.exit().normal().getAxis().isVertical()) return true;
+            ServerWorld world = server.getWorld(a.exit().world());
+            Entity e = world == null ? null : world.getEntity(entry.getKey());
+            return e == null || !over(a.exit(), e);
+        });
         if (s.pairs.isEmpty()) return;
 
         // Copy first: a traveller can't change the pairs, but keep the loop safe from anything that does
@@ -318,14 +325,7 @@ public final class PortalNetwork {
             Vec3d center = e.getBoundingBox().getCenter();
             Vec3d motion = motionOf(e, center, now);
             Arrival arrival = ARRIVED.get(e.getUuid());
-            if (arrival != null) {
-                if (arrival.until() > now) continue;
-                if (arrival.exit().equals(from) && from.normal().getAxis().isVertical()
-                        && center.squaredDistanceTo(from.center()) < 2.5 * 2.5) {
-                    ARRIVED.put(e.getUuid(), new Arrival(from, now)); // still standing on it
-                    continue;
-                }
-            }
+            if (arrival != null && (arrival.until() > now || arrival.exit().equals(from) && over(from, e))) continue;
 
             Vec3d at = entering(from, e, center, motion);
             if (at != null) travel(server, e, at, motion, from, to, exitSlot, now);
@@ -377,6 +377,18 @@ public final class PortalNetwork {
         Vec3d d = at.subtract(p.center());
         return Math.abs(d.dotProduct(p.r())) <= HALF_WIDTH + 0.1 && Math.abs(d.dotProduct(p.u())) <= HALF_HEIGHT + 0.2
                 ? at : null;
+    }
+
+    /**
+     * True if any part of the entity is over (or under) the floor or ceiling portal {@code p}, close enough to land
+     * back on it - so it hasn't stepped off yet.
+     */
+    private static boolean over(Portal p, Entity e) {
+        Vec3d d = e.getBoundingBox().getCenter().subtract(p.center());
+        double depth = d.dotProduct(p.n());
+        return depth > -0.1 && depth < 4.0
+                && Math.abs(d.dotProduct(p.r())) < HALF_WIDTH + extent(e, p.r())
+                && Math.abs(d.dotProduct(p.u())) < HALF_HEIGHT + extent(e, p.u());
     }
 
     /** Half the entity's size measured along {@code axis}. */

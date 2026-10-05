@@ -15,7 +15,11 @@
       "net.ragnar.ragnarsmagicmod.gametest.TomeCooldownGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.ReckoningGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.EnderPearlGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.JauntingGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.JauntingGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.RicochetAndJumpingGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.LogsGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.PortalGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.BallLightningGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",

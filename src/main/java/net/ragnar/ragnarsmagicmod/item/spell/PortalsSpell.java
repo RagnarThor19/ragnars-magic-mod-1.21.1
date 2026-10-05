@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 import net.ragnar.ragnarsmagicmod.util.PortalNetwork;
 
 /**
- * Tome of Portals. The first cast opens an amber portal on whatever you're looking at (wall, floor, ceiling,
- * or thin air); the second opens its cyan twin and links them. Anything that goes into one comes out of the
+ * Tome of Portals. The first cast opens a magenta portal on whatever you're looking at (wall, floor, ceiling,
+ * or thin air); the second opens its dark purple twin and links them. Anything that goes into one comes out of the
  * other, momentum and all, even from another dimension. Casting again closes both. Sneak-casting while only
  * the first is open closes it.
  *

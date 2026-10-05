@@ -21,7 +21,7 @@ import java.util.UUID;
 public final class PortalPayloads {
     private PortalPayloads() {}
 
-    /** One open portal, as the clients draw it. {@code slot} is 0 for the amber portal, 1 for the cyan one. */
+    /** One open portal, as the clients draw it. {@code slot} is 0 for the magenta portal, 1 for the dark purple one. */
     public record View(UUID owner, int slot, Identifier world, Vec3d center, Direction normal, Direction up, boolean linked) {
         public static View of(UUID owner, int slot, PortalNetwork.Portal p, boolean linked) {
             return new View(owner, slot, p.world().getValue(), p.center(), p.normal(), p.up(), linked);

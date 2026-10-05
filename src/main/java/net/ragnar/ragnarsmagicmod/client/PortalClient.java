@@ -42,7 +42,7 @@ import java.util.Set;
 
 /**
  * How the Tome of Portals looks and sounds. Each portal is an oval window onto the End's starfield, the same
- * shimmering sky you see in an End gateway, framed in a burning amber or cyan rim. A ring of enchanting-table
+ * shimmering sky you see in an End gateway, framed in a glowing magenta or dark purple rim. A ring of enchanting-table
  * runes slowly turns around it, and more runes drift in off the air and sink into its face. A portal waiting
  * for its twin is smaller and its rim flickers; linking the pair flares them both.
  *

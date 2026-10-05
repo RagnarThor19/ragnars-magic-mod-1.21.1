@@ -26,6 +26,10 @@ public class RagnarsMagicMod implements ModInitializer {
         ModEntities.registerModEntities();
         net.ragnar.ragnarsmagicmod.knight.Knight.register(); // Tome of Knight
         net.ragnar.ragnarsmagicmod.jaunting.Jaunting.register(); // Tome of Jaunting
+        net.ragnar.ragnarsmagicmod.ricochet.Ricochet.register(); // Tome of Ricochet
+        net.ragnar.ragnarsmagicmod.jumping.Jumping.register(); // Tome of Jumping
+        net.ragnar.ragnarsmagicmod.logs.Logs.register(); // Tome of Logs
+        net.ragnar.ragnarsmagicmod.balllightning.BallLightning.register(); // Tome of Ball Lightning
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();

@@ -100,5 +100,9 @@ public enum SpellId {
     RECKONING,
     ENDER_PEARLS,
     KNIGHT,
-    JAUNTING
+    JAUNTING,
+    RICOCHET,
+    JUMPING,
+    LOGS,
+    BALL_LIGHTNING
 }
