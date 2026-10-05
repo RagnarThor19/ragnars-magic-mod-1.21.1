@@ -373,9 +373,43 @@ public class StaffItem extends Item {
             staff.damage(1, player, hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 
             applyCooldown(world, player, staff, tome, spell.cooldownAfterCast(player, tome.getCooldown()));
+            if (spell instanceof net.ragnar.ragnarsmagicmod.item.spell.ChanneledSpell) {
+                // Held like a bow from here on: see usageTick and onStoppedUsing
+                player.setCurrentHand(hand);
+                return TypedActionResult.consume(staff);
+            }
             return TypedActionResult.success(staff, world.isClient);
         }
         return TypedActionResult.pass(staff);
+    }
+
+    /** The channeled spell selected on {@code staff}, if that's what it has selected. */
+    @org.jetbrains.annotations.Nullable
+    private static net.ragnar.ragnarsmagicmod.item.spell.ChanneledSpell channeled(ItemStack staff) {
+        TomeItem tome = getSelectedTome(staff);
+        if (tome == null) return null;
+        return net.ragnar.ragnarsmagicmod.item.spell.Spells.get(tome.getSpell()) instanceof net.ragnar.ragnarsmagicmod.item.spell.ChanneledSpell c ? c : null;
+    }
+
+    @Override
+    public int getMaxUseTime(ItemStack staff, net.minecraft.entity.LivingEntity user) {
+        return channeled(staff) != null ? 72000 : 0;
+    }
+
+    @Override
+    public void usageTick(World world, net.minecraft.entity.LivingEntity user, ItemStack staff, int remainingUseTicks) {
+        if (!(world instanceof net.minecraft.server.world.ServerWorld sw) || !(user instanceof PlayerEntity player)) return;
+        var spell = channeled(staff);
+        TomeItem tome = getSelectedTome(staff);
+        // Switched to another spell mid-use, or the spell is done: stop
+        if (spell == null || tome == null || !spell.channelTick(sw, player, staff, tome)) user.stopUsingItem();
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack staff, World world, net.minecraft.entity.LivingEntity user, int remainingUseTicks) {
+        if (!(world instanceof net.minecraft.server.world.ServerWorld sw) || !(user instanceof PlayerEntity player)) return;
+        var spell = channeled(staff);
+        if (spell != null) spell.channelStop(sw, player);
     }
 
     @Override

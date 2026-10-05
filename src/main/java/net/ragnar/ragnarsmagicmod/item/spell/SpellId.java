@@ -107,5 +107,7 @@ public enum SpellId {
     BALL_LIGHTNING,
     IMPULSE,
     SIGHT,
-    SHADOW_HANDS
+    SHADOW_HANDS,
+    BEAMING,
+    UPSIDE_DOWN
 }

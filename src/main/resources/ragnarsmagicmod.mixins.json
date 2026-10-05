@@ -11,7 +11,11 @@
 		"LivingEntityMixin",
 		"MobEntityAccessor",
 		"MobEntityMixin",
-		"PlayerEntityMixin"
+		"PlayerEntityMixin",
+		"upsidedown.UpsideDownPlayerMixin",
+		"upsidedown.UpsideDownEntityMixin",
+		"upsidedown.UpsideDownLivingEntityMixin",
+		"upsidedown.UpsideDownNetworkHandlerMixin"
 	],
 	"client": [
 		"client.DrawContextMixin",
@@ -25,7 +29,11 @@
 		"client.KeyboardInputMixin",
 		"client.MinecraftClientMixin",
 		"client.MouseMixin",
-		"client.PlayerTravelMixin"
+		"client.PlayerTravelMixin",
+		"upsidedown.UpsideDownCameraMixin",
+		"upsidedown.UpsideDownLookMixin",
+		"upsidedown.UpsideDownInputMixin",
+		"upsidedown.UpsideDownRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

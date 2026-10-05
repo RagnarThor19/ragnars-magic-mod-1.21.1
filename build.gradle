@@ -165,6 +165,24 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Beaming photo shoot: screenshots into build/clientsmoke/screenshots
+		beamSmoke {
+			client()
+			name "Beaming Smoke Test"
+			vmArg "-Dragnarsmagicmod.beamsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Upside Down photo shoot: screenshots into build/clientsmoke/screenshots
+		upsideSmoke {
+			client()
+			name "Upside Down Smoke Test"
+			vmArg "-Dragnarsmagicmod.upsidesmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Zap photo shoot: screenshots into build/clientsmoke/screenshots
 		zapSmoke {
 			client()

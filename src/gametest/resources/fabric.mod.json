@@ -23,7 +23,9 @@
       "net.ragnar.ragnarsmagicmod.gametest.ImpulseGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.SightGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.CreativeTabGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.ShadowHandsGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.ShadowHandsGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.BeamingGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.UpsideDownGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
@@ -32,7 +34,9 @@
       "net.ragnar.ragnarsmagicmod.gametest.JauntingClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.ZapClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.SightClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.ShadowHandsClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.ShadowHandsClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.BeamingClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.UpsideDownClientSmoke"
     ]
   },
   "depends": {
