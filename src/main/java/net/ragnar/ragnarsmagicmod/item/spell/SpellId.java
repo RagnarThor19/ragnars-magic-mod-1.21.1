@@ -104,5 +104,8 @@ public enum SpellId {
     RICOCHET,
     JUMPING,
     LOGS,
-    BALL_LIGHTNING
+    BALL_LIGHTNING,
+    IMPULSE,
+    SIGHT,
+    SHADOW_HANDS
 }

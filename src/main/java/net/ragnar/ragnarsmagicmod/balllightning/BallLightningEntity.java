@@ -49,10 +49,10 @@ import java.util.UUID;
  * On the client it eases between synced positions and remembers where it's been for its trail.
  */
 public class BallLightningEntity extends Entity {
-    public static final double SPEED = 0.84;
+    public static final double SPEED = 0.63;
     public static final double RANGE = 48.0;
     public static final float HIT_DAMAGE = 24f;
-    public static final float ZAP_DAMAGE = 4f;
+    public static final float ZAP_DAMAGE = 16f;
     public static final double ZAP_RANGE = 4.5;
     public static final float BOOM_RADIUS = 5f;
     public static final float BOOM_DAMAGE = 18f, BOOM_DAMAGE_EDGE = 6f;

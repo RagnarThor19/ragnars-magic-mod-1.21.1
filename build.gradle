@@ -147,6 +147,24 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Sight photo shoot: screenshots into build/clientsmoke/screenshots
+		sightSmoke {
+			client()
+			name "Sight Smoke Test"
+			vmArg "-Dragnarsmagicmod.sightsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Unseen Hands photo shoot: screenshots into build/clientsmoke/screenshots
+		shadowSmoke {
+			client()
+			name "Unseen Hands Smoke Test"
+			vmArg "-Dragnarsmagicmod.shadowsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Zap photo shoot: screenshots into build/clientsmoke/screenshots
 		zapSmoke {
 			client()

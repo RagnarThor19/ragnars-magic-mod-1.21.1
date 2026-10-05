@@ -30,6 +30,9 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.jumping.Jumping.register(); // Tome of Jumping
         net.ragnar.ragnarsmagicmod.logs.Logs.register(); // Tome of Logs
         net.ragnar.ragnarsmagicmod.balllightning.BallLightning.register(); // Tome of Ball Lightning
+        net.ragnar.ragnarsmagicmod.impulse.Impulse.register(); // Tome of Impulse
+        net.ragnar.ragnarsmagicmod.sight.Sight.register(); // Tome of Sight
+        net.ragnar.ragnarsmagicmod.shadowhands.ShadowHands.register(); // Tome of Unseen Hands
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();
