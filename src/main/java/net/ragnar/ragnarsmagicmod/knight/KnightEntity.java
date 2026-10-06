@@ -72,6 +72,8 @@ public class KnightEntity extends PathAwareEntity {
     static final double COMMAND_RANGE = 48.0;
     private static final double CATCH_UP = 28.0;
     private static final int CALM_TICKS = 100;
+    /** Out of a fight it stays between these distances of the caster, settling at STAY_AT when it has to move. */
+    private static final double STAY_NEAR = 3.0, STAY_FAR = 10.0, STAY_AT = 6.0;
 
     private static final DustParticleEffect MARK = new DustParticleEffect(new Vector3f(1.0f, 0.2f, 0.15f), 1.4f);
     private static final BlockStateParticleEffect MOSS_DUST = new BlockStateParticleEffect(ParticleTypes.FALLING_DUST, Blocks.MOSS_BLOCK.getDefaultState());
@@ -123,7 +125,8 @@ public class KnightEntity extends PathAwareEntity {
     private LivingEntity givenUpOn;
     private int givenUpUntil;
     private int repath;
-    private float followAngle = 140f;
+    /** Where it's walking to when the caster got too far or too close; null while it stands its ground. */
+    private Vec3d stayGoal;
 
     public KnightEntity(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -292,6 +295,7 @@ public class KnightEntity extends PathAwareEntity {
             follow(owner);
             return;
         }
+        stayGoal = null;
 
         getLookControl().lookAt(target, 30f, 30f);
         double dist = flatDistance(target);
@@ -323,28 +327,38 @@ public class KnightEntity extends PathAwareEntity {
         }
     }
 
-    /** Follows a step behind its caster, catching up in a burst of soul fire if left far behind. */
+    /**
+     * With nothing to fight it stands its ground, keeping watch the way the caster looks. It only moves when the
+     * caster wanders more than {@link #STAY_FAR} away (it closes back in to {@link #STAY_AT}) or comes closer than
+     * {@link #STAY_NEAR} (it steps back out to it), and catches up in a burst of soul fire if left far behind.
+     */
     private void follow(PlayerEntity owner) {
         double d2 = squaredDistanceTo(owner);
         if (d2 > CATCH_UP * CATCH_UP) {
             teleportNear(owner);
             return;
         }
-        if (this.age % 80 == 0) followAngle = 140f + (random.nextFloat() - 0.5f) * 40f;
-        double a = Math.toRadians(owner.getYaw() + followAngle);
-        Vec3d spot = owner.getPos().add(-Math.sin(a) * 3.2, 0, Math.cos(a) * 3.2);
-
-        if (squaredDistanceTo(spot) > 2.2 * 2.2) {
-            if (--repath <= 0) {
-                repath = 8;
-                getNavigation().startMovingTo(spot.x, spot.y, spot.z, d2 > 12 * 12 ? 1.4 : 1.05);
-            }
-        } else {
-            getNavigation().stop();
-            // Settled in: keep watch the way the caster looks
-            Vec3d focus = owner.getEyePos().add(owner.getRotationVector().multiply(16.0));
-            getLookControl().lookAt(focus.x, focus.y, focus.z, 10f, 20f);
+        double d = Math.sqrt(d2);
+        if (stayGoal == null && (d > STAY_FAR || d < STAY_NEAR)) {
+            // Somewhere at a comfortable distance, on the line between it and the caster
+            Vec3d away = getPos().subtract(owner.getPos()).multiply(1, 0, 1);
+            if (away.lengthSquared() < 1e-4) away = new Vec3d(-Math.sin(Math.toRadians(owner.getYaw())), 0, Math.cos(Math.toRadians(owner.getYaw()))).negate();
+            stayGoal = owner.getPos().add(away.normalize().multiply(STAY_AT));
+            repath = 0;
         }
+        if (stayGoal != null) {
+            if (squaredDistanceTo(stayGoal) < 1.2 * 1.2 || this.age % 100 == 0 && getNavigation().isIdle()) {
+                stayGoal = null;
+            } else if (--repath <= 0) {
+                repath = 8;
+                getNavigation().startMovingTo(stayGoal.x, stayGoal.y, stayGoal.z, d > STAY_FAR + 6 ? 1.4 : 1.05);
+            }
+            return;
+        }
+        getNavigation().stop();
+        // Standing guard: keep watch the way the caster looks
+        Vec3d focus = owner.getEyePos().add(owner.getRotationVector().multiply(16.0));
+        getLookControl().lookAt(focus.x, focus.y, focus.z, 10f, 20f);
     }
 
     private void teleportNear(PlayerEntity owner) {

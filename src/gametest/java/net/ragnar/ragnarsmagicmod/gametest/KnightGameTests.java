@@ -168,4 +168,36 @@ public class KnightGameTests implements FabricGameTest {
         p.discard();
         ctx.complete();
     }
+
+    @GameTest(templateName = EMPTY_STRUCTURE, batchId = "knight_stand", skyAccess = true, tickLimit = 220)
+    public void knightStandsItsGroundAtADistance(TestContext ctx) {
+        floor(ctx, 8);
+        ServerPlayerEntity p = caster(ctx);
+        ctx.assertTrue(cast(ctx, p), "cast");
+        Vec3d[] held = new Vec3d[1];
+        ctx.waitAndRun(RISEN, () -> {
+            KnightEntity k = knightOf(ctx, p);
+            ctx.assertTrue(k != null, "knight out");
+            // Six blocks off: comfortable, so it should just stand there
+            Vec3d six = Vec3d.ofBottomCenter(ctx.getAbsolutePos(new BlockPos(3, 1, 7)));
+            k.refreshPositionAndAngles(six.x, six.y, six.z, 180f, 0f);
+            k.getNavigation().stop();
+            held[0] = k.getPos();
+        });
+        ctx.waitAndRun(RISEN + 40, () -> {
+            KnightEntity k = knightOf(ctx, p);
+            ctx.assertTrue(k.getPos().distanceTo(held[0]) < 0.3, "stood still, moved " + k.getPos().distanceTo(held[0]));
+            // Right up against the caster: too close, so it steps back
+            Vec3d close = p.getPos().add(0, 0, 1.5);
+            k.refreshPositionAndAngles(close.x, close.y, close.z, 180f, 0f);
+            k.getNavigation().stop();
+        });
+        ctx.waitAndRun(RISEN + 120, () -> {
+            KnightEntity k = knightOf(ctx, p);
+            double d = Math.sqrt(k.squaredDistanceTo(p));
+            ctx.assertTrue(d >= 3.0 && d <= 10.0, "stepped back out to a comfortable distance, at " + d);
+            cleanUp(ctx, p);
+            ctx.complete();
+        });
+    }
 }

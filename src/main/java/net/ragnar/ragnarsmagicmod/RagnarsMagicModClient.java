@@ -49,5 +49,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.shadowhands.client.ShadowHandsClient.init(); // Tome of Unseen Hands
         net.ragnar.ragnarsmagicmod.beaming.client.BeamingClient.init(); // Tome of Beaming
         net.ragnar.ragnarsmagicmod.upsidedown.client.UpsideDownClient.init(); // Tome of Upside Down
+        net.ragnar.ragnarsmagicmod.boulders.client.BouldersClient.init(); // Tome of Boulders
     }
 }

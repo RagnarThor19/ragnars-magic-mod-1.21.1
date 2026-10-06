@@ -37,11 +37,11 @@ public class ModEntities {
                     .build()
     );
 
-    public static final EntityType<BoulderProjectileEntity> BOULDER_PROJECTILE = Registry.register(
+    public static final EntityType<RockEntity> ROCK = Registry.register(
             Registries.ENTITY_TYPE,
-            Identifier.of(RagnarsMagicMod.MOD_ID, "boulder"),
-            FabricEntityTypeBuilder.<BoulderProjectileEntity>create(SpawnGroup.MISC, BoulderProjectileEntity::new)
-                    .dimensions(EntityDimensions.fixed(0.75f, 0.75f)) // Bigger hitbox
+            Identifier.of(RagnarsMagicMod.MOD_ID, "rock"),
+            FabricEntityTypeBuilder.<RockEntity>create(SpawnGroup.MISC, RockEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.5f, 0.5f))
                     .trackRangeBlocks(64)
                     .trackedUpdateRate(10)
                     .build()

@@ -35,6 +35,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.shadowhands.ShadowHands.register(); // Tome of Unseen Hands
         net.ragnar.ragnarsmagicmod.beaming.Beaming.register(); // Tome of Beaming
         net.ragnar.ragnarsmagicmod.upsidedown.UpsideDown.register(); // Tome of Upside Down
+        net.ragnar.ragnarsmagicmod.boulders.Boulders.register(); // Tome of Boulders
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();
@@ -126,7 +127,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.FREEZING, new net.ragnar.ragnarsmagicmod.item.spell.FreezingSpell());
         Spells.register(SpellId.RAINING_ARROWS, new net.ragnar.ragnarsmagicmod.item.spell.RainingArrowsSpell());
         Spells.register(SpellId.RANDOMNESS, new net.ragnar.ragnarsmagicmod.item.spell.RandomnessSpell());
-        Spells.register(SpellId.BOULDER, new net.ragnar.ragnarsmagicmod.item.spell.BoulderSpell());
+        Spells.register(SpellId.ROCKS, new net.ragnar.ragnarsmagicmod.item.spell.RocksSpell());
         Spells.register(SpellId.SWAP, new net.ragnar.ragnarsmagicmod.item.spell.SwappingSpell());
         Spells.register(SpellId.CLOUDS, new net.ragnar.ragnarsmagicmod.item.spell.CloudSpell());
         Spells.register(SpellId.SMASH, new net.ragnar.ragnarsmagicmod.item.spell.SmashingSpell());
@@ -155,6 +156,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.COBWEBS, new net.ragnar.ragnarsmagicmod.item.spell.CobwebSpell());
         Spells.register(SpellId.SMELTING, new net.ragnar.ragnarsmagicmod.item.spell.SmeltingSpell());
         Spells.register(SpellId.SPEED, new net.ragnar.ragnarsmagicmod.item.spell.SpeedSpell());
+        net.ragnar.ragnarsmagicmod.item.spell.SpeedSpell.register(); // passive Speed I
         Spells.register(SpellId.BLOOM, new net.ragnar.ragnarsmagicmod.item.spell.BloomSpell());
         Spells.register(SpellId.TNT, new net.ragnar.ragnarsmagicmod.item.spell.TntSpell());
         Spells.register(SpellId.DUSK_AND_DAWN, new net.ragnar.ragnarsmagicmod.item.spell.DuskAndDawnSpell());

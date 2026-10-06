@@ -2,7 +2,9 @@ package net.ragnar.ragnarsmagicmod.entity.client;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
+import net.minecraft.client.render.entity.feature.EyesFeatureRenderer;
 import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.client.render.entity.model.ArmorEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
@@ -14,6 +16,8 @@ public class SteveRenderer extends MobEntityRenderer<SteveEntity, PlayerEntityMo
 
     private static final Identifier STEVE_TEXTURE =
             Identifier.of("ragnarsmagicmod", "textures/entity/steve.png");
+    /** Summoned Steves' eyes glow a cold cyan, light or dark. */
+    private static final RenderLayer EYES = RenderLayer.getEyes(Identifier.of("ragnarsmagicmod", "textures/entity/steve_eyes.png"));
 
     public SteveRenderer(EntityRendererFactory.Context context) {
         super(
@@ -32,6 +36,14 @@ public class SteveRenderer extends MobEntityRenderer<SteveEntity, PlayerEntityMo
                 new ArmorEntityModel<>(context.getPart(EntityModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getModelManager()
         ));
+
+        // 3. Glowing eyes
+        this.addFeature(new EyesFeatureRenderer<>(this) {
+            @Override
+            public RenderLayer getEyesTexture() {
+                return EYES;
+            }
+        });
     }
 
     @Override

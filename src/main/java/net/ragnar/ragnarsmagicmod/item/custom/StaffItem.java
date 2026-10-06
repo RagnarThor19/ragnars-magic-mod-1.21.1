@@ -89,7 +89,8 @@ public class StaffItem extends Item {
 
     private static TomeItem readTome(NbtCompound entry, String idKey, String tierKey) {
         try {
-            SpellId id = SpellId.valueOf(entry.getString(idKey));
+            String name = entry.getString(idKey);
+            SpellId id = name.equals("BOULDER") ? SpellId.ROCKS : SpellId.valueOf(name); // the old Tome of Boulders is the Tome of Rocks now
             TomeTier tier = TomeTier.valueOf(entry.getString(tierKey));
             return ModItems.getTomeFor(id, tier);
         } catch (IllegalArgumentException e) {

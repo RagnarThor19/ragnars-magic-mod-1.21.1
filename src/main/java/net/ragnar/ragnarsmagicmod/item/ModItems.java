@@ -93,7 +93,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.BLINK,
-                    10 // XP cost
+                    4 // XP cost
             ).setCooldown(20 * 2) // 2 seconds
     );
 
@@ -402,11 +402,11 @@ public class ModItems {
                     10 // Cheap XP
             ).setCooldown(50)
     );
-    public static final Item TOME_OF_BOULDERS = registerItem("tome_of_boulders",
+    public static final Item TOME_OF_ROCKS = registerItem("tome_of_rocks",
             new TomeItem(
                     new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // begginner
                     TomeTier.BEGINNER,
-                    SpellId.BOULDER,
+                    SpellId.ROCKS,
                     12 // XP Cost
             ).setCooldown(80) // 4 seconds
     );
@@ -541,8 +541,8 @@ public class ModItems {
     );
     public static final TomeItem TOME_OF_SPEED = (TomeItem) registerItem("tome_of_speed",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
-                    TomeTier.BEGINNER, SpellId.SPEED, 3
-            ).setCooldown(60) // 3 seconds
+                    TomeTier.BEGINNER, SpellId.SPEED, 0
+            ).setCooldown(0) // passive: Speed I while it's on a staff you carry
     );
     public static final TomeItem TOME_OF_BLOOM = (TomeItem) registerItem("tome_of_bloom",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
@@ -898,9 +898,9 @@ public class ModItems {
                 (net.ragnar.ragnarsmagicmod.item.custom.TomeItem) TOME_RANDOMNESS
         );
         putTome(
-                SpellId.BOULDER,
+                SpellId.ROCKS,
                 TomeTier.BEGINNER,
-                (TomeItem) TOME_OF_BOULDERS
+                (TomeItem) TOME_OF_ROCKS
         );
         putTome(SpellId.SWAP, TomeTier.BEGINNER, (TomeItem) TOME_SWAPPING);
         putTome(
@@ -993,7 +993,7 @@ public class ModItems {
     //other stuff
     public static final Item ICE_SHARD_ITEM = registerItem("ice_shard",
             new Item(new Item.Settings().maxCount(16)));
-    public static final Item BOULDER_ITEM = registerItem("boulder",
+    public static final Item ROCK_ITEM = registerItem("rock",
             new Item(new Item.Settings().maxCount(16)));
 
 
@@ -1044,7 +1044,7 @@ public class ModItems {
             entries.add(new net.minecraft.item.ItemStack(TOME_ARROW_VOLLEY));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_TORCHES));
             entries.add(new net.minecraft.item.ItemStack(TOME_INVISIBILITY));
-            entries.add(new ItemStack(TOME_OF_BOULDERS));
+            entries.add(new ItemStack(TOME_OF_ROCKS));
             entries.add(new ItemStack(TOME_SWAPPING));
             entries.add(new net.minecraft.item.ItemStack(TOME_OF_PULLING));
             entries.add(new ItemStack(TOME_OF_BREATHING));

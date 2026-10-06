@@ -18,7 +18,7 @@ import java.util.Set;
 /** Every item the mod adds shows up in some creative tab. */
 public class CreativeTabGameTests implements FabricGameTest {
     /** Items that only exist so a projectile has something to draw; nothing a player should hold. */
-    private static final Set<String> PROJECTILE_ONLY = Set.of("ice_shard", "boulder", "jaunting_kunai");
+    private static final Set<String> PROJECTILE_ONLY = Set.of("ice_shard", "rock", "jaunting_kunai");
 
     @GameTest(templateName = EMPTY_STRUCTURE)
     public void everyItemIsInACreativeTab(TestContext ctx) {
