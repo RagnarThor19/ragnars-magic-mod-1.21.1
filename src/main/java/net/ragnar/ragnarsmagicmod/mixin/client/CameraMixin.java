@@ -51,14 +51,14 @@ public abstract class CameraMixin {
     @WrapOperation(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getYaw(F)F"))
     private float ragnarsmagicmod$possessedYaw(Entity entity, float tickDelta, Operation<Float> original) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player != null && PossessionClient.isHost(entity)) return client.player.getYaw(tickDelta);
+        if (client.player != null && (PossessionClient.isHost(entity) || net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.isDragon(entity))) return client.player.getYaw(tickDelta);
         return original.call(entity, tickDelta);
     }
 
     @WrapOperation(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getPitch(F)F"))
     private float ragnarsmagicmod$possessedPitch(Entity entity, float tickDelta, Operation<Float> original) {
         MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player != null && PossessionClient.isHost(entity)) return client.player.getPitch(tickDelta);
+        if (client.player != null && (PossessionClient.isHost(entity) || net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.isDragon(entity))) return client.player.getPitch(tickDelta);
         return original.call(entity, tickDelta);
     }
 }

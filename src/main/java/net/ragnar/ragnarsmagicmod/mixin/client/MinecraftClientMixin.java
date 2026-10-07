@@ -13,16 +13,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MinecraftClientMixin {
     @Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$hostAbility(CallbackInfoReturnable<Boolean> cir) {
-        if (PossessionClient.onAttack()) cir.setReturnValue(false);
+        if (PossessionClient.onAttack() || net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.onClick()) cir.setReturnValue(false);
     }
 
     @Inject(method = "doItemUse", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$leaveHost(CallbackInfo ci) {
-        if (PossessionClient.onUse()) ci.cancel();
+        if (PossessionClient.onUse() || net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.onUse()) ci.cancel();
     }
 
     @Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$noBreakingWhilePossessing(boolean breaking, CallbackInfo ci) {
-        if (PossessionClient.isPossessing()) ci.cancel();
+        if (PossessionClient.isPossessing() || net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.isPiloting()) ci.cancel();
     }
 }

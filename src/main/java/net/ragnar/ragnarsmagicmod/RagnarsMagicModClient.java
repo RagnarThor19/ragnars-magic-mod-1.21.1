@@ -50,5 +50,8 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.beaming.client.BeamingClient.init(); // Tome of Beaming
         net.ragnar.ragnarsmagicmod.upsidedown.client.UpsideDownClient.init(); // Tome of Upside Down
         net.ragnar.ragnarsmagicmod.boulders.client.BouldersClient.init(); // Tome of Boulders
+        net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.init(); // Tome of the Dragon
+        net.ragnar.ragnarsmagicmod.moon.client.MoonClient.init(); // Tome of the Moon
+        net.ragnar.ragnarsmagicmod.mightypush.client.MightyPushClient.init(); // Tome of Mighty Pushing
     }
 }

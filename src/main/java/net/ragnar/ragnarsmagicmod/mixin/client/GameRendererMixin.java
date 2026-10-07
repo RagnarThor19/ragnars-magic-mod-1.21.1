@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class GameRendererMixin {
     @Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$noHandInHost(Camera camera, float tickDelta, Matrix4f matrix, CallbackInfo ci) {
-        if (PossessionClient.isPossessing()) ci.cancel();
+        if (PossessionClient.isPossessing() || net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.isPiloting()) ci.cancel();
     }
 
     /** Tome of Grappling: the view widens as you pick up speed on the chain. */

@@ -27,6 +27,7 @@
 		"client.EntityRenderDispatcherMixin",
 		"client.GameRendererMixin",
 		"client.KeyboardInputMixin",
+		"client.MightyPushPoseMixin",
 		"client.MinecraftClientMixin",
 		"client.MouseMixin",
 		"client.PlayerTravelMixin",

@@ -132,11 +132,14 @@ public class BoulderGameTests implements FabricGameTest {
 
         ctx.waitAndRun(2, () -> {
             boolean slammed = false;
-            Vec3d leftKick = Vec3d.ZERO, rightKick = Vec3d.ZERO;
+            Vec3d leftKick = Vec3d.ZERO, rightKick = Vec3d.ZERO, leftAway = Vec3d.ZERO, rightAway = Vec3d.ZERO;
             for (int i = 0; i < 200 && !boulder.isRemoved(); i++) {
                 boulder.tick();
                 if (!slammed && boulder.stage() == BoulderEntity.ROLLING) {
                     slammed = true;
+                    Vec3d slamAt = boulder.getPos();
+                    leftAway = left.getPos().subtract(slamAt).multiply(1, 0, 1).normalize();
+                    rightAway = right.getPos().subtract(slamAt).multiply(1, 0, 1).normalize();
                     leftKick = left.getVelocity();
                     rightKick = right.getVelocity();
                 }
@@ -145,7 +148,9 @@ public class BoulderGameTests implements FabricGameTest {
             ctx.assertTrue(boulder.isRemoved(), "broke apart in the end");
             ctx.assertTrue(left.getHealth() < left.getMaxHealth() && right.getHealth() < right.getMaxHealth(),
                     "slam hurt both, health " + left.getHealth() + " / " + right.getHealth());
-            ctx.assertTrue(leftKick.x < -0.3 && rightKick.x > 0.3, "thrown outwards: " + leftKick + " / " + rightKick);
+            // Away from wherever it actually came down
+            ctx.assertTrue(leftKick.multiply(1, 0, 1).dotProduct(leftAway) > 0.3 && rightKick.multiply(1, 0, 1).dotProduct(rightAway) > 0.3,
+                    "thrown outwards: " + leftKick + " / " + rightKick);
             ctx.assertTrue(leftKick.y > 0.2 && rightKick.y > 0.2, "and up off their feet");
             ctx.assertTrue(p.getHealth() == p.getMaxHealth(), "never hurts the caster");
             ctx.assertTrue(ctx.getBlockState(new BlockPos(3, 2, 7)).isOf(Blocks.STONE), "breaks no blocks");

@@ -201,6 +201,33 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of the Dragon photo shoot: screenshots into build/clientsmoke/screenshots
+		dragonSmoke {
+			client()
+			name "Dragon Smoke Test"
+			vmArg "-Dragnarsmagicmod.dragonsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of the Moon photo shoot: screenshots into build/clientsmoke/screenshots
+		moonSmoke {
+			client()
+			name "Moon Smoke Test"
+			vmArg "-Dragnarsmagicmod.moonsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Mighty Pushing photo shoot: screenshots into build/clientsmoke/screenshots
+		pushSmoke {
+			client()
+			name "Mighty Push Smoke Test"
+			vmArg "-Dragnarsmagicmod.pushsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Zap photo shoot: screenshots into build/clientsmoke/screenshots
 		zapSmoke {
 			client()

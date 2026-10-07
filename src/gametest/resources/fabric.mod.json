@@ -28,7 +28,10 @@
       "net.ragnar.ragnarsmagicmod.gametest.UpsideDownGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.SteveGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.SpeedGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.BoulderGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.BoulderGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.DragonGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.MoonGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.MightyPushGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
@@ -41,7 +44,10 @@
       "net.ragnar.ragnarsmagicmod.gametest.BeamingClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.UpsideDownClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.SteveClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.BoulderClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.BoulderClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.DragonClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.MoonClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.MightyPushClientSmoke"
     ]
   },
   "depends": {
