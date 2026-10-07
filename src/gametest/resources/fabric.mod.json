@@ -33,7 +33,9 @@
       "net.ragnar.ragnarsmagicmod.gametest.MoonGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.MightyPushGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.LightningPathGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.BubbleGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.BubbleGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.EarthquakeGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.LungingGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
@@ -51,7 +53,9 @@
       "net.ragnar.ragnarsmagicmod.gametest.MoonClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.MightyPushClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.LightningPathClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.BubbleClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.BubbleClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.EarthquakeClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.LungingClientSmoke"
     ]
   },
   "depends": {

@@ -8,6 +8,7 @@
 		"ItemCooldownEntryAccessor",
 		"ItemCooldownManagerAccessor",
 		"ExampleMixin",
+		"LivingEntityAttackAccessor",
 		"LivingEntityMixin",
 		"MobEntityAccessor",
 		"MobEntityMixin",

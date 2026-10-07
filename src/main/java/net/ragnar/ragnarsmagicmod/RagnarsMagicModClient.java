@@ -55,5 +55,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.mightypush.client.MightyPushClient.init(); // Tome of Mighty Pushing
         net.ragnar.ragnarsmagicmod.lightningpath.client.LightningPathClient.init(); // Tome of the Lightning Path
         net.ragnar.ragnarsmagicmod.bubbles.client.BubblesClient.init(); // Tome of Bubbles
+        net.ragnar.ragnarsmagicmod.earthquake.client.EarthquakeClient.init(); // Tome of Earthquake
+        net.ragnar.ragnarsmagicmod.lunging.client.LungingClient.init(); // Tome of Lunging
     }
 }

@@ -246,6 +246,24 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Earthquake photo shoot: screenshots into build/clientsmoke/screenshots
+		quakeSmoke {
+			client()
+			name "Earthquake Smoke Test"
+			vmArg "-Dragnarsmagicmod.quakesmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Lunging check: positions logged, screenshots into build/clientsmoke/screenshots
+		lungeSmoke {
+			client()
+			name "Lunge Smoke Test"
+			vmArg "-Dragnarsmagicmod.lungesmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Zap photo shoot: screenshots into build/clientsmoke/screenshots
 		zapSmoke {
 			client()

@@ -115,5 +115,7 @@ public enum SpellId {
     SHADOW_HANDS,
     BEAMING,
     UPSIDE_DOWN,
-    BUBBLES
+    BUBBLES,
+    EARTHQUAKE,
+    LUNGING
 }

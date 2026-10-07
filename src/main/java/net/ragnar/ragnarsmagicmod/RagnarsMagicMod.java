@@ -41,6 +41,8 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.mightypush.MightyPush.register(); // Tome of Mighty Pushing
         net.ragnar.ragnarsmagicmod.lightningpath.LightningPath.register(); // Tome of the Lightning Path
         net.ragnar.ragnarsmagicmod.bubbles.Bubbles.register(); // Tome of Bubbles
+        net.ragnar.ragnarsmagicmod.earthquake.Earthquake.register(); // Tome of Earthquake
+        net.ragnar.ragnarsmagicmod.lunging.Lunging.register(); // Tome of Lunging
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();
