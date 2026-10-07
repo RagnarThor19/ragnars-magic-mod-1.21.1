@@ -11,15 +11,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/** As a Tome of the Fairy fairy, your own movement follows fairy flight instead of walking. */
+/** As a Tome of the Fairy fairy, your own movement follows fairy flight instead of walking; on a Lightning Path, the route. */
 @Mixin(PlayerEntity.class)
 public class PlayerTravelMixin {
     @Inject(method = "travel", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$fairyFlight(Vec3d movementInput, CallbackInfo ci) {
-        if ((Object) this instanceof ClientPlayerEntity player && player == MinecraftClient.getInstance().player
-                && FairyForm.isFairy(player)) {
-            FairyClient.travel(player);
-            ci.cancel();
+        if ((Object) this instanceof ClientPlayerEntity player && player == MinecraftClient.getInstance().player) {
+            // Tome of the Lightning Path: running your painted route
+            if (net.ragnar.ragnarsmagicmod.lightningpath.client.LightningPathClient.travel(player)) {
+                ci.cancel();
+            } else if (FairyForm.isFairy(player)) {
+                FairyClient.travel(player);
+                ci.cancel();
+            }
         }
     }
 }

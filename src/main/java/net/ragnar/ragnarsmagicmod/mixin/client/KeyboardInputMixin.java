@@ -16,5 +16,6 @@ public class KeyboardInputMixin {
         PossessionClient.captureInput((Input) (Object) this);
         net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.captureInput((Input) (Object) this); // Tome of the Dragon
         net.ragnar.ragnarsmagicmod.mightypush.client.MightyPushClient.captureInput((Input) (Object) this); // Tome of Mighty Pushing
+        net.ragnar.ragnarsmagicmod.lightningpath.client.LightningPathClient.captureInput((Input) (Object) this); // Tome of the Lightning Path
     }
 }

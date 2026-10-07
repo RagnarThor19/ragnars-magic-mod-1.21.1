@@ -228,6 +228,15 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of the Lightning Path photo shoot: screenshots into build/clientsmoke/screenshots
+		pathSmoke {
+			client()
+			name "Lightning Path Smoke Test"
+			vmArg "-Dragnarsmagicmod.pathsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Zap photo shoot: screenshots into build/clientsmoke/screenshots
 		zapSmoke {
 			client()

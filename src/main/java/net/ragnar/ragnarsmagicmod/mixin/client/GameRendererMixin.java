@@ -22,6 +22,7 @@ public class GameRendererMixin {
     /** Tome of Grappling: the view widens as you pick up speed on the chain. */
     @Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
     private void ragnarsmagicmod$grappleRush(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
-        if (changingFov) cir.setReturnValue(cir.getReturnValue() * GrappleClient.fovMultiplier(tickDelta));
+        if (changingFov) cir.setReturnValue(cir.getReturnValue() * GrappleClient.fovMultiplier(tickDelta)
+                * net.ragnar.ragnarsmagicmod.lightningpath.client.LightningPathClient.fovMultiplier(tickDelta));
     }
 }

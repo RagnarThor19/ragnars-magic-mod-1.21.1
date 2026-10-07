@@ -49,6 +49,7 @@ public enum SpellId {
     DRAGON,
     MOON,
     MIGHTY_PUSH,
+    LIGHTNING_PATH,
     SWAP,
     CLOUDS,
     SMASH,
