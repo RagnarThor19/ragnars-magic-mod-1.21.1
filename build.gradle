@@ -237,6 +237,15 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Bubbles photo shoot: screenshots into build/clientsmoke/screenshots
+		bubbleSmoke {
+			client()
+			name "Bubble Smoke Test"
+			vmArg "-Dragnarsmagicmod.bubblesmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Zap photo shoot: screenshots into build/clientsmoke/screenshots
 		zapSmoke {
 			client()

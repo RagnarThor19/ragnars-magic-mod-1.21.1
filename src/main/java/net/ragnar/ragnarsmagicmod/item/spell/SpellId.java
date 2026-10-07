@@ -114,5 +114,6 @@ public enum SpellId {
     SIGHT,
     SHADOW_HANDS,
     BEAMING,
-    UPSIDE_DOWN
+    UPSIDE_DOWN,
+    BUBBLES
 }

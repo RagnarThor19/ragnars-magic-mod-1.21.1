@@ -40,6 +40,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.moon.Moon.register(); // Tome of the Moon
         net.ragnar.ragnarsmagicmod.mightypush.MightyPush.register(); // Tome of Mighty Pushing
         net.ragnar.ragnarsmagicmod.lightningpath.LightningPath.register(); // Tome of the Lightning Path
+        net.ragnar.ragnarsmagicmod.bubbles.Bubbles.register(); // Tome of Bubbles
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();
