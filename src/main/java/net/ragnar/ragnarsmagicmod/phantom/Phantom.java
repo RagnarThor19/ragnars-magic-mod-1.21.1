@@ -47,7 +47,6 @@ import net.ragnar.ragnarsmagicmod.item.custom.TomeItem;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
-import net.ragnar.ragnarsmagicmod.lunging.Lunging;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -132,7 +131,7 @@ public final class Phantom {
         // Lets staffs hand the tome back and puts it in the master tome loot pool
         ModItems.TOMES.computeIfAbsent(SpellId.PHANTOM, k -> new EnumMap<>(TomeTier.class)).put(TomeTier.MASTER, TOME_OF_THE_PHANTOM);
         Spells.register(SpellId.PHANTOM, new PhantomSpell());
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(Lunging.TOME_OF_LUNGING, TOME_OF_THE_PHANTOM));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(ModItems.TOME_OF_RECKONING, TOME_OF_THE_PHANTOM));
 
         PayloadTypeRegistry.playS2C().register(StatePayload.ID, StatePayload.CODEC);
         ServerTickEvents.END_WORLD_TICK.register(Phantom::tick);

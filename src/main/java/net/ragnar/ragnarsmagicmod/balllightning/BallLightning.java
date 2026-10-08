@@ -26,7 +26,6 @@ import net.ragnar.ragnarsmagicmod.item.custom.TomeItem;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
-import net.ragnar.ragnarsmagicmod.logs.Logs;
 import org.joml.Vector3f;
 
 import java.util.EnumMap;
@@ -121,6 +120,6 @@ public final class BallLightning {
         Spells.register(SpellId.BALL_LIGHTNING, new BallLightningSpell());
         PayloadTypeRegistry.playS2C().register(ArcPayload.ID, ArcPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(BoomPayload.ID, BoomPayload.CODEC);
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(Logs.TOME_OF_LOGS, TOME_OF_BALL_LIGHTNING));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(ModItems.TOME_METEOR, TOME_OF_BALL_LIGHTNING));
     }
 }
