@@ -117,5 +117,6 @@ public enum SpellId {
     UPSIDE_DOWN,
     BUBBLES,
     EARTHQUAKE,
-    LUNGING
+    LUNGING,
+    PHANTOM
 }

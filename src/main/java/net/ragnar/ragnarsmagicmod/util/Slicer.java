@@ -1,5 +1,6 @@
 package net.ragnar.ragnarsmagicmod.util;
 
+import net.ragnar.ragnarsmagicmod.util.DeflectableShots;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.DisplayEntity;
@@ -42,11 +43,11 @@ public final class Slicer {
         void hitWall(ServerWorld world, Vec3d at, Vec3d dir);
     }
 
-    private static final class Cut {
+    private static final class Cut implements DeflectableShots.Shot {
         final ServerWorld world;
-        final UUID owner;
+        UUID owner;
         final Style style;
-        final Vec3d dir;
+        Vec3d dir;
         final List<DisplayEntity> visual;
         Vec3d pos;
         double travelled = 0;
@@ -60,9 +61,28 @@ public final class Slicer {
             this.dir = dir;
             this.visual = visual;
         }
+
+        // A Tome of Deflection pane sends it back, the full range again, as the deflector's
+        @Override public ServerWorld world() { return world; }
+        @Override public Vec3d pos() { return pos; }
+        @Override public Vec3d deflectVelocity() { return dir.multiply(style.speed()); }
+        @Override public UUID deflectOwner() { return owner; }
+        @Override public double radius() { return style.hitMargin() + 0.2; }
+
+        @Override
+        public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
+            owner = deflector.getUuid();
+            this.dir = dir;
+            pos = at;
+            travelled = 0;
+        }
     }
 
     private static final List<Cut> ACTIVE = new ArrayList<>();
+
+    static {
+        DeflectableShots.register(() -> ACTIVE);
+    }
     private static boolean registered = false;
 
     private static void ensureRegistered() {

@@ -8,6 +8,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.ragnar.ragnarsmagicmod.util.Deflectable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -38,7 +39,7 @@ import java.util.UUID;
  * <p>
  * On the client it eases between synced positions; {@link #fuse()} tells it how close it is to going off.
  */
-public class ImpulseCubeEntity extends Entity {
+public class ImpulseCubeEntity extends Entity implements Deflectable {
     public static final double SPEED = 1.45;
     public static final double GRAVITY = 0.045;
     public static final int FUSE = 16;
@@ -110,6 +111,29 @@ public class ImpulseCubeEntity extends Entity {
     @Override
     public boolean shouldRender(double distance) {
         return distance < 96 * 96;
+    }
+
+    // A Tome of Deflection pane bats it back while it's flying, as the deflector's
+    @Override
+    public Vec3d deflectVelocity() {
+        return isStuck() || isRemoved() ? Vec3d.ZERO : vel;
+    }
+
+    @Override
+    @Nullable
+    public UUID deflectOwner() {
+        return ownerId;
+    }
+
+    @Override
+    public double deflectGravity() {
+        return GRAVITY;
+    }
+
+    @Override
+    public void deflect(PlayerEntity deflector, Vec3d dir, double speed) {
+        ownerId = deflector.getUuid();
+        vel = dir.multiply(speed);
     }
 
     // ---------------------------------------------------------------------

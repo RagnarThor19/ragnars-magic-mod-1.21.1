@@ -10,6 +10,7 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.ragnar.ragnarsmagicmod.util.Deflectable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -48,7 +49,7 @@ import java.util.UUID;
  * <p>
  * On the client it eases between synced positions and remembers where it's been for its trail.
  */
-public class BallLightningEntity extends Entity {
+public class BallLightningEntity extends Entity implements Deflectable {
     public static final double SPEED = 0.63;
     public static final double RANGE = 48.0;
     public static final float HIT_DAMAGE = 24f;
@@ -95,6 +96,27 @@ public class BallLightningEntity extends Entity {
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {}
+
+    // A Tome of Deflection pane turns it back, the whole way again, as the deflector's
+    @Override
+    public Vec3d deflectVelocity() {
+        return isRemoved() ? Vec3d.ZERO : dir.multiply(SPEED);
+    }
+
+    @Override
+    @Nullable
+    public UUID deflectOwner() {
+        return ownerId;
+    }
+
+    @Override
+    public void deflect(PlayerEntity deflector, Vec3d dir, double speed) {
+        ownerId = deflector.getUuid();
+        this.dir = dir;
+        travelled = 0;
+        age = 0;
+        struck.clear();
+    }
 
     @Override
     public boolean shouldSave() {

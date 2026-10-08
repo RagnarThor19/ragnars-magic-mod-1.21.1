@@ -1,5 +1,6 @@
 package net.ragnar.ragnarsmagicmod.item.spell;
 
+import net.ragnar.ragnarsmagicmod.util.DeflectableShots;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.component.DataComponentTypes;
@@ -71,11 +72,11 @@ public class QuiverSpell implements Spell {
         }
     }
 
-    private static final class Flying {
+    private static final class Flying implements DeflectableShots.Shot {
         final ServerWorld world;
         final DisplayEntity.ItemDisplayEntity display;
-        final UUID owner;
-        final Vec3d vel;
+        UUID owner;
+        Vec3d vel;
         Vec3d pos;
         int age = 0;
         int stuck = -1;
@@ -87,10 +88,30 @@ public class QuiverSpell implements Spell {
             this.pos = pos;
             this.vel = vel;
         }
+
+        // A Tome of Deflection pane sends it back while it's flying, as the deflector's
+        @Override public ServerWorld world() { return world; }
+        @Override public Vec3d pos() { return pos; }
+        @Override public Vec3d deflectVelocity() { return stuck >= 0 ? Vec3d.ZERO : vel; }
+        @Override public UUID deflectOwner() { return owner; }
+
+        @Override
+        public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
+            owner = deflector.getUuid();
+            vel = dir.multiply(SPEED);
+            pos = at;
+            age = 0;
+            display.setTransformation(transformFor(vel));
+            moveDisplay(this);
+        }
     }
 
     private static final Map<UUID, Ring> RINGS = new HashMap<>();
     private static final List<Flying> FLYING = new ArrayList<>();
+
+    static {
+        DeflectableShots.register(() -> FLYING);
+    }
     private static boolean registered = false;
 
     private static void ensureRegistered() {

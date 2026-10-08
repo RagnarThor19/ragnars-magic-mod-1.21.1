@@ -10,6 +10,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.ragnar.ragnarsmagicmod.util.Deflectable;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.DustParticleEffect;
@@ -47,7 +48,7 @@ import java.util.UUID;
  * <p>
  * On the client it just eases from one synced spot to the next, and remembers where it's been for the trail.
  */
-public class RicochetArrowEntity extends Entity {
+public class RicochetArrowEntity extends Entity implements Deflectable {
     public static final float DAMAGE = 20f;
     public static final int CHARGE_TICKS = 30;
     /** Blocks per tick in a straight line, and while darting to the next mob. */
@@ -108,6 +109,29 @@ public class RicochetArrowEntity extends Entity {
 
     public int ownerNetId() {
         return dataTracker.get(OWNER);
+    }
+
+    // A Tome of Deflection pane turns it back once it's flying, as the deflector's, ready to bounce on from there
+    @Override
+    public Vec3d deflectVelocity() {
+        return charge() > 0 || isRemoved() ? Vec3d.ZERO : dir.multiply(target != null ? BOUNCE_SPEED : SPEED);
+    }
+
+    @Override
+    @Nullable
+    public UUID deflectOwner() {
+        return ownerId;
+    }
+
+    @Override
+    public void deflect(PlayerEntity deflector, Vec3d dir, double speed) {
+        ownerId = deflector.getUuid();
+        dataTracker.set(OWNER, deflector.getId());
+        target = null;
+        struck.clear();
+        flight = 0;
+        this.dir = dir;
+        aim(dir);
     }
 
     public int charge() {

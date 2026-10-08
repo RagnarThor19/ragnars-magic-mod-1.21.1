@@ -99,6 +99,10 @@ public class FairySpell implements Spell {
             end(sp);
             return true;
         }
+        if (net.ragnar.ragnarsmagicmod.phantom.Phantom.isPhantom(player)) {
+            player.sendMessage(net.minecraft.text.Text.literal("Not while you're a spectre.").formatted(net.minecraft.util.Formatting.GRAY), true);
+            return false;
+        }
 
         FAIRIES.put(player.getUuid(), new Fairy(sw));
         FairyForm.SERVER.add(player.getUuid());

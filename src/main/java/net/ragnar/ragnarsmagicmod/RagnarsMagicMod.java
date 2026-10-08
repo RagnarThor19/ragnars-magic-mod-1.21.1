@@ -43,6 +43,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.bubbles.Bubbles.register(); // Tome of Bubbles
         net.ragnar.ragnarsmagicmod.earthquake.Earthquake.register(); // Tome of Earthquake
         net.ragnar.ragnarsmagicmod.lunging.Lunging.register(); // Tome of Lunging
+        net.ragnar.ragnarsmagicmod.phantom.Phantom.register(); // Tome of the Phantom
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();
@@ -59,6 +60,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.network.IceBeamPayload.register();
         net.ragnar.ragnarsmagicmod.network.ZapPayload.register();
         net.ragnar.ragnarsmagicmod.network.FairyPayload.register();
+        net.ragnar.ragnarsmagicmod.network.DeflectionPayload.register();
         net.ragnar.ragnarsmagicmod.network.BlinkPayload.register();
         net.ragnar.ragnarsmagicmod.network.SprayPayload.register();
         net.ragnar.ragnarsmagicmod.network.SlipperyPayload.register();

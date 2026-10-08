@@ -13,6 +13,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.ragnar.ragnarsmagicmod.util.Deflectable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -53,7 +54,7 @@ import java.util.UUID;
  * It never breaks blocks and never hurts its caster, their pets or their teammates. The server does all the physics;
  * the client eases between synced positions and turns the boulder to match how it moves (see {@link Tumble}).
  */
-public class BoulderEntity extends Entity {
+public class BoulderEntity extends Entity implements Deflectable {
     public static final int FORM_TICKS = 7;
     public static final double LAUNCH_SPEED = 1.3;
     /** How far off the crosshair can be and still be thrown at exactly. */
@@ -97,6 +98,32 @@ public class BoulderEntity extends Entity {
         ownerId = owner.getUuid();
         setPosition(holdPoint(world, owner));
         resetPosition();
+    }
+
+    // A Tome of Deflection pane hurls it back while it's in the air, as the deflector's
+    @Override
+    public Vec3d deflectVelocity() {
+        return stage() == FLYING && !isRemoved() ? getVelocity() : Vec3d.ZERO;
+    }
+
+    @Override
+    @Nullable
+    public UUID deflectOwner() {
+        return ownerId;
+    }
+
+    @Override
+    public double deflectGravity() {
+        return GRAVITY;
+    }
+
+    @Override
+    public void deflect(PlayerEntity deflector, Vec3d dir, double speed) {
+        ownerId = deflector.getUuid();
+        ploughed.clear();
+        stageAge = 0;
+        setVelocity(dir.multiply(Math.max(speed, LAUNCH_SPEED)));
+        velocityDirty = true;
     }
 
     @Override

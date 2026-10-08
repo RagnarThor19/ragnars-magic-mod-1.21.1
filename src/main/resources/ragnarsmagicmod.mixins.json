@@ -16,7 +16,9 @@
 		"upsidedown.UpsideDownPlayerMixin",
 		"upsidedown.UpsideDownEntityMixin",
 		"upsidedown.UpsideDownLivingEntityMixin",
-		"upsidedown.UpsideDownNetworkHandlerMixin"
+		"upsidedown.UpsideDownNetworkHandlerMixin",
+		"phantom.PhantomPlayerMixin",
+		"phantom.PhantomNetworkHandlerMixin"
 	],
 	"client": [
 		"client.DrawContextMixin",
@@ -35,7 +37,12 @@
 		"upsidedown.UpsideDownCameraMixin",
 		"upsidedown.UpsideDownLookMixin",
 		"upsidedown.UpsideDownInputMixin",
-		"upsidedown.UpsideDownRendererMixin"
+		"upsidedown.UpsideDownRendererMixin",
+		"phantom.PhantomTravelMixin",
+		"phantom.PhantomRenderMixin",
+		"phantom.PhantomCameraMixin",
+		"phantom.PhantomWorldRendererMixin",
+		"phantom.PhantomFovMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -1,5 +1,6 @@
 package net.ragnar.ragnarsmagicmod.item.spell;
 
+import net.ragnar.ragnarsmagicmod.util.DeflectableShots;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -78,9 +79,9 @@ public class StoneCannonSpell implements Spell {
 
     private enum Phase { CHARGING, FLYING, STUCK }
 
-    private static final class Shot {
+    private static final class Shot implements DeflectableShots.Shot {
         final ServerWorld world;
-        final UUID owner;
+        UUID owner;
         final DisplayEntity.BlockDisplayEntity[] parts = new DisplayEntity.BlockDisplayEntity[PARTS.length];
         final Set<UUID> hit = new HashSet<>();
         Phase phase = Phase.CHARGING;
@@ -97,9 +98,30 @@ public class StoneCannonSpell implements Spell {
             this.pos = pos;
             this.dir = dir;
         }
+
+        // Once it's flying, a Tome of Deflection pane sends it back the full range again, as the deflector's
+        @Override public ServerWorld world() { return world; }
+        @Override public Vec3d pos() { return pos; }
+        @Override public Vec3d deflectVelocity() { return phase == Phase.FLYING ? dir.multiply(SPEED) : Vec3d.ZERO; }
+        @Override public UUID deflectOwner() { return owner; }
+        @Override public double radius() { return 0.35; }
+
+        @Override
+        public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
+            owner = deflector.getUuid();
+            this.dir = dir;
+            pos = at;
+            travelled = 0;
+            hit.clear();
+            pose(this, 1f);
+        }
     }
 
     private static final List<Shot> ACTIVE = new ArrayList<>();
+
+    static {
+        DeflectableShots.register(() -> ACTIVE);
+    }
     private static boolean registered = false;
 
     private static void ensureRegistered() {

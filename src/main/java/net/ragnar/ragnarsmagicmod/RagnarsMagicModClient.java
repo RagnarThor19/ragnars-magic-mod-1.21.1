@@ -28,6 +28,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.IceBeamClient.init();
         net.ragnar.ragnarsmagicmod.client.ZapClient.init();
         net.ragnar.ragnarsmagicmod.client.FairyClient.init();
+        net.ragnar.ragnarsmagicmod.client.DeflectionClient.init();
         net.ragnar.ragnarsmagicmod.client.SprayingClient.init();
         net.ragnar.ragnarsmagicmod.client.SlipperyClient.init();
         net.ragnar.ragnarsmagicmod.client.TestEntityClient.init();
@@ -57,5 +58,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.bubbles.client.BubblesClient.init(); // Tome of Bubbles
         net.ragnar.ragnarsmagicmod.earthquake.client.EarthquakeClient.init(); // Tome of Earthquake
         net.ragnar.ragnarsmagicmod.lunging.client.LungingClient.init(); // Tome of Lunging
+        net.ragnar.ragnarsmagicmod.phantom.client.PhantomClient.init(); // Tome of the Phantom
     }
 }

@@ -1,5 +1,6 @@
 package net.ragnar.ragnarsmagicmod.item.spell;
 
+import net.ragnar.ragnarsmagicmod.util.DeflectableShots;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -91,10 +92,10 @@ public class SprayingSpell implements Spell {
         }
     }
 
-    private static final class Flying {
+    private static final class Flying implements DeflectableShots.Shot {
         final ServerWorld world;
         final DisplayEntity.ItemDisplayEntity display;
-        final UUID owner;
+        UUID owner;
         Vec3d pos, vel;
         int age;
         int stuck = -1;
@@ -106,10 +107,31 @@ public class SprayingSpell implements Spell {
             this.pos = pos;
             this.vel = vel;
         }
+
+        // A Tome of Deflection pane sends it back while it's flying, as the deflector's
+        @Override public ServerWorld world() { return world; }
+        @Override public Vec3d pos() { return pos; }
+        @Override public Vec3d deflectVelocity() { return stuck >= 0 ? Vec3d.ZERO : vel; }
+        @Override public UUID deflectOwner() { return owner; }
+        @Override public double deflectGravity() { return GRAVITY; }
+
+        @Override
+        public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
+            owner = deflector.getUuid();
+            vel = dir.multiply(SPEED);
+            pos = at;
+            age = 0;
+            display.setTransformation(transformFor(vel, SCALE, true));
+            move(this);
+        }
     }
 
     private static final Map<UUID, Barrage> BARRAGES = new HashMap<>();
     private static final List<Flying> FLYING = new ArrayList<>();
+
+    static {
+        DeflectableShots.register(() -> FLYING);
+    }
 
     public static void register() {
         ServerTickEvents.END_WORLD_TICK.register(SprayingSpell::tick);

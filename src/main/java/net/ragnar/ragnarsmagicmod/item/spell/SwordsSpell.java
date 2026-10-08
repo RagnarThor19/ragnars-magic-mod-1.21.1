@@ -1,5 +1,6 @@
 package net.ragnar.ragnarsmagicmod.item.spell;
 
+import net.ragnar.ragnarsmagicmod.util.DeflectableShots;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.component.DataComponentTypes;
@@ -72,11 +73,11 @@ public class SwordsSpell implements Spell {
         }
     }
 
-    private static final class Flying {
+    private static final class Flying implements DeflectableShots.Shot {
         final ServerWorld world;
         final DisplayEntity.ItemDisplayEntity display;
-        final UUID owner;
-        final LivingEntity target;
+        UUID owner;
+        LivingEntity target; // null once deflected with nobody to aim at: it just flies straight
         Vec3d pos;
         Vec3d vel;
         int age = 0;
@@ -90,10 +91,32 @@ public class SwordsSpell implements Spell {
             this.pos = pos;
             this.vel = vel;
         }
+
+        // A Tome of Deflection pane sends it back while it's flying, as the deflector's, homing in on whoever they
+        // were aiming at instead
+        @Override public ServerWorld world() { return world; }
+        @Override public Vec3d pos() { return pos; }
+        @Override public Vec3d deflectVelocity() { return stuck >= 0 ? Vec3d.ZERO : vel; }
+        @Override public UUID deflectOwner() { return owner; }
+        @Override public double radius() { return 0.4; }
+
+        @Override
+        public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
+            owner = deflector.getUuid();
+            target = aimedAt;
+            vel = dir.multiply(SPEED);
+            pos = at;
+            age = 0;
+            moveDisplay(this);
+        }
     }
 
     private static final Map<UUID, Halo> HALOS = new HashMap<>();
     private static final List<Flying> FLYING = new ArrayList<>();
+
+    static {
+        DeflectableShots.register(() -> FLYING);
+    }
     private static boolean registered = false;
 
     private static void ensureRegistered() {
@@ -322,7 +345,7 @@ public class SwordsSpell implements Spell {
         }
 
         // Light homing toward the target's current position
-        if (f.target.isAlive()) {
+        if (f.target != null && f.target.isAlive()) {
             Vec3d desired = f.target.getBoundingBox().getCenter().subtract(f.pos).normalize();
             f.vel = turnToward(f.vel.normalize(), desired, Math.toRadians(MAX_TURN_DEGREES)).multiply(SPEED);
         }

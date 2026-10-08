@@ -1,5 +1,6 @@
 package net.ragnar.ragnarsmagicmod.item.spell;
 
+import net.ragnar.ragnarsmagicmod.util.DeflectableShots;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -54,9 +55,9 @@ public class BoomingSpell implements Spell {
     private static final float SHELL_SCALE = 0.75f;
     private static final float CORE_SCALE = 0.4f;
 
-    private static final class Orb {
+    private static final class Orb implements DeflectableShots.Shot {
         final ServerWorld world;
-        final UUID owner;
+        UUID owner;
         final DisplayEntity.BlockDisplayEntity shell;
         final DisplayEntity.BlockDisplayEntity core;
         Vec3d pos;
@@ -70,6 +71,24 @@ public class BoomingSpell implements Spell {
             this.shell = shell;
             this.core = core;
             this.pos = pos;
+        }
+
+        // Once it's flying, a Tome of Deflection pane sends it back as the deflector's: it steers by their crosshair
+        // from then on, with its full life ahead of it again
+        @Override public ServerWorld world() { return world; }
+        @Override public Vec3d pos() { return pos; }
+        @Override public Vec3d deflectVelocity() { return age <= CHARGE_TICKS ? Vec3d.ZERO : vel; }
+        @Override public UUID deflectOwner() { return owner; }
+        @Override public double radius() { return 0.5; }
+
+        @Override
+        public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
+            owner = deflector.getUuid();
+            launchDir = dir;
+            vel = dir.multiply(SPEED);
+            pos = at;
+            age = CHARGE_TICKS + 1;
+            place(this, SHELL_SCALE, CORE_SCALE);
         }
     }
 
@@ -87,6 +106,10 @@ public class BoomingSpell implements Spell {
     }
 
     private static final List<Orb> ORBS = new ArrayList<>();
+
+    static {
+        DeflectableShots.register(() -> ORBS);
+    }
     private static final List<Blast> BLASTS = new ArrayList<>();
     private static boolean registered = false;
 
