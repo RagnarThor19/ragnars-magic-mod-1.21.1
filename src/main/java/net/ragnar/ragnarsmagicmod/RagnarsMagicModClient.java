@@ -59,5 +59,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.earthquake.client.EarthquakeClient.init(); // Tome of Earthquake
         net.ragnar.ragnarsmagicmod.lunging.client.LungingClient.init(); // Tome of Lunging
         net.ragnar.ragnarsmagicmod.phantom.client.PhantomClient.init(); // Tome of the Phantom
+        net.ragnar.ragnarsmagicmod.sleep.client.SleepClient.init(); // Tome of Sleep Darts, Tome of Sleep Potions
     }
 }

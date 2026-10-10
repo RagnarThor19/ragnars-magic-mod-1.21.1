@@ -18,7 +18,9 @@
 		"upsidedown.UpsideDownLivingEntityMixin",
 		"upsidedown.UpsideDownNetworkHandlerMixin",
 		"phantom.PhantomPlayerMixin",
-		"phantom.PhantomNetworkHandlerMixin"
+		"phantom.PhantomNetworkHandlerMixin",
+		"sleep.SleepMobMixin",
+		"sleep.SleepCreeperMixin"
 	],
 	"client": [
 		"client.DrawContextMixin",
@@ -42,7 +44,10 @@
 		"phantom.PhantomRenderMixin",
 		"phantom.PhantomCameraMixin",
 		"phantom.PhantomWorldRendererMixin",
-		"phantom.PhantomFovMixin"
+		"phantom.PhantomFovMixin",
+		"sleep.SleepRendererMixin",
+		"sleep.SleepLookMixin",
+		"sleep.SleepInputMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

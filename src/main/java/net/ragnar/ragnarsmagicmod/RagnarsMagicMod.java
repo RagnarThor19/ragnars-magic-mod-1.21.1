@@ -44,6 +44,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.earthquake.Earthquake.register(); // Tome of Earthquake
         net.ragnar.ragnarsmagicmod.lunging.Lunging.register(); // Tome of Lunging
         net.ragnar.ragnarsmagicmod.phantom.Phantom.register(); // Tome of the Phantom
+        net.ragnar.ragnarsmagicmod.sleep.Sleep.register(); // Tome of Sleep Darts, Tome of Sleep Potions
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();

@@ -118,5 +118,7 @@ public enum SpellId {
     BUBBLES,
     EARTHQUAKE,
     LUNGING,
-    PHANTOM
+    PHANTOM,
+    SLEEP_DARTS,
+    SLEEP_POTIONS
 }

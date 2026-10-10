@@ -237,6 +237,15 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tomes of Sleep Darts and Sleep Potions photo shoot: screenshots into build/clientsmoke/screenshots
+		sleepSmoke {
+			client()
+			name "Sleep Smoke Test"
+			vmArg "-Dragnarsmagicmod.sleepsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Bubbles photo shoot: screenshots into build/clientsmoke/screenshots
 		bubbleSmoke {
 			client()
