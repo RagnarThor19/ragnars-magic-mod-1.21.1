@@ -115,7 +115,8 @@ public class SleepGameTests implements FabricGameTest {
         ctx.assertEquals(tab.indexOf(Lunging.TOME_OF_LUNGING) + 1, tab.indexOf(Sleep.TOME_OF_SLEEP_DARTS), "darts after the last beginner tome");
         ctx.assertEquals(tab.indexOf(Sight.TOME_OF_SIGHT) + 1, tab.indexOf(Sleep.TOME_OF_SLEEP_POTIONS), "potions after the last advanced tome");
         ctx.assertEquals(TomeTier.ADVANCED, ((net.ragnar.ragnarsmagicmod.item.custom.TomeItem) tab.get(tab.indexOf(Sleep.TOME_OF_SLEEP_DARTS) + 1)).getTier(), "advanced tomes start right after the darts");
-        ctx.assertEquals(TomeTier.MASTER, ((net.ragnar.ragnarsmagicmod.item.custom.TomeItem) tab.get(tab.indexOf(Sleep.TOME_OF_SLEEP_POTIONS) + 1)).getTier(), "master tomes start right after the potions");
+        // (Later advanced tomes may come after the potions; CreativeTabGameTests checks the sections stay in order)
+        ctx.assertEquals(TomeTier.ADVANCED, ((net.ragnar.ragnarsmagicmod.item.custom.TomeItem) tab.get(tab.indexOf(Sleep.TOME_OF_SLEEP_POTIONS) - 1)).getTier(), "potions among the advanced tomes");
         ctx.complete();
     }
 

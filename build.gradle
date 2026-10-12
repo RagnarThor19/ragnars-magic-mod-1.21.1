@@ -237,6 +237,15 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Crows photo shoot: screenshots into build/clientsmoke/screenshots
+		crowsSmoke {
+			client()
+			name "Crows Smoke Test"
+			vmArg "-Dragnarsmagicmod.crowssmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tomes of Sleep Darts and Sleep Potions photo shoot: screenshots into build/clientsmoke/screenshots
 		sleepSmoke {
 			client()

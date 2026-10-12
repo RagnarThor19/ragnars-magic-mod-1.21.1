@@ -120,5 +120,6 @@ public enum SpellId {
     LUNGING,
     PHANTOM,
     SLEEP_DARTS,
-    SLEEP_POTIONS
+    SLEEP_POTIONS,
+    CROWS
 }

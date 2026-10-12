@@ -47,7 +47,9 @@
 		"phantom.PhantomFovMixin",
 		"sleep.SleepRendererMixin",
 		"sleep.SleepLookMixin",
-		"sleep.SleepInputMixin"
+		"sleep.SleepInputMixin",
+		"crows.CrowsRenderMixin",
+		"crows.CrowsInputMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
