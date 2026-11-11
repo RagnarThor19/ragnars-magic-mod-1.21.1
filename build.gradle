@@ -256,6 +256,51 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tomes of Climbing and Gliding (with Jumping and Leaping): plays them for real, logs heights, distances, health
+		climbGlideSmoke {
+			client()
+			name "Climb Glide Smoke Test"
+			vmArg "-Dragnarsmagicmod.climbglidesmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tomes of Swimming, Fire Resistance, Grace, Lifesteal and the Gourmet: plays them for real, logs the numbers
+		survivalSmoke {
+			client()
+			name "Survival Passives Smoke Test"
+			vmArg "-Dragnarsmagicmod.survivalsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Knockback: a husk hits you three times; logs how far it flies, screenshots the shove
+		knockbackSmoke {
+			client()
+			name "Knockback Smoke Test"
+			vmArg "-Dragnarsmagicmod.knockbacksmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tomes of Ground Pound, Sidestep, Desperation and Reflection: plays them for real, logs the numbers, screenshots
+		combatSmoke {
+			client()
+			name "Combat Passives Smoke Test"
+			vmArg "-Dragnarsmagicmod.combatsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Geysir: casts it on six husks, logs how high they fly, screenshots the eruption
+		geysirSmoke {
+			client()
+			name "Geysir Smoke Test"
+			vmArg "-Dragnarsmagicmod.geysirsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Punching: plays it for real, logs dash and knockback distances, screenshots
 		punchSmoke {
 			client()

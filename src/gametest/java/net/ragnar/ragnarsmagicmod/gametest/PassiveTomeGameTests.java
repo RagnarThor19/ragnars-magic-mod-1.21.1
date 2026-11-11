@@ -14,6 +14,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.TestContext;
 import net.minecraft.util.Hand;
+import net.ragnar.ragnarsmagicmod.climbing.Climbing;
+import net.ragnar.ragnarsmagicmod.gliding.Gliding;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
 import net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes;
 import net.ragnar.ragnarsmagicmod.item.custom.StaffItem;
@@ -36,7 +38,14 @@ public class PassiveTomeGameTests implements FabricGameTest {
     public void speedJumpingAndLungingAreThePassiveTomes(TestContext ctx) {
         Set<TomeItem> passive = Set.copyOf(PassiveTomes.all());
         ctx.assertEquals(Set.of(ModItems.TOME_OF_SPEED, Jumping.TOME_OF_JUMPING, Lunging.TOME_OF_LUNGING,
-                NightVision.TOME_OF_NIGHT_VISION, Leaping.TOME_OF_LEAPING), passive, "the passive tomes");
+                NightVision.TOME_OF_NIGHT_VISION, Leaping.TOME_OF_LEAPING, Climbing.TOME_OF_CLIMBING, Gliding.TOME_OF_GLIDING,
+                net.ragnar.ragnarsmagicmod.swimming.Swimming.TOME_OF_SWIMMING, net.ragnar.ragnarsmagicmod.fireresistance.FireResistance.TOME_OF_FIRE_RESISTANCE,
+                net.ragnar.ragnarsmagicmod.grace.Grace.TOME_OF_GRACE, net.ragnar.ragnarsmagicmod.lifesteal.Lifesteal.TOME_OF_LIFESTEAL,
+                net.ragnar.ragnarsmagicmod.gourmet.Gourmet.TOME_OF_THE_GOURMET, net.ragnar.ragnarsmagicmod.knockback.Knockback.TOME_OF_KNOCKBACK,
+                net.ragnar.ragnarsmagicmod.groundpound.GroundPound.TOME_OF_GROUND_POUND, net.ragnar.ragnarsmagicmod.sidestep.Sidestep.TOME_OF_SIDESTEP,
+                net.ragnar.ragnarsmagicmod.desperation.Desperation.TOME_OF_DESPERATION, net.ragnar.ragnarsmagicmod.reflection.Reflection.TOME_OF_REFLECTION,
+                net.ragnar.ragnarsmagicmod.haste.Haste.TOME_OF_HASTE),
+                passive, "the passive tomes");
         for (TomeItem t : passive) ctx.assertEquals(TomeTier.PASSIVE, t.getTier(), "tier of " + t);
         ctx.assertTrue(ModLootTableModifiers.PASSIVE_SHARE > 0f && ModLootTableModifiers.PASSIVE_SHARE < 1f, "rarer than advanced");
 
@@ -167,6 +176,71 @@ public class PassiveTomeGameTests implements FabricGameTest {
         ctx.assertTrue(safe.getValue() <= 15.5 + 1e-6, "a client can't ask for more than 15");
         Leaping.clear(p);
         ctx.assertEquals(normal, safe.getValue(), "gone once they've landed");
+        p.discard();
+        ctx.complete();
+    }
+
+    @GameTest(templateName = EMPTY_STRUCTURE, batchId = "climbing")
+    public void climbingTakesTheFallOnlyAgainstAWall(TestContext ctx) {
+        for (int y = 1; y <= 4; y++) ctx.setBlockState(new net.minecraft.util.math.BlockPos(2, y, 1), net.minecraft.block.Blocks.STONE);
+        ServerPlayerEntity p = ctx.createMockCreativeServerPlayerInWorld();
+        p.getInventory().clear();
+        // Pressed up against the east face of the wall, looking at it, a couple of blocks up
+        net.minecraft.util.math.Vec3d at = ctx.getAbsolute(new net.minecraft.util.math.Vec3d(1.7, 2.5, 1.5));
+        p.refreshPositionAndAngles(at.x, at.y, at.z, -90f, 0f);
+        ctx.assertTrue(Climbing.wallAt(p) != null, "the wall is found");
+
+        p.changeGameMode(net.minecraft.world.GameMode.SURVIVAL);
+        Climbing.set(p, true);
+        ctx.assertFalse(Climbing.isClimbing(p), "no tome, no climbing");
+
+        p.getInventory().setStack(25, new ItemStack(Climbing.TOME_OF_CLIMBING));
+        Climbing.set(p, true);
+        ctx.assertTrue(Climbing.isClimbing(p), "on the wall");
+        // A long fall caught on the wall, then a slide all the way down: none of it hurts, however the moves arrive
+        float before = p.getHealth();
+        p.handleFallDamage(30f, 1f, p.getDamageSources().fall());
+        ctx.assertEquals(before, p.getHealth(), "a fall caught on the wall doesn't hurt");
+
+        Climbing.set(p, false);
+        ctx.assertFalse(Climbing.isClimbing(p), "let go");
+        ctx.assertEquals(0f, p.fallDistance, "what they fell on the wall is forgiven");
+        p.timeUntilRegen = 0;
+        p.handleFallDamage(8f, 1f, p.getDamageSources().fall());
+        ctx.assertTrue(p.getHealth() < before, "but a fall after letting go counts");
+
+        // A client claiming to climb thin air gets nothing
+        net.minecraft.util.math.Vec3d away = ctx.getAbsolute(new net.minecraft.util.math.Vec3d(0.5, 2.5, 3.5));
+        p.refreshPositionAndAngles(away.x, away.y, away.z, -90f, 0f);
+        ctx.assertTrue(Climbing.wallAt(p) == null, "nothing beside them");
+        Climbing.set(p, true);
+        ctx.assertFalse(Climbing.isClimbing(p), "no wall, no grab");
+        p.discard();
+        ctx.complete();
+    }
+
+    @GameTest(templateName = EMPTY_STRUCTURE, batchId = "gliding")
+    public void glidingNeedsTheTome(TestContext ctx) {
+        ServerPlayerEntity p = ctx.createMockCreativeServerPlayerInWorld();
+        p.getInventory().clear();
+        p.changeGameMode(net.minecraft.world.GameMode.SURVIVAL);
+        Gliding.set(p, true);
+        ctx.assertFalse(Gliding.isGliding(p), "no tome, no gliding");
+
+        p.getInventory().offHand.set(0, new ItemStack(Gliding.TOME_OF_GLIDING));
+        Gliding.set(p, true);
+        ctx.assertTrue(Gliding.isGliding(p), "gliding");
+        // Even if a laggy connection delivers the whole glide down in one go, landing it doesn't hurt
+        float before = p.getHealth();
+        p.handleFallDamage(40f, 1f, p.getDamageSources().fall());
+        ctx.assertEquals(before, p.getHealth(), "landing a glide doesn't hurt");
+        Gliding.set(p, false);
+        ctx.assertFalse(Gliding.isGliding(p), "stopped");
+        p.timeUntilRegen = 0;
+        p.handleFallDamage(8f, 1f, p.getDamageSources().fall());
+        ctx.assertTrue(p.getHealth() < before, "and a fall after letting go of jump counts");
+
+        ctx.assertTrue(Gliding.START_DROP > Leaping.riseFrom(0.42), "an ordinary jump never drops far enough to glide");
         p.discard();
         ctx.complete();
     }

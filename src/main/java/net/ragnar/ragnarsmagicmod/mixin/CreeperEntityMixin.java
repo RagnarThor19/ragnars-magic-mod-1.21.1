@@ -1,6 +1,7 @@
 package net.ragnar.ragnarsmagicmod.mixin;
 
 import net.minecraft.entity.mob.CreeperEntity;
+import net.ragnar.ragnarsmagicmod.grace.Grace;
 import net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell;
 import net.ragnar.ragnarsmagicmod.item.spell.VinesSpell;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,5 +16,12 @@ public class CreeperEntityMixin {
     private void ragnarsmagicmod$smothered(CallbackInfo ci) {
         CreeperEntity creeper = (CreeperEntity) (Object) this;
         if (VinesSpell.isHeld(creeper) || IceBeamSpell.isFrozen(creeper)) ci.cancel();
+    }
+
+    /** Tome of Grace: creepers back away from players carrying it, as they do from cats. */
+    @Inject(method = "initGoals", at = @At("TAIL"))
+    private void ragnarsmagicmod$fleeGrace(CallbackInfo ci) {
+        CreeperEntity creeper = (CreeperEntity) (Object) this;
+        ((MobEntityAccessor) creeper).ragnarsmagicmod$getGoalSelector().add(3, Grace.fleeGoal(creeper));
     }
 }

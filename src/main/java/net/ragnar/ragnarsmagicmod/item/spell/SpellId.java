@@ -127,5 +127,19 @@ public enum SpellId {
     BASALT,
     NIGHT_VISION,
     LEAPING,
-    PUNCHING
+    PUNCHING,
+    CLIMBING,
+    GLIDING,
+    SWIMMING,
+    FIRE_RESISTANCE,
+    GRACE,
+    LIFESTEAL,
+    GOURMET,
+    KNOCKBACK,
+    GROUND_POUND,
+    SIDESTEP,
+    DESPERATION,
+    REFLECTION,
+    HASTE,
+    GEYSIR
 }

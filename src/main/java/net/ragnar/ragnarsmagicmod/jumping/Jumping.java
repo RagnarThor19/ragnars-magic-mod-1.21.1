@@ -91,7 +91,8 @@ public final class Jumping {
         ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.ID, (payload, context) -> airJump(context.player()));
         ServerTickEvents.END_SERVER_TICK.register(server -> USED.entrySet().removeIf(e -> {
             ServerPlayerEntity p = server.getPlayerManager().getPlayer(e.getKey());
-            return p == null || !p.isAlive() || p.isOnGround() || p.isTouchingWater() || p.isClimbing() || p.hasVehicle();
+            return p == null || !p.isAlive() || p.isOnGround() || p.isTouchingWater() || p.isClimbing() || p.hasVehicle()
+                    || net.ragnar.ragnarsmagicmod.climbing.Climbing.isClimbing(p);
         }));
     }
 

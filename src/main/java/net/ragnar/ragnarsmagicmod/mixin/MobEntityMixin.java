@@ -2,6 +2,7 @@ package net.ragnar.ragnarsmagicmod.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.ragnar.ragnarsmagicmod.grace.Grace;
 import net.ragnar.ragnarsmagicmod.item.spell.ControllingSpell;
 import net.ragnar.ragnarsmagicmod.item.spell.IceBeamSpell;
 import net.ragnar.ragnarsmagicmod.item.spell.IllusionSpell;
@@ -16,6 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MobEntityMixin {
     @Inject(method = "tickNewAi", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$possessedBrain(CallbackInfo ci) {
+        // Tome of Grace: a creeper or phantom that was already after you when you picked it up lets go
+        MobEntity self = (MobEntity) (Object) this;
+        if (Grace.ignores(self, self.getTarget())) self.setTarget(null);
         if (ControllingSpell.drive((MobEntity) (Object) this)) ci.cancel();
         // Wrapped up by the Tome of Vines: no goals, no brain, no attacks
         else if (VinesSpell.isHeld((MobEntity) (Object) this)) ci.cancel();
@@ -31,5 +35,7 @@ public class MobEntityMixin {
     @Inject(method = "setTarget", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$ignoreEmptyBody(LivingEntity target, CallbackInfo ci) {
         if (target != null && (ControllingSpell.isPossessing(target) || IllusionSpell.isGhost(target))) ci.cancel();
+        // Tome of Grace: creepers and phantoms never pick its carrier
+        else if (Grace.ignores((MobEntity) (Object) this, target)) ci.cancel();
     }
 }

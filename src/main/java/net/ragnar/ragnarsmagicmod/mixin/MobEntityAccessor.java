@@ -10,4 +10,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface MobEntityAccessor {
     @Accessor("targetSelector")
     GoalSelector ragnarsmagicmod$getTargetSelector();
+
+    /** Lets creepers be given the Tome of Grace's flee goal. */
+    @Accessor("goalSelector")
+    GoalSelector ragnarsmagicmod$getGoalSelector();
 }

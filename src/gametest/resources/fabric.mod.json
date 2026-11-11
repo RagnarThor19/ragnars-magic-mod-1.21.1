@@ -44,7 +44,9 @@
       "net.ragnar.ragnarsmagicmod.gametest.PoisonDartGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.BasaltGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.PassiveTomeGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.PunchingGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.PunchingGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.MorePassiveTomeGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.GeysirGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
@@ -72,7 +74,12 @@
       "net.ragnar.ragnarsmagicmod.gametest.TornadoClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.BasaltClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.LeapingClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.PunchingClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.PunchingClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.ClimbGlideClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.SurvivalPassivesClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.KnockbackClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.CombatPassivesClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.GeysirClientSmoke"
     ]
   },
   "depends": {

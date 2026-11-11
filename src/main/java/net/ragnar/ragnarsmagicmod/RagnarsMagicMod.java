@@ -50,8 +50,22 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.poisondarts.PoisonDarts.register(); // Tome of Poison Darts
         net.ragnar.ragnarsmagicmod.basalt.Basalt.register(); // Tome of Basalt
         net.ragnar.ragnarsmagicmod.punching.Punching.register(); // Tome of Punching
+        net.ragnar.ragnarsmagicmod.geysir.Geysir.register(); // Tome of Geysir
         net.ragnar.ragnarsmagicmod.nightvision.NightVision.register(); // Tome of Night Vision (passive)
         net.ragnar.ragnarsmagicmod.leaping.Leaping.register(); // Tome of Leaping (passive)
+        net.ragnar.ragnarsmagicmod.climbing.Climbing.register(); // Tome of Climbing (passive)
+        net.ragnar.ragnarsmagicmod.gliding.Gliding.register(); // Tome of Gliding (passive)
+        net.ragnar.ragnarsmagicmod.swimming.Swimming.register(); // Tome of Swimming (passive)
+        net.ragnar.ragnarsmagicmod.fireresistance.FireResistance.register(); // Tome of Fire Resistance (passive)
+        net.ragnar.ragnarsmagicmod.grace.Grace.register(); // Tome of Grace (passive)
+        net.ragnar.ragnarsmagicmod.lifesteal.Lifesteal.register(); // Tome of Lifesteal (passive)
+        net.ragnar.ragnarsmagicmod.gourmet.Gourmet.register(); // Tome of the Gourmet (passive)
+        net.ragnar.ragnarsmagicmod.knockback.Knockback.register(); // Tome of Knockback (passive)
+        net.ragnar.ragnarsmagicmod.groundpound.GroundPound.register(); // Tome of Ground Pound (passive)
+        net.ragnar.ragnarsmagicmod.sidestep.Sidestep.register(); // Tome of Sidestep (passive)
+        net.ragnar.ragnarsmagicmod.desperation.Desperation.register(); // Tome of Desperation (passive)
+        net.ragnar.ragnarsmagicmod.reflection.Reflection.register(); // Tome of Reflection (passive)
+        net.ragnar.ragnarsmagicmod.haste.Haste.register(); // Tome of Haste (passive)
         net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes.register(); // the passive tomes' section of the Tools tab (after every other tome)
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();

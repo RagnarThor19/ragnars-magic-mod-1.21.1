@@ -12,6 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.ragnar.ragnarsmagicmod.client.ScreenShake;
+import net.ragnar.ragnarsmagicmod.climbing.client.ClimbingClient;
 import net.ragnar.ragnarsmagicmod.jumping.Jumping;
 import net.ragnar.ragnarsmagicmod.util.FairyForm;
 
@@ -72,10 +73,14 @@ public final class JumpingClient {
         }
     }
 
-    /** Places where jumping works its own way (or not at all), which also end a chain of jumps. */
+    /**
+     * Places where jumping works its own way (or not at all), which also end a chain of jumps. Holding on to a wall
+     * (Tome of Climbing) counts too, so pressing jump there climbs instead of spending an air jump.
+     */
     private static boolean grounded(ClientPlayerEntity p) {
         return p.isTouchingWater() || p.isInLava() || p.isClimbing() || p.hasVehicle() || p.isFallFlying()
-                || p.getAbilities().flying || FairyForm.isFairy(p);
+                || p.getAbilities().flying || FairyForm.isFairy(p) || ClimbingClient.onWall()
+                || net.ragnar.ragnarsmagicmod.groundpound.client.GroundPoundClient.active();
     }
 
     private static void airJump(ClientPlayerEntity p) {
