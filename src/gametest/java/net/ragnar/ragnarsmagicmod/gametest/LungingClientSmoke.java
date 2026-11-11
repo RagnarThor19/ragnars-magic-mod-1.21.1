@@ -82,9 +82,7 @@ public class LungingClientSmoke implements ClientModInitializer {
                 sp.teleport(world, 0.5, Y, 0.5, 0f, 0f);
                 sp.getInventory().clear();
                 sp.getInventory().setStack(0, new ItemStack(Items.IRON_SWORD));
-                ItemStack staff = new ItemStack(ModItems.NETHERITE_STAFF);
-                ((StaffItem) ModItems.NETHERITE_STAFF).insertTome(staff, Lunging.TOME_OF_LUNGING);
-                sp.getInventory().setStack(4, staff);
+                sp.getInventory().setStack(4, new ItemStack(Lunging.TOME_OF_LUNGING)); // passive: just carried
                 sp.getInventory().selectedSlot = 0;
                 sp.setExperienceLevel(10);
                 MobEntity golem = EntityType.IRON_GOLEM.create(world);

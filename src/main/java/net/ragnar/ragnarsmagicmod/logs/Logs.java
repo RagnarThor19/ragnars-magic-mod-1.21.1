@@ -23,7 +23,6 @@ import net.ragnar.ragnarsmagicmod.item.custom.TomeItem;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
-import net.ragnar.ragnarsmagicmod.jumping.Jumping;
 
 import java.util.EnumMap;
 
@@ -71,7 +70,7 @@ public final class Logs {
         // Lets staffs hand the tome back and puts it in the advanced tome loot pool
         ModItems.TOMES.computeIfAbsent(SpellId.LOGS, k -> new EnumMap<>(TomeTier.class)).put(TomeTier.ADVANCED, TOME_OF_LOGS);
         Spells.register(SpellId.LOGS, new LogsSpell());
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(Jumping.TOME_OF_JUMPING, TOME_OF_LOGS));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(net.ragnar.ragnarsmagicmod.ricochet.Ricochet.TOME_OF_RICOCHET, TOME_OF_LOGS));
         PayloadTypeRegistry.playS2C().register(SwapPayload.ID, SwapPayload.CODEC);
 
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) ->

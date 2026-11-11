@@ -25,6 +25,12 @@ import java.util.Map;
 
 public class ModLootTableModifiers {
 
+    /**
+     * Passive tomes (Speed, Jumping, Lunging) get their own pool in every chest that has an advanced tome pool, at this
+     * share of the advanced chance - so a little rarer than an advanced tome, and found in the same places.
+     */
+    public static final float PASSIVE_SHARE = 0.6f;
+
     // Define keys manually to match vanilla IDs (fixes mapping mismatches)
     private static final RegistryKey<LootTable> TRIAL_REWARD_COMMON = key("chests/trial_chambers/reward_common");
     private static final RegistryKey<LootTable> TRIAL_REWARD_RARE = key("chests/trial_chambers/reward_rare");
@@ -260,6 +266,8 @@ public class ModLootTableModifiers {
      * Helper to inject a pool of ALL tomes of a specific tier into a table with a specific chance.
      */
     private static void buildTomePool(net.minecraft.loot.LootTable.Builder tableBuilder, TomeTier tier, float chance) {
+        // Passive tomes turn up wherever advanced ones do, but rarer
+        if (tier == TomeTier.ADVANCED) buildTomePool(tableBuilder, TomeTier.PASSIVE, chance * PASSIVE_SHARE);
         List<TomeItem> tomes = new ArrayList<>();
         for (Map<TomeTier, TomeItem> tierMap : ModItems.TOMES.values()) {
             if (tierMap.containsKey(tier)) {

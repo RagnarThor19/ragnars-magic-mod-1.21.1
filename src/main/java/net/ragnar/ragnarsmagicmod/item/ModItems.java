@@ -540,9 +540,9 @@ public class ModItems {
             ).setCooldown(3) // 0.15 seconds
     );
     public static final TomeItem TOME_OF_SPEED = (TomeItem) registerItem("tome_of_speed",
-            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
-                    TomeTier.BEGINNER, SpellId.SPEED, 0
-            ).setCooldown(0) // passive: Speed I while it's on a staff you carry
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Passive
+                    TomeTier.PASSIVE, SpellId.SPEED, 0
+            ).setCooldown(0) // passive: Speed I while it's in your inventory (see PassiveTomes)
     );
     public static final TomeItem TOME_OF_BLOOM = (TomeItem) registerItem("tome_of_bloom",
             new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
@@ -941,7 +941,7 @@ public class ModItems {
         putTome(SpellId.WATERWALKING, TomeTier.BEGINNER, TOME_OF_WATERWALKING);
         putTome(SpellId.COBWEBS, TomeTier.BEGINNER, TOME_OF_COBWEBS);
         putTome(SpellId.SMELTING, TomeTier.BEGINNER, TOME_OF_SMELTING);
-        putTome(SpellId.SPEED, TomeTier.BEGINNER, TOME_OF_SPEED);
+        putTome(SpellId.SPEED, TomeTier.PASSIVE, TOME_OF_SPEED);
         putTome(SpellId.BLOOM, TomeTier.BEGINNER, TOME_OF_BLOOM);
         putTome(SpellId.KINDLING, TomeTier.BEGINNER, TOME_OF_KINDLING);
         putTome(SpellId.CLONES, TomeTier.ADVANCED, TOME_OF_CLONES);
@@ -1055,7 +1055,6 @@ public class ModItems {
             entries.add(new ItemStack(TOME_OF_WATERWALKING));
             entries.add(new ItemStack(TOME_OF_COBWEBS));
             entries.add(new ItemStack(TOME_OF_SMELTING));
-            entries.add(new ItemStack(TOME_OF_SPEED));
             entries.add(new ItemStack(TOME_OF_BLOOM));
             entries.add(new ItemStack(TOME_OF_KINDLING));
             entries.add(new ItemStack(TOME_OF_TOWERING));

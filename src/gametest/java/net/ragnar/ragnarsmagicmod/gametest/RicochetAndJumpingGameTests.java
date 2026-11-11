@@ -98,20 +98,19 @@ public class RicochetAndJumpingGameTests implements FabricGameTest {
 
     @GameTest(templateName = EMPTY_STRUCTURE)
     public void jumpingIsPassive(TestContext ctx) {
-        ctx.assertEquals(TomeTier.ADVANCED, Jumping.TOME_OF_JUMPING.getTier(), "tier");
+        ctx.assertEquals(TomeTier.PASSIVE, Jumping.TOME_OF_JUMPING.getTier(), "tier");
         ctx.assertEquals(1, Jumping.TOME_OF_JUMPING.getXpCost(), "xp");
         ctx.assertEquals(0, Jumping.TOME_OF_JUMPING.getCooldown(), "cooldown");
         ctx.assertTrue(Spells.get(SpellId.JUMPING) instanceof JumpingSpell, "spell registered");
 
         ServerPlayerEntity p = player(ctx, new BlockPos(1, 1, 1), 0f, 0f);
         p.addExperience(50);
-        ctx.assertFalse(Jumping.canAirJump(p), "no staff, no air jumps");
+        ctx.assertFalse(Jumping.canAirJump(p), "no tome, no air jumps");
 
         ItemStack staff = new ItemStack(ModItems.DIAMOND_STAFF);
-        ((StaffItem) ModItems.DIAMOND_STAFF).insertTome(staff, Jumping.TOME_OF_JUMPING);
-        ((StaffItem) ModItems.DIAMOND_STAFF).insertTome(staff, Ricochet.TOME_OF_RICOCHET); // not even selected
-        p.getInventory().setStack(5, staff);
-        ctx.assertTrue(Jumping.canAirJump(p), "works from anywhere in the inventory, selected or not");
+        ((StaffItem) ModItems.DIAMOND_STAFF).insertTome(staff, Ricochet.TOME_OF_RICOCHET);
+        p.getInventory().setStack(5, new ItemStack(Jumping.TOME_OF_JUMPING)); // passive: just carried
+        ctx.assertTrue(Jumping.canAirJump(p), "works from anywhere in the inventory");
 
         ctx.assertFalse(Spells.get(SpellId.JUMPING).cast(ctx.getWorld(), p, staff), "casting does nothing");
         ctx.assertEquals(0, Spells.get(SpellId.JUMPING).xpCost(p, 1), "and costs nothing");

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Tome of Mighty Pushing: a caster's arms spread into a cross. Tome of the Lightning Path: an arm pointing the way
- * while painting, both swept back while running. Runs after the usual pose is worked out, and before a player model
+ * while painting, both swept back while running. Tome of Punching: the wind-up and the punch. Runs after the usual pose is worked out, and before a player model
  * copies its arms onto its sleeves.
  */
 @Mixin(BipedEntityModel.class)
@@ -20,5 +20,6 @@ public abstract class MightyPushPoseMixin {
                                                 float headYaw, float headPitch, CallbackInfo ci) {
         MightyPushClient.pose(entity, (BipedEntityModel<?>) (Object) this, animationProgress - entity.age);
         net.ragnar.ragnarsmagicmod.lightningpath.client.LightningPathClient.pose(entity, (BipedEntityModel<?>) (Object) this, animationProgress - entity.age);
+        net.ragnar.ragnarsmagicmod.punching.client.PunchingClient.pose(entity, (BipedEntityModel<?>) (Object) this, animationProgress - entity.age);
     }
 }

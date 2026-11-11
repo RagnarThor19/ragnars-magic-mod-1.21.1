@@ -121,5 +121,11 @@ public enum SpellId {
     PHANTOM,
     SLEEP_DARTS,
     SLEEP_POTIONS,
-    CROWS
+    CROWS,
+    TORNADO,
+    POISON_DARTS,
+    BASALT,
+    NIGHT_VISION,
+    LEAPING,
+    PUNCHING
 }

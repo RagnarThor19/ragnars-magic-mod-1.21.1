@@ -40,7 +40,7 @@ public class CreativeTabGameTests implements FabricGameTest {
 
     /**
      * Every tome is in Tools & Utilities, inside its own tier's section: all the beginner tomes, then all the advanced
-     * ones, then all the master ones. Tomes added later (anywhere in the mod) are checked too, since it looks at every
+     * ones, then all the master ones, then the passive ones. Tomes added later (anywhere in the mod) are checked too, since it looks at every
      * registered TomeItem rather than a list.
      */
     @GameTest(templateName = EMPTY_STRUCTURE)
@@ -73,10 +73,12 @@ public class CreativeTabGameTests implements FabricGameTest {
             }
         }
         ctx.assertTrue(misplaced.isEmpty(), "tomes outside their tier's section: " + misplaced);
-        RagnarsMagicMod.LOGGER.info("[TOMES] {} tomes: {} beginner, {} advanced, {} master", order.size(),
+        RagnarsMagicMod.LOGGER.info("[TOMES] {} tomes: {} beginner, {} advanced, {} master, {} passive", order.size(),
                 order.stream().filter(t -> t.getTier() == TomeTier.BEGINNER).count(),
                 order.stream().filter(t -> t.getTier() == TomeTier.ADVANCED).count(),
-                order.stream().filter(t -> t.getTier() == TomeTier.MASTER).count());
+                order.stream().filter(t -> t.getTier() == TomeTier.MASTER).count(),
+                order.stream().filter(t -> t.getTier() == TomeTier.PASSIVE).count());
+        RagnarsMagicMod.LOGGER.info("[TOMES] order: {}", order.stream().map(t -> Registries.ITEM.getId(t).getPath()).toList());
         ctx.complete();
     }
 }

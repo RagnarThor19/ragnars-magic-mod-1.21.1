@@ -66,7 +66,8 @@ public class StaffItem extends Item {
     }
 
     public boolean canAccept(TomeItem tome) {
-        return allowed.contains(tome.getTier());
+        // Passive tomes go on any staff, and work from there as they would from the inventory
+        return tome.getTier().isPassive() || allowed.contains(tome.getTier());
     }
 
     public int getTomeSlots() {
@@ -92,7 +93,12 @@ public class StaffItem extends Item {
             String name = entry.getString(idKey);
             SpellId id = name.equals("BOULDER") ? SpellId.ROCKS : SpellId.valueOf(name); // the old Tome of Boulders is the Tome of Rocks now
             TomeTier tier = TomeTier.valueOf(entry.getString(tierKey));
-            return ModItems.getTomeFor(id, tier);
+            TomeItem tome = ModItems.getTomeFor(id, tier);
+            if (tome == null && ModItems.TOMES.containsKey(id)) {
+                // Saved under a tier the tome has since left (Speed, Jumping and Lunging became passive): it's still that tome
+                tome = ModItems.TOMES.get(id).values().stream().findFirst().orElse(null);
+            }
+            return tome;
         } catch (IllegalArgumentException e) {
             return null;
         }

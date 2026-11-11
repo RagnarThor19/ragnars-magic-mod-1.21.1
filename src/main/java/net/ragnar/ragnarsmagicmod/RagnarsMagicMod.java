@@ -46,6 +46,13 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.phantom.Phantom.register(); // Tome of the Phantom
         net.ragnar.ragnarsmagicmod.sleep.Sleep.register(); // Tome of Sleep Darts, Tome of Sleep Potions
         net.ragnar.ragnarsmagicmod.crows.Crows.register(); // Tome of Crows
+        net.ragnar.ragnarsmagicmod.tornado.Tornado.register(); // Tome of Tornados
+        net.ragnar.ragnarsmagicmod.poisondarts.PoisonDarts.register(); // Tome of Poison Darts
+        net.ragnar.ragnarsmagicmod.basalt.Basalt.register(); // Tome of Basalt
+        net.ragnar.ragnarsmagicmod.punching.Punching.register(); // Tome of Punching
+        net.ragnar.ragnarsmagicmod.nightvision.NightVision.register(); // Tome of Night Vision (passive)
+        net.ragnar.ragnarsmagicmod.leaping.Leaping.register(); // Tome of Leaping (passive)
+        net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes.register(); // the passive tomes' section of the Tools tab (after every other tome)
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
         net.ragnar.ragnarsmagicmod.network.PossessionPayloads.register();

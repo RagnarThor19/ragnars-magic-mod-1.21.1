@@ -27,9 +27,8 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.ragnar.ragnarsmagicmod.RagnarsMagicMod;
-import net.ragnar.ragnarsmagicmod.bubbles.Bubbles;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
-import net.ragnar.ragnarsmagicmod.item.custom.StaffItem;
+import net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes;
 import net.ragnar.ragnarsmagicmod.item.custom.TomeItem;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
@@ -43,7 +42,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 /**
- * Tome of Lunging: a passive tome. While it's on a staff you're carrying, tap right-click with a sword to lunge
+ * Tome of Lunging: a passive tome. While it's in your inventory, tap right-click with a sword to lunge
  * {@link #LUNGE_DISTANCE} blocks forward and stab the first thing in your way with a full-strength swing. Land it and
  * you spring {@link #BACK_DISTANCE} blocks back out of reach; miss and you're left standing where the lunge ended.
  * <p>
@@ -79,8 +78,8 @@ public final class Lunging {
     public static final TomeItem TOME_OF_LUNGING = (TomeItem) Registry.register(
             Registries.ITEM,
             Identifier.of(RagnarsMagicMod.MOD_ID, "tome_of_lunging"),
-            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), // Beginner
-                    TomeTier.BEGINNER, SpellId.LUNGING, XP_COST
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Passive
+                    TomeTier.PASSIVE, SpellId.LUNGING, XP_COST
             ).setCooldown(COOLDOWN)
     );
 
@@ -118,9 +117,9 @@ public final class Lunging {
 
     public static void register() {
         // Lets staffs hand the tome back and puts it in the beginner tome loot pool
-        ModItems.TOMES.computeIfAbsent(SpellId.LUNGING, k -> new EnumMap<>(TomeTier.class)).put(TomeTier.BEGINNER, TOME_OF_LUNGING);
+        ModItems.TOMES.computeIfAbsent(SpellId.LUNGING, k -> new EnumMap<>(TomeTier.class)).put(TomeTier.PASSIVE, TOME_OF_LUNGING);
         Spells.register(SpellId.LUNGING, new LungingSpell());
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(Bubbles.TOME_OF_BUBBLES, TOME_OF_LUNGING));
+        // Its place in the Tools tab is with the other passive tomes (PassiveTomes)
 
         PayloadTypeRegistry.playC2S().register(StartPayload.ID, StartPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(StabPayload.ID, StabPayload.CODEC);
@@ -141,11 +140,11 @@ public final class Lunging {
         });
     }
 
-    /** True if this right-click can lunge: a sword in the main hand and the tome on a staff you carry. */
+    /** True if this right-click can lunge: a sword in the main hand and the tome in your inventory. */
     public static boolean triggers(PlayerEntity player, net.minecraft.util.Hand hand) {
         if (hand != net.minecraft.util.Hand.MAIN_HAND || !(player.getMainHandStack().getItem() instanceof SwordItem)) return false;
         if (player.isSpectator() || player.hasVehicle() || player.getAbilities().flying || player.isFallFlying()) return false;
-        return !StaffItem.findStaffWith(player, TOME_OF_LUNGING).isEmpty();
+        return PassiveTomes.has(player, TOME_OF_LUNGING);
     }
 
     /**
@@ -171,7 +170,7 @@ public final class Lunging {
     /** Server: a lunge has begun. Public so tests can call it. */
     public static void start(ServerPlayerEntity player) {
         if (!player.isAlive() || !(player.getMainHandStack().getItem() instanceof SwordItem)) return;
-        if (StaffItem.findStaffWith(player, TOME_OF_LUNGING).isEmpty() || !canLunge(player)) return;
+        if (!PassiveTomes.has(player, TOME_OF_LUNGING) || !canLunge(player)) return;
         if (!player.isCreative()) player.addExperience(-XP_COST);
         player.getItemCooldownManager().set(TOME_OF_LUNGING, COOLDOWN);
         player.getItemCooldownManager().set(player.getMainHandStack().getItem(), COOLDOWN); // shown on the sword

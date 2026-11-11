@@ -11,11 +11,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
-import net.ragnar.ragnarsmagicmod.item.custom.StaffItem;
+import net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes;
 
 /**
- * Tome of Speed: a passive tome. While it's on a staff you're carrying (in either hand or anywhere in your
- * inventory) you have Speed I; take it off and the Speed goes with it. Costs nothing and has no cooldown; casting it
+ * Tome of Speed: a passive tome. While it's anywhere in your inventory you have Speed I; drop it or put it away
+ * and the Speed goes with it. Costs nothing and has no cooldown; casting it
  * just says how it works.
  */
 public class SpeedSpell implements Spell {
@@ -31,10 +31,10 @@ public class SpeedSpell implements Spell {
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) update(player);
     }
 
-    /** Gives {@code player} the tome's Speed if they carry it on a staff, or takes it away if they don't. */
+    /** Gives {@code player} the tome's Speed if they carry it, or takes it away if they don't. */
     public static void update(PlayerEntity player) {
         if (!player.isAlive() || player.isSpectator()) return;
-        boolean carrying = !StaffItem.findStaffWith(player, ModItems.TOME_OF_SPEED).isEmpty();
+        boolean carrying = PassiveTomes.has(player, ModItems.TOME_OF_SPEED);
         StatusEffectInstance current = player.getStatusEffect(StatusEffects.SPEED);
         if (carrying) {
             // Ambient and particle-free, like a beacon's: just the icon. Never cuts a stronger or longer Speed short.
@@ -59,7 +59,7 @@ public class SpeedSpell implements Spell {
     @Override
     public boolean cast(World world, PlayerEntity player, ItemStack staff) {
         if (!world.isClient) {
-            player.sendMessage(Text.literal("Passive: Speed I while this tome is on a staff you carry.").formatted(Formatting.AQUA), true);
+            player.sendMessage(Text.literal("Passive: Speed I while this tome is in your inventory or on a staff you carry.").formatted(Formatting.AQUA), true);
         }
         return false;
     }

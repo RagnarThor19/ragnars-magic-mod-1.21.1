@@ -32,9 +32,7 @@ public class LungingGameTests implements FabricGameTest {
         p.getInventory().clear();
         p.getInventory().setStack(0, new ItemStack(Items.IRON_SWORD));
         p.getInventory().selectedSlot = 0;
-        ItemStack staff = new ItemStack(ModItems.NETHERITE_STAFF);
-        ((StaffItem) ModItems.NETHERITE_STAFF).insertTome(staff, Lunging.TOME_OF_LUNGING);
-        p.getInventory().setStack(5, staff);
+        p.getInventory().setStack(5, new ItemStack(Lunging.TOME_OF_LUNGING)); // passive: just carried
         p.addExperience(100);
         p.playerTick(); // picks up the sword's attack damage, as holding it does in play
         return p;
@@ -42,7 +40,7 @@ public class LungingGameTests implements FabricGameTest {
 
     @GameTest(templateName = EMPTY_STRUCTURE)
     public void tomeIsABeginnerPassiveWithTheRightNumbers(TestContext ctx) {
-        ctx.assertEquals(TomeTier.BEGINNER, Lunging.TOME_OF_LUNGING.getTier(), "tier");
+        ctx.assertEquals(TomeTier.PASSIVE, Lunging.TOME_OF_LUNGING.getTier(), "tier");
         ctx.assertEquals(2, Lunging.TOME_OF_LUNGING.getXpCost(), "xp");
         ctx.assertEquals(100, Lunging.TOME_OF_LUNGING.getCooldown(), "cooldown (5 seconds)");
         ctx.assertTrue(Spells.get(SpellId.LUNGING) instanceof LungingSpell, "spell registered");

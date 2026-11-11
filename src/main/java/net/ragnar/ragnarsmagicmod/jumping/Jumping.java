@@ -22,12 +22,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.ragnar.ragnarsmagicmod.RagnarsMagicMod;
 import net.ragnar.ragnarsmagicmod.item.ModItems;
-import net.ragnar.ragnarsmagicmod.item.custom.StaffItem;
+import net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes;
 import net.ragnar.ragnarsmagicmod.item.custom.TomeItem;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
-import net.ragnar.ragnarsmagicmod.ricochet.Ricochet;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -35,7 +34,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Tome of Jumping: a passive tome. While it's on a staff you're carrying, you can jump twice more in mid-air - a
+ * Tome of Jumping: a passive tome. While it's in your inventory, you can jump twice more in mid-air - a
  * triple jump - as long as each one comes within {@link #WINDOW} ticks of the jump before. Walking off a ledge isn't
  * a jump, so it won't catch a fall. Each air jump costs {@link #XP_PER_JUMP} XP. Everything for it lives in this
  * package.
@@ -62,8 +61,8 @@ public final class Jumping {
     public static final TomeItem TOME_OF_JUMPING = (TomeItem) Registry.register(
             Registries.ITEM,
             Identifier.of(RagnarsMagicMod.MOD_ID, "tome_of_jumping"),
-            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Advanced
-                    TomeTier.ADVANCED, SpellId.JUMPING, XP_PER_JUMP
+            new TomeItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), // Passive
+                    TomeTier.PASSIVE, SpellId.JUMPING, XP_PER_JUMP
             ).setCooldown(0)
     );
 
@@ -83,10 +82,10 @@ public final class Jumping {
     private static final Map<UUID, Integer> USED = new HashMap<>();
 
     public static void register() {
-        // Lets staffs hand the tome back and puts it in the advanced tome loot pool
-        ModItems.TOMES.computeIfAbsent(SpellId.JUMPING, k -> new EnumMap<>(TomeTier.class)).put(TomeTier.ADVANCED, TOME_OF_JUMPING);
+        // Lets old staffs hand the tome back and puts it in the passive tome loot pool
+        ModItems.TOMES.computeIfAbsent(SpellId.JUMPING, k -> new EnumMap<>(TomeTier.class)).put(TomeTier.PASSIVE, TOME_OF_JUMPING);
         Spells.register(SpellId.JUMPING, new JumpingSpell());
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.addAfter(Ricochet.TOME_OF_RICOCHET, TOME_OF_JUMPING));
+        // Its place in the Tools tab is with the other passive tomes (PassiveTomes)
 
         PayloadTypeRegistry.playC2S().register(AirJumpPayload.ID, AirJumpPayload.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(AirJumpPayload.ID, (payload, context) -> airJump(context.player()));
@@ -96,10 +95,10 @@ public final class Jumping {
         }));
     }
 
-    /** True if {@code player} can air jump at all right now: tome on a staff they carry, and XP to pay for it. */
+    /** True if {@code player} can air jump at all right now: tome in their inventory, and XP to pay for it. */
     public static boolean canAirJump(PlayerEntity player) {
         if (player.isSpectator() || player.getAbilities().flying) return false;
-        if (StaffItem.findStaffWith(player, TOME_OF_JUMPING).isEmpty()) return false;
+        if (!PassiveTomes.has(player, TOME_OF_JUMPING)) return false;
         return player.isCreative() || player.experienceLevel > 0 || player.experienceProgress > 0f;
     }
 

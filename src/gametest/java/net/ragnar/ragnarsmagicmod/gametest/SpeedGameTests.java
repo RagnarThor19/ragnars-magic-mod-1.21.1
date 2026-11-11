@@ -20,9 +20,7 @@ public class SpeedGameTests implements FabricGameTest {
         ctx.assertEquals(0, ModItems.TOME_OF_SPEED.getCooldown(), "no cooldown");
 
         ServerPlayerEntity p = ctx.createMockCreativeServerPlayerInWorld();
-        ItemStack staff = new ItemStack(ModItems.GOLDEN_STAFF);
-        ((StaffItem) ModItems.GOLDEN_STAFF).insertTome(staff, ModItems.TOME_OF_SPEED);
-        p.getInventory().setStack(5, staff); // just carried, not held
+        p.getInventory().setStack(5, new ItemStack(ModItems.TOME_OF_SPEED)); // just carried, not held
 
         SpeedSpell.update(p);
         StatusEffectInstance speed = p.getStatusEffect(StatusEffects.SPEED);

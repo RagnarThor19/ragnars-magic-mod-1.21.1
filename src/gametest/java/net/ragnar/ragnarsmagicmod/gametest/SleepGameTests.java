@@ -20,7 +20,6 @@ import net.minecraft.world.GameMode;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
-import net.ragnar.ragnarsmagicmod.lunging.Lunging;
 import net.ragnar.ragnarsmagicmod.sight.Sight;
 import net.ragnar.ragnarsmagicmod.sleep.Sleep;
 import net.ragnar.ragnarsmagicmod.sleep.SleepDartEntity;
@@ -112,10 +111,10 @@ public class SleepGameTests implements FabricGameTest {
     public void sitWithTheirTiersInTheCreativeTab(TestContext ctx) {
         ItemGroups.updateDisplayContext(ctx.getWorld().getEnabledFeatures(), true, ctx.getWorld().getRegistryManager());
         List<Item> tab = Registries.ITEM_GROUP.get(ItemGroups.TOOLS).getDisplayStacks().stream().map(ItemStack::getItem).toList();
-        ctx.assertEquals(tab.indexOf(Lunging.TOME_OF_LUNGING) + 1, tab.indexOf(Sleep.TOME_OF_SLEEP_DARTS), "darts after the last beginner tome");
+        ctx.assertEquals(tab.indexOf(net.ragnar.ragnarsmagicmod.bubbles.Bubbles.TOME_OF_BUBBLES) + 1, tab.indexOf(Sleep.TOME_OF_SLEEP_DARTS), "darts after the bubbles");
         ctx.assertEquals(tab.indexOf(Sight.TOME_OF_SIGHT) + 1, tab.indexOf(Sleep.TOME_OF_SLEEP_POTIONS), "potions after the last advanced tome");
-        ctx.assertEquals(TomeTier.ADVANCED, ((net.ragnar.ragnarsmagicmod.item.custom.TomeItem) tab.get(tab.indexOf(Sleep.TOME_OF_SLEEP_DARTS) + 1)).getTier(), "advanced tomes start right after the darts");
-        // (Later advanced tomes may come after the potions; CreativeTabGameTests checks the sections stay in order)
+        ctx.assertEquals(TomeTier.BEGINNER, ((net.ragnar.ragnarsmagicmod.item.custom.TomeItem) tab.get(tab.indexOf(Sleep.TOME_OF_SLEEP_DARTS) - 1)).getTier(), "darts among the beginner tomes");
+        // (Later tomes of each tier may come after the darts and potions; CreativeTabGameTests checks the sections stay in order)
         ctx.assertEquals(TomeTier.ADVANCED, ((net.ragnar.ragnarsmagicmod.item.custom.TomeItem) tab.get(tab.indexOf(Sleep.TOME_OF_SLEEP_POTIONS) - 1)).getTier(), "potions among the advanced tomes");
         ctx.complete();
     }

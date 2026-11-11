@@ -237,6 +237,42 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Tornados photo shoot: screenshots into build/clientsmoke/screenshots
+		// Tome of Basalt photo shoot: screenshots into build/clientsmoke/screenshots
+		basaltSmoke {
+			client()
+			name "Basalt Smoke Test"
+			vmArg "-Dragnarsmagicmod.basaltsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Leaping: plays it for real, logs heights and landing damage, screenshots the bar
+		leapSmoke {
+			client()
+			name "Leap Smoke Test"
+			vmArg "-Dragnarsmagicmod.leapsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Punching: plays it for real, logs dash and knockback distances, screenshots
+		punchSmoke {
+			client()
+			name "Punch Smoke Test"
+			vmArg "-Dragnarsmagicmod.punchsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		tornadoSmoke {
+			client()
+			name "Tornado Smoke Test"
+			vmArg "-Dragnarsmagicmod.tornadosmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Crows photo shoot: screenshots into build/clientsmoke/screenshots
 		crowsSmoke {
 			client()

@@ -57,7 +57,6 @@ import net.ragnar.ragnarsmagicmod.item.custom.TomeItem;
 import net.ragnar.ragnarsmagicmod.item.spell.SpellId;
 import net.ragnar.ragnarsmagicmod.item.spell.Spells;
 import net.ragnar.ragnarsmagicmod.item.spell.TomeTier;
-import net.ragnar.ragnarsmagicmod.lunging.Lunging;
 import net.ragnar.ragnarsmagicmod.phantom.Phantom;
 import net.ragnar.ragnarsmagicmod.sight.Sight;
 import org.joml.Vector3f;
@@ -218,7 +217,7 @@ public final class Sleep {
         Spells.register(SpellId.SLEEP_POTIONS, new SleepPotionSpell());
         // At the end of the beginner and advanced tomes in the tab
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
-            entries.addAfter(Lunging.TOME_OF_LUNGING, TOME_OF_SLEEP_DARTS);
+            entries.addAfter(net.ragnar.ragnarsmagicmod.bubbles.Bubbles.TOME_OF_BUBBLES, TOME_OF_SLEEP_DARTS);
             entries.addAfter(Sight.TOME_OF_SIGHT, TOME_OF_SLEEP_POTIONS);
         });
 
