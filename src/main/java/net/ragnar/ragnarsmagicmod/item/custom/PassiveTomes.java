@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemGroups;
-import net.ragnar.ragnarsmagicmod.basalt.Basalt;
 import net.ragnar.ragnarsmagicmod.climbing.Climbing;
 import net.ragnar.ragnarsmagicmod.fireresistance.FireResistance;
 import net.ragnar.ragnarsmagicmod.gliding.Gliding;
@@ -59,7 +58,7 @@ public final class PassiveTomes {
     /** Their own section of the Tools tab, after all the master tomes. Call after every tome has registered. */
     public static void register() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries ->
-                entries.addAfter(Basalt.TOME_OF_BASALT, ModItems.TOME_OF_SPEED, Jumping.TOME_OF_JUMPING, Lunging.TOME_OF_LUNGING,
+                entries.addAfter(net.ragnar.ragnarsmagicmod.blackhole.BlackHoles.TOME_OF_BLACK_HOLES, ModItems.TOME_OF_SPEED, Jumping.TOME_OF_JUMPING, Lunging.TOME_OF_LUNGING,
                         NightVision.TOME_OF_NIGHT_VISION, Leaping.TOME_OF_LEAPING, Climbing.TOME_OF_CLIMBING,
                         Gliding.TOME_OF_GLIDING, Swimming.TOME_OF_SWIMMING, FireResistance.TOME_OF_FIRE_RESISTANCE,
                         Grace.TOME_OF_GRACE, Lifesteal.TOME_OF_LIFESTEAL, Gourmet.TOME_OF_THE_GOURMET,

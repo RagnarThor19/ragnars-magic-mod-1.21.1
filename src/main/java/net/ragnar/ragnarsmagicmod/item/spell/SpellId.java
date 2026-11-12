@@ -141,5 +141,6 @@ public enum SpellId {
     DESPERATION,
     REFLECTION,
     HASTE,
-    GEYSIR
+    GEYSIR,
+    BLACK_HOLES
 }

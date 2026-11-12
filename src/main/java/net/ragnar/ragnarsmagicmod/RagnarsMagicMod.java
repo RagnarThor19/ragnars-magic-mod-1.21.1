@@ -51,6 +51,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.basalt.Basalt.register(); // Tome of Basalt
         net.ragnar.ragnarsmagicmod.punching.Punching.register(); // Tome of Punching
         net.ragnar.ragnarsmagicmod.geysir.Geysir.register(); // Tome of Geysir
+        net.ragnar.ragnarsmagicmod.blackhole.BlackHoles.register(); // Tome of Black Holes
         net.ragnar.ragnarsmagicmod.nightvision.NightVision.register(); // Tome of Night Vision (passive)
         net.ragnar.ragnarsmagicmod.leaping.Leaping.register(); // Tome of Leaping (passive)
         net.ragnar.ragnarsmagicmod.climbing.Climbing.register(); // Tome of Climbing (passive)
