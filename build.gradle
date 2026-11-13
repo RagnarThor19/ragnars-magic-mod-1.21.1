@@ -256,6 +256,15 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Astral Projection photo shoot: screenshots into build/clientsmoke/screenshots
+		astralSmoke {
+			client()
+			name "Astral Smoke Test"
+			vmArg "-Dragnarsmagicmod.astralsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Leaping: plays it for real, logs heights and landing damage, screenshots the bar
 		leapSmoke {
 			client()

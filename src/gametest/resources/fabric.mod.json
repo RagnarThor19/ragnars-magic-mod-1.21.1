@@ -81,7 +81,8 @@
       "net.ragnar.ragnarsmagicmod.gametest.KnockbackClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.CombatPassivesClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.GeysirClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.BlackHoleClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.BlackHoleClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.AstralClientSmoke"
     ]
   },
   "depends": {

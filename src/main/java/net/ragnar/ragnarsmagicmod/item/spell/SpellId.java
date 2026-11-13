@@ -142,5 +142,6 @@ public enum SpellId {
     REFLECTION,
     HASTE,
     GEYSIR,
-    BLACK_HOLES
+    BLACK_HOLES,
+    ASTRAL_PROJECTION
 }
