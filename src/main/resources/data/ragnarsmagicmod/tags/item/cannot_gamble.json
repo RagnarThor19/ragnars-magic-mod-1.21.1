@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:nether_star",
+    "minecraft:beacon",
+    "minecraft:conduit",
+    "minecraft:heart_of_the_sea",
+    "minecraft:enchanted_golden_apple",
+    "minecraft:dragon_egg",
+    "minecraft:dragon_head",
+    "minecraft:trial_key",
+    "minecraft:ominous_trial_key",
+    "minecraft:ominous_bottle"
+  ]
+}
