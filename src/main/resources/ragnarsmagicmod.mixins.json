@@ -23,6 +23,7 @@
 		"upsidedown.UpsideDownNetworkHandlerMixin",
 		"phantom.PhantomPlayerMixin",
 		"phantom.PhantomNetworkHandlerMixin",
+		"gambling.GamblingPlayerManagerMixin",
 		"sleep.SleepMobMixin",
 		"sleep.SleepCreeperMixin"
 	],

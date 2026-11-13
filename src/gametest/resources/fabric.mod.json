@@ -47,7 +47,8 @@
       "net.ragnar.ragnarsmagicmod.gametest.PunchingGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.MorePassiveTomeGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.GeysirGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.BlackHoleGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.BlackHoleGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.GamblingGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
@@ -82,7 +83,8 @@
       "net.ragnar.ragnarsmagicmod.gametest.CombatPassivesClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.GeysirClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.BlackHoleClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.AstralClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.AstralClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.GamblingClientSmoke"
     ]
   },
   "depends": {

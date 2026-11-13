@@ -75,5 +75,6 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.geysir.client.GeysirClient.init(); // Tome of Geysir
         net.ragnar.ragnarsmagicmod.blackhole.client.BlackHoleClient.init(); // Tome of Black Holes
         net.ragnar.ragnarsmagicmod.astral.client.AstralClient.init(); // Tome of Astral Projection
+        net.ragnar.ragnarsmagicmod.gambling.client.GamblingClient.init(); // Tome of Gambling
     }
 }

@@ -265,6 +265,15 @@ loom {
 			runDir "build/clientsmoke"
 			source sourceSets.gametest
 		}
+		// Tome of Gambling photo shoot: screenshots into build/clientsmoke/screenshots
+		gamblingSmoke {
+			client()
+			name "Gambling Smoke Test"
+			vmArg "-Dragnarsmagicmod.gamblingsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Leaping: plays it for real, logs heights and landing damage, screenshots the bar
 		leapSmoke {
 			client()

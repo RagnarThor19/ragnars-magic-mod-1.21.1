@@ -143,5 +143,6 @@ public enum SpellId {
     HASTE,
     GEYSIR,
     BLACK_HOLES,
-    ASTRAL_PROJECTION
+    ASTRAL_PROJECTION,
+    GAMBLING
 }
