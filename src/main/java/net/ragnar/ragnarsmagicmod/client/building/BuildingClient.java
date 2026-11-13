@@ -229,6 +229,16 @@ public final class BuildingClient {
         }
     }
 
+    /** Whether the resize key (shared with the Tome of Terraforming) is held down right now. */
+    public static boolean isResizeKeyHeld(MinecraftClient client) {
+        return isResizeHeld(client);
+    }
+
+    /** Whether a key press is the menu key (so an open menu can close on it). */
+    public static boolean isMenuKey(int keyCode, int scanCode) {
+        return menuKey.matchesKey(keyCode, scanCode);
+    }
+
     private static boolean isResizeHeld(MinecraftClient client) {
         InputUtil.Key key = KeyBindingHelper.getBoundKeyOf(resizeKey);
         if (key.equals(InputUtil.UNKNOWN_KEY)) return false;
@@ -238,7 +248,7 @@ public final class BuildingClient {
         return InputUtil.isKeyPressed(window, key.getCode());
     }
 
-    static Text keyName(boolean menu) {
+    public static Text keyName(boolean menu) {
         return (menu ? menuKey : resizeKey).getBoundKeyLocalizedText();
     }
 
@@ -247,7 +257,9 @@ public final class BuildingClient {
         ClientPlayerEntity player = client.player;
         boolean active = isActive(player);
         while (menuKey.wasPressed()) {
+            // The same key opens the Tome of Terraforming's menu when that's the tome in hand
             if (active && client.currentScreen == null) client.setScreen(new BuildingScreen());
+            else net.ragnar.ragnarsmagicmod.terraform.client.TerraformClient.openMenu(client);
         }
         if (active && !wasActive) hintTicks = 20 * 6;
         wasActive = active;

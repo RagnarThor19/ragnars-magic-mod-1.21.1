@@ -124,6 +124,7 @@
   "item.ragnarsmagicmod.tome_of_basalt": "Tome of Basalt",
   "item.ragnarsmagicmod.tome_of_black_holes": "Tome of Black Holes",
   "item.ragnarsmagicmod.tome_of_oak": "Tome of Oak",
+  "item.ragnarsmagicmod.tome_of_terraforming": "Tome of Terraforming",
   "item.ragnarsmagicmod.tome_of_astral_projection": "Tome of Astral Projection",
   "item.ragnarsmagicmod.tome_of_gambling": "Tome of Gambling",
   "item.ragnarsmagicmod.tome_of_spin_attack": "Tome of Spin Attack",
@@ -194,6 +195,7 @@
   "key.ragnarsmagicmod.scroll_spells": "Scroll Spells (Hold + Mouse Wheel)",
   "key.ragnarsmagicmod.next_spell": "Next Spell",
   "key.ragnarsmagicmod.previous_spell": "Previous Spell",
-  "key.ragnarsmagicmod.building_menu": "Tome of Building: Open Menu",
-  "key.ragnarsmagicmod.building_resize": "Tome of Building: Resize (Hold + Mouse Wheel)"
+  "key.ragnarsmagicmod.building_menu": "Tome of Building / Terraforming: Open Menu",
+  "key.ragnarsmagicmod.building_resize": "Tome of Building / Terraforming: Resize (Hold + Mouse Wheel)",
+  "key.ragnarsmagicmod.terraform_undo": "Tome of Terraforming: Undo Last"
 }

@@ -238,6 +238,15 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tome of Tornados photo shoot: screenshots into build/clientsmoke/screenshots
+		// Tome of Terraforming photo shoot: screenshots into build/clientsmoke/screenshots
+		terraformSmoke {
+			client()
+			name "Terraform Smoke Test"
+			vmArg "-Dragnarsmagicmod.terraformsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Spin Attack photo shoot: screenshots into build/clientsmoke/screenshots
 		spinSmoke {
 			client()

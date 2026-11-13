@@ -150,5 +150,6 @@ public enum SpellId {
     AIMING,
     FISHING,
     SPIN_ATTACK,
-    LONG_ARMS
+    LONG_ARMS,
+    TERRAFORMING
 }

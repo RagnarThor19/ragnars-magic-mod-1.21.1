@@ -53,6 +53,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.geysir.Geysir.register(); // Tome of Geysir
         net.ragnar.ragnarsmagicmod.blackhole.BlackHoles.register(); // Tome of Black Holes
         net.ragnar.ragnarsmagicmod.oak.Oak.register(); // Tome of Oak
+        net.ragnar.ragnarsmagicmod.terraform.Terraform.register(); // Tome of Terraforming
         net.ragnar.ragnarsmagicmod.astral.AstralProjection.register(); // Tome of Astral Projection
         net.ragnar.ragnarsmagicmod.gambling.Gambling.register(); // Tome of Gambling
         net.ragnar.ragnarsmagicmod.spinattack.SpinAttack.register(); // Tome of Spin Attack (after Gambling: it follows it in the Tools tab)

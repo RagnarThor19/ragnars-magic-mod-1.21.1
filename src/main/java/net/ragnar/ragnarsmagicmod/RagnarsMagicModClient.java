@@ -35,6 +35,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.client.GrappleClient.init();
         net.ragnar.ragnarsmagicmod.client.PortalClient.init();
         net.ragnar.ragnarsmagicmod.client.building.BuildingClient.init();
+        net.ragnar.ragnarsmagicmod.terraform.client.TerraformClient.init(); // Tome of Terraforming (after Building: it shares its keys)
         net.ragnar.ragnarsmagicmod.client.InvisibilityClient.init();
         net.ragnar.ragnarsmagicmod.client.AscendClient.init();
         net.ragnar.ragnarsmagicmod.client.ReckoningClient.init();
