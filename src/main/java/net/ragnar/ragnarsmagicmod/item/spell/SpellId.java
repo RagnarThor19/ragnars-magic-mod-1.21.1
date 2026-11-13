@@ -146,5 +146,9 @@ public enum SpellId {
     ASTRAL_PROJECTION,
     GAMBLING,
     LIVING,
-    OAK
+    OAK,
+    AIMING,
+    FISHING,
+    SPIN_ATTACK,
+    LONG_ARMS
 }

@@ -55,6 +55,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.oak.Oak.register(); // Tome of Oak
         net.ragnar.ragnarsmagicmod.astral.AstralProjection.register(); // Tome of Astral Projection
         net.ragnar.ragnarsmagicmod.gambling.Gambling.register(); // Tome of Gambling
+        net.ragnar.ragnarsmagicmod.spinattack.SpinAttack.register(); // Tome of Spin Attack (after Gambling: it follows it in the Tools tab)
         net.ragnar.ragnarsmagicmod.nightvision.NightVision.register(); // Tome of Night Vision (passive)
         net.ragnar.ragnarsmagicmod.leaping.Leaping.register(); // Tome of Leaping (passive)
         net.ragnar.ragnarsmagicmod.climbing.Climbing.register(); // Tome of Climbing (passive)
@@ -71,6 +72,10 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.reflection.Reflection.register(); // Tome of Reflection (passive)
         net.ragnar.ragnarsmagicmod.haste.Haste.register(); // Tome of Haste (passive)
         net.ragnar.ragnarsmagicmod.living.Living.register(); // Tome of Living (passive)
+        net.ragnar.ragnarsmagicmod.aiming.Aiming.register(); // Tome of Aiming (passive)
+        net.ragnar.ragnarsmagicmod.lavafish.LavaFish.register(); // the lava fish (caught with the Tome of Fishing)
+        net.ragnar.ragnarsmagicmod.fishing.Fishing.register(); // Tome of Fishing (passive)
+        net.ragnar.ragnarsmagicmod.longarms.LongArms.register(); // Tome of Long Arms (passive)
         net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes.register(); // the passive tomes' section of the Tools tab (after every other tome)
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();

@@ -21,5 +21,6 @@ public abstract class MightyPushPoseMixin {
         MightyPushClient.pose(entity, (BipedEntityModel<?>) (Object) this, animationProgress - entity.age);
         net.ragnar.ragnarsmagicmod.lightningpath.client.LightningPathClient.pose(entity, (BipedEntityModel<?>) (Object) this, animationProgress - entity.age);
         net.ragnar.ragnarsmagicmod.punching.client.PunchingClient.pose(entity, (BipedEntityModel<?>) (Object) this, animationProgress - entity.age);
+        net.ragnar.ragnarsmagicmod.spinattack.client.SpinAttackClient.pose(entity, (BipedEntityModel<?>) (Object) this, animationProgress - entity.age);
     }
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [{"type": "minecraft:item", "name": "minecraft:magma_cream"}]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "conditions": [{"condition": "minecraft:random_chance", "chance": 0.5}],
+      "entries": [{"type": "minecraft:item", "name": "minecraft:bone"}]
+    }
+  ],
+  "random_sequence": "ragnarsmagicmod:entities/lava_fish"
+}

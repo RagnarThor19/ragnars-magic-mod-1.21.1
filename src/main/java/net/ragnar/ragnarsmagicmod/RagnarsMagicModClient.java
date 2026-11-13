@@ -64,6 +64,8 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.tornado.client.TornadoClient.init(); // Tome of Tornados
         net.ragnar.ragnarsmagicmod.poisondarts.client.PoisonDartsClient.init(); // Tome of Poison Darts
         net.ragnar.ragnarsmagicmod.basalt.client.BasaltClient.init(); // Tome of Basalt
+        net.ragnar.ragnarsmagicmod.lavafish.client.LavaFishClient.init(); // the lava fish
+        net.ragnar.ragnarsmagicmod.spinattack.client.SpinAttackClient.init(); // Tome of Spin Attack
         net.ragnar.ragnarsmagicmod.leaping.client.LeapingClient.init(); // Tome of Leaping
         net.ragnar.ragnarsmagicmod.climbing.client.ClimbingClient.init(); // Tome of Climbing
         net.ragnar.ragnarsmagicmod.gliding.client.GlidingClient.init(); // Tome of Gliding

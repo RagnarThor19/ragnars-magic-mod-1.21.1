@@ -52,12 +52,19 @@ public class ModLootTableModifiers {
             // FISHING (Treasure category is best for "good loot")
             // ============================================================
             if (key.equals(LootTables.FISHING_TREASURE_GAMEPLAY)) {
-                // B: 2%
-                buildTomePool(tableBuilder, TomeTier.BEGINNER, 0.02f);
-                // A: 0.5%
-                buildTomePool(tableBuilder, TomeTier.ADVANCED, 0.005f);
-                // M: 0.1%
-                buildTomePool(tableBuilder, TomeTier.MASTER, 0.001f);
+                // B: 3%
+                buildTomePool(tableBuilder, TomeTier.BEGINNER, 0.03f);
+                // A: 0.75%, passive: 0.5% (its own figure here, not the usual share of advanced)
+                buildTomePool(tableBuilder, TomeTier.ADVANCED, 0.0075f, 0.005f);
+                // M: 0.2%
+                buildTomePool(tableBuilder, TomeTier.MASTER, 0.002f);
+            }
+            // Lava fishing (Tome of Fishing): the same tomes, a tenth more often
+            if (key.equals(net.ragnar.ragnarsmagicmod.fishing.Fishing.LAVA_TREASURE)) {
+                float boost = net.ragnar.ragnarsmagicmod.fishing.Fishing.LAVA_TOME_BOOST;
+                buildTomePool(tableBuilder, TomeTier.BEGINNER, 0.03f * boost);
+                buildTomePool(tableBuilder, TomeTier.ADVANCED, 0.0075f * boost, 0.005f * boost);
+                buildTomePool(tableBuilder, TomeTier.MASTER, 0.002f * boost);
             }
 
             // ============================================================
@@ -246,7 +253,7 @@ public class ModLootTableModifiers {
         else if (key.equals(LootTables.SIMPLE_DUNGEON_CHEST) || key.equals(LootTables.ABANDONED_MINESHAFT_CHEST)
                 || key.equals(LootTables.NETHER_BRIDGE_CHEST) || key.equals(LootTables.DESERT_PYRAMID_CHEST)
                 || key.equals(LootTables.JUNGLE_TEMPLE_CHEST)) chance = 0.04f;
-        else if (key.equals(LootTables.FISHING_TREASURE_GAMEPLAY)) chance = 0.03f;
+        else if (key.equals(LootTables.FISHING_TREASURE_GAMEPLAY) || key.equals(net.ragnar.ragnarsmagicmod.fishing.Fishing.LAVA_TREASURE)) chance = 0.03f;
         else return;
 
         RegistryWrapper.Impl<Enchantment> enchantments = registries.getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
@@ -266,8 +273,13 @@ public class ModLootTableModifiers {
      * Helper to inject a pool of ALL tomes of a specific tier into a table with a specific chance.
      */
     private static void buildTomePool(net.minecraft.loot.LootTable.Builder tableBuilder, TomeTier tier, float chance) {
-        // Passive tomes turn up wherever advanced ones do, but rarer
-        if (tier == TomeTier.ADVANCED) buildTomePool(tableBuilder, TomeTier.PASSIVE, chance * PASSIVE_SHARE);
+        buildTomePool(tableBuilder, tier, chance, chance * PASSIVE_SHARE);
+    }
+
+    /** As above, but with the passive tomes' chance given outright (it only matters for the advanced tier). */
+    private static void buildTomePool(net.minecraft.loot.LootTable.Builder tableBuilder, TomeTier tier, float chance, float passiveChance) {
+        // Passive tomes turn up wherever advanced ones do, usually a little rarer
+        if (tier == TomeTier.ADVANCED) buildTomePool(tableBuilder, TomeTier.PASSIVE, passiveChance, 0f);
         List<TomeItem> tomes = new ArrayList<>();
         for (Map<TomeTier, TomeItem> tierMap : ModItems.TOMES.values()) {
             if (tierMap.containsKey(tier)) {

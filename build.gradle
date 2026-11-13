@@ -238,6 +238,24 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tome of Tornados photo shoot: screenshots into build/clientsmoke/screenshots
+		// Tome of Spin Attack photo shoot: screenshots into build/clientsmoke/screenshots
+		spinSmoke {
+			client()
+			name "Spin Attack Smoke Test"
+			vmArg "-Dragnarsmagicmod.spinsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Lava fish photo shoot: screenshots into build/clientsmoke/screenshots
+		lavaFishSmoke {
+			client()
+			name "Lava Fish Smoke Test"
+			vmArg "-Dragnarsmagicmod.lavafishsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Oak photo shoot: screenshots into build/clientsmoke/screenshots
 		oakSmoke {
 			client()

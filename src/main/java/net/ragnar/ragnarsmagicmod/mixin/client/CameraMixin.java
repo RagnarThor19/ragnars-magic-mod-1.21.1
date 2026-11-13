@@ -36,6 +36,10 @@ public abstract class CameraMixin {
                                              float tickDelta, CallbackInfo ci) {
         if (focusedEntity != null && focusedEntity == MinecraftClient.getInstance().player) {
             setPos(CameraGlide.apply(getPos(), tickDelta));
+            // Tome of Spin Attack: in first person the view whirls round with you (only the view: where you face, and
+            // what everyone else sees, are untouched - they see your body spin instead)
+            float spin = thirdPerson ? 0f : net.ragnar.ragnarsmagicmod.spinattack.client.SpinAttackClient.angle(focusedEntity, tickDelta);
+            if (spin != 0f) setRotation(getYaw() + spin, getPitch());
         }
         float k = Math.max(Math.max(DimensionSplitClient.shake(tickDelta), DayShiftClient.shake(tickDelta)),
                 ScreenShake.current(tickDelta));
