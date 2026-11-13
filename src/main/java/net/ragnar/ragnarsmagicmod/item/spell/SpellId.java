@@ -144,5 +144,7 @@ public enum SpellId {
     GEYSIR,
     BLACK_HOLES,
     ASTRAL_PROJECTION,
-    GAMBLING
+    GAMBLING,
+    LIVING,
+    OAK
 }

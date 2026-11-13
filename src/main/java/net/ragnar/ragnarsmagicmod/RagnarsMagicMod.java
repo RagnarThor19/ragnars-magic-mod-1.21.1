@@ -52,6 +52,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.punching.Punching.register(); // Tome of Punching
         net.ragnar.ragnarsmagicmod.geysir.Geysir.register(); // Tome of Geysir
         net.ragnar.ragnarsmagicmod.blackhole.BlackHoles.register(); // Tome of Black Holes
+        net.ragnar.ragnarsmagicmod.oak.Oak.register(); // Tome of Oak
         net.ragnar.ragnarsmagicmod.astral.AstralProjection.register(); // Tome of Astral Projection
         net.ragnar.ragnarsmagicmod.gambling.Gambling.register(); // Tome of Gambling
         net.ragnar.ragnarsmagicmod.nightvision.NightVision.register(); // Tome of Night Vision (passive)
@@ -69,6 +70,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.desperation.Desperation.register(); // Tome of Desperation (passive)
         net.ragnar.ragnarsmagicmod.reflection.Reflection.register(); // Tome of Reflection (passive)
         net.ragnar.ragnarsmagicmod.haste.Haste.register(); // Tome of Haste (passive)
+        net.ragnar.ragnarsmagicmod.living.Living.register(); // Tome of Living (passive)
         net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes.register(); // the passive tomes' section of the Tools tab (after every other tome)
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();

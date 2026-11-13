@@ -67,14 +67,16 @@ public class BlackHoleGameTests implements FabricGameTest {
         ctx.assertEquals(BlackHoles.TOME_OF_BLACK_HOLES, ModItems.getTomeFor(SpellId.BLACK_HOLES, TomeTier.MASTER), "lookup");
         ItemGroups.updateDisplayContext(ctx.getWorld().getEnabledFeatures(), true, ctx.getWorld().getRegistryManager());
         List<ItemStack> tools = List.copyOf(Registries.ITEM_GROUP.get(ItemGroups.TOOLS).getDisplayStacks());
-        int basalt = -1, hole = -1, speed = -1;
+        int basalt = -1, hole = -1, oak = -1, speed = -1;
         for (int i = 0; i < tools.size(); i++) {
             if (tools.get(i).isOf(Basalt.TOME_OF_BASALT)) basalt = i;
             if (tools.get(i).isOf(BlackHoles.TOME_OF_BLACK_HOLES)) hole = i;
+            if (tools.get(i).isOf(net.ragnar.ragnarsmagicmod.oak.Oak.TOME_OF_OAK)) oak = i;
             if (tools.get(i).isOf(ModItems.TOME_OF_SPEED)) speed = i;
         }
         ctx.assertTrue(hole >= 0 && hole == basalt + 1, "with the master tomes, after basalt (" + basalt + ", " + hole + ")");
-        ctx.assertTrue(speed == hole + 1, "the passive tomes still start right after the last master tome (" + hole + ", " + speed + ")");
+        ctx.assertTrue(oak == hole + 1, "then the Tome of Oak (" + hole + ", " + oak + ")");
+        ctx.assertTrue(speed == oak + 1, "the passive tomes still start right after the last master tome (" + oak + ", " + speed + ")");
         ctx.complete();
     }
 

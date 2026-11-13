@@ -229,7 +229,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SUN,
                     40 // XP cost
-            ).setCooldown(175)
+            ).setCooldown(20 * 50) // 50 seconds
     );
 
     public static final net.minecraft.item.Item TOME_MINING = registerItem("tome_mining",

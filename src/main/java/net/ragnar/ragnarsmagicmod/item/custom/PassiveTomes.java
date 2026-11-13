@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * Passive tomes (TomeTier.PASSIVE): Speed, Jumping, Lunging, Night Vision, Leaping, Climbing, Gliding,
  * Swimming, Fire Resistance, Grace, Lifesteal, the Gourmet, Knockback, Ground Pound,
- * Sidestep, Desperation, Reflection and Haste. They aren't cast; each one just
+ * Sidestep, Desperation, Reflection, Haste and Living. They aren't cast; each one just
  * works while it's anywhere in your inventory (hotbar, backpack, off hand or armour slots) or on any staff you carry
  * (any staff takes them, whatever its tier). Rarer than advanced
  * tomes: they turn up wherever advanced tomes do, at {@code ModLootTableModifiers.PASSIVE_SHARE} of the chance.
@@ -58,7 +58,7 @@ public final class PassiveTomes {
     /** Their own section of the Tools tab, after all the master tomes. Call after every tome has registered. */
     public static void register() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries ->
-                entries.addAfter(net.ragnar.ragnarsmagicmod.blackhole.BlackHoles.TOME_OF_BLACK_HOLES, ModItems.TOME_OF_SPEED, Jumping.TOME_OF_JUMPING, Lunging.TOME_OF_LUNGING,
+                entries.addAfter(net.ragnar.ragnarsmagicmod.oak.Oak.TOME_OF_OAK, ModItems.TOME_OF_SPEED, Jumping.TOME_OF_JUMPING, Lunging.TOME_OF_LUNGING,
                         NightVision.TOME_OF_NIGHT_VISION, Leaping.TOME_OF_LEAPING, Climbing.TOME_OF_CLIMBING,
                         Gliding.TOME_OF_GLIDING, Swimming.TOME_OF_SWIMMING, FireResistance.TOME_OF_FIRE_RESISTANCE,
                         Grace.TOME_OF_GRACE, Lifesteal.TOME_OF_LIFESTEAL, Gourmet.TOME_OF_THE_GOURMET,
@@ -66,6 +66,7 @@ public final class PassiveTomes {
                         net.ragnar.ragnarsmagicmod.sidestep.Sidestep.TOME_OF_SIDESTEP,
                         net.ragnar.ragnarsmagicmod.desperation.Desperation.TOME_OF_DESPERATION,
                         net.ragnar.ragnarsmagicmod.reflection.Reflection.TOME_OF_REFLECTION,
-                        net.ragnar.ragnarsmagicmod.haste.Haste.TOME_OF_HASTE));
+                        net.ragnar.ragnarsmagicmod.haste.Haste.TOME_OF_HASTE,
+                        net.ragnar.ragnarsmagicmod.living.Living.TOME_OF_LIVING));
     }
 }

@@ -44,7 +44,7 @@ public class PassiveTomeGameTests implements FabricGameTest {
                 net.ragnar.ragnarsmagicmod.gourmet.Gourmet.TOME_OF_THE_GOURMET, net.ragnar.ragnarsmagicmod.knockback.Knockback.TOME_OF_KNOCKBACK,
                 net.ragnar.ragnarsmagicmod.groundpound.GroundPound.TOME_OF_GROUND_POUND, net.ragnar.ragnarsmagicmod.sidestep.Sidestep.TOME_OF_SIDESTEP,
                 net.ragnar.ragnarsmagicmod.desperation.Desperation.TOME_OF_DESPERATION, net.ragnar.ragnarsmagicmod.reflection.Reflection.TOME_OF_REFLECTION,
-                net.ragnar.ragnarsmagicmod.haste.Haste.TOME_OF_HASTE),
+                net.ragnar.ragnarsmagicmod.haste.Haste.TOME_OF_HASTE, net.ragnar.ragnarsmagicmod.living.Living.TOME_OF_LIVING),
                 passive, "the passive tomes");
         for (TomeItem t : passive) ctx.assertEquals(TomeTier.PASSIVE, t.getTier(), "tier of " + t);
         ctx.assertTrue(ModLootTableModifiers.PASSIVE_SHARE > 0f && ModLootTableModifiers.PASSIVE_SHARE < 1f, "rarer than advanced");

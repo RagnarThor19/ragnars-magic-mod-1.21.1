@@ -91,7 +91,7 @@ public class TomeItem extends Item {
             tooltip.add(Text.literal("Works while it's in your inventory").formatted(Formatting.GRAY));
             tooltip.add(Text.literal("or on any staff you carry").formatted(Formatting.GRAY));
             if (xpCost > 0) tooltip.add(Text.literal("XP Cost: " + xpCost + " per use").formatted(Formatting.GRAY));
-            if (cooldown > 0) tooltip.add(Text.literal("Cooldown: " + String.format("%.1f", cooldown / 20.0f) + "s").formatted(Formatting.BLUE));
+            if (cooldown > 0) tooltip.add(Text.literal("Cooldown: " + formatCooldown(cooldown)).formatted(Formatting.BLUE));
             return;
         }
         tooltip.add(Text.literal("Tier: " + tier.name()).formatted(colorFor(tier)));
@@ -109,6 +109,12 @@ public class TomeItem extends Item {
         };
 
         tooltip.add(Text.literal("Usable with: " + usable).formatted(Formatting.DARK_GRAY));
+    }
+
+    /** Seconds with one decimal ("2.5s"), or whole minutes once it's a minute or more ("60 min"). */
+    static String formatCooldown(int ticks) {
+        if (ticks >= 20 * 60 && ticks % (20 * 60) == 0) return (ticks / (20 * 60)) + " min";
+        return String.format("%.1f", ticks / 20.0f) + "s";
     }
 
     public static Formatting colorFor(TomeTier t) {

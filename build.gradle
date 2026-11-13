@@ -238,6 +238,15 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tome of Tornados photo shoot: screenshots into build/clientsmoke/screenshots
+		// Tome of Oak photo shoot: screenshots into build/clientsmoke/screenshots
+		oakSmoke {
+			client()
+			name "Oak Smoke Test"
+			vmArg "-Dragnarsmagicmod.oaksmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Basalt photo shoot: screenshots into build/clientsmoke/screenshots
 		basaltSmoke {
 			client()

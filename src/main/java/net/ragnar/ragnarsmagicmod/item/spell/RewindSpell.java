@@ -77,6 +77,37 @@ public class RewindSpell implements Spell {
         return !player.getWorld().isClient && !REWINDING.isEmpty() && REWINDING.containsKey(player.getUuid());
     }
 
+    /**
+     * Snaps the player straight back to where they were about {@code ticksAgo} ticks ago in this world (or as far
+     * back as is remembered here, if that's less), in one go: position, view, health, hunger, fire, air and fall.
+     * Everything remembered after that moment is forgotten. Returns false (and changes nothing) if nothing in this
+     * world is remembered at all. Used by the Tome of Living.
+     */
+    public static boolean snapBack(ServerPlayerEntity p, int ticksAgo) {
+        Deque<Moment> history = HISTORY.get(p.getUuid());
+        if (history == null || history.isEmpty()) return false;
+        Moment target = null;
+        int newer = 0; // moments to drop off the end once we've picked one
+        int seen = 0;
+        Iterator<Moment> newestFirst = history.descendingIterator();
+        while (newestFirst.hasNext() && seen <= ticksAgo) {
+            Moment m = newestFirst.next();
+            if (m.world() != p.getWorld().getRegistryKey()) break;
+            target = m;
+            newer = seen;
+            seen++;
+        }
+        if (target == null) return false;
+        for (int i = 0; i < newer; i++) history.pollLast();
+
+        if (p.hasVehicle()) p.stopRiding();
+        if (p.isSleeping()) p.wakeUp();
+        apply(p, target);
+        p.velocityModified = true;
+        unstick(p);
+        return true;
+    }
+
     @Override
     public int xpCost(PlayerEntity player, int tomeCost) {
         return isRewinding(player) ? 0 : tomeCost; // stopping it is free
@@ -198,13 +229,8 @@ public class RewindSpell implements Spell {
         }
     }
 
-    private static void finish(ServerPlayerEntity p, boolean cancelled) {
-        REWINDING.remove(p.getUuid());
-        RewindPayload.send(p, false, List.of());
-        p.setVelocity(Vec3d.ZERO);
-        p.velocityModified = true;
-
-        // Never leave anyone inside a wall someone built in the meantime
+    /** Never leave anyone inside a wall someone built in the meantime. */
+    private static void unstick(ServerPlayerEntity p) {
         BlockPos.Mutable pos = p.getBlockPos().mutableCopy();
         for (int i = 0; i < 4 && !p.getWorld().isSpaceEmpty(p, p.getDimensions(p.getPose()).getBoxAt(Vec3d.ofBottomCenter(pos))); i++) {
             pos.move(0, 1, 0);
@@ -213,6 +239,14 @@ public class RewindSpell implements Spell {
             p.networkHandler.requestTeleport(p.getX(), pos.getY(), p.getZ(), p.getYaw(), p.getPitch(),
                     EnumSet.of(PositionFlag.Y_ROT, PositionFlag.X_ROT));
         }
+    }
+
+    private static void finish(ServerPlayerEntity p, boolean cancelled) {
+        REWINDING.remove(p.getUuid());
+        RewindPayload.send(p, false, List.of());
+        p.setVelocity(Vec3d.ZERO);
+        p.velocityModified = true;
+        unstick(p);
 
         ServerWorld world = (ServerWorld) p.getWorld();
         world.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.PLAYERS, 1.0f, 1.5f);

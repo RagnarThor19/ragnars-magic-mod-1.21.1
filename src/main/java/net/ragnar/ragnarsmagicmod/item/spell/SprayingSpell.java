@@ -68,7 +68,7 @@ public class SprayingSpell implements Spell {
     private static final double SPEED = 4.5;
     private static final double GRAVITY = 0.004;
     private static final double SPREAD = 0.012;
-    private static final float DAMAGE = 10.0f;
+    private static final float DAMAGE = 5.0f;
     private static final int FLIGHT_TICKS = 22;
     private static final int STUCK_TICKS = 20;
     private static final float SCALE = 0.7f;

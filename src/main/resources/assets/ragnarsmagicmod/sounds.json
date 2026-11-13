@@ -83,5 +83,12 @@
         "name": "ragnarsmagicmod:ice_beam_end"
       }
     ]
+  },
+  "tome_of_living": {
+    "sounds": [
+      {
+        "name": "ragnarsmagicmod:tome_of_living"
+      }
+    ]
   }
 }
