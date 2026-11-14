@@ -33,18 +33,10 @@ public class VoidSpell implements Spell {
 
         if (hit.getType() == HitResult.Type.BLOCK) {
             if (world instanceof ServerWorld sw) {
-                // A thread of void shoots from the staff to the target
+                // The thread of void from the staff, and the rift itself, are drawn by each client (VoidClient)
                 Vec3d from = start.add(player.getRotationVec(1.0f).multiply(1.0)).subtract(0, 0.3, 0);
-                Vec3d path = hit.getPos().subtract(from);
-                int steps = (int) (path.length() * 3);
-                for (int i = 0; i <= steps; i++) {
-                    Vec3d p = from.add(path.multiply(i / (double) Math.max(1, steps)));
-                    sw.spawnParticles(i % 3 == 0 ? ParticleTypes.SCULK_SOUL : ParticleTypes.REVERSE_PORTAL, p.x, p.y, p.z, 1, 0.02, 0.02, 0.02, 0.0);
-                }
                 world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.PLAYERS, 0.8f, 0.5f);
-
-                // Create the void zone at the impact point
-                VoidZone.create(sw, hit.getPos(), player.getUuid());
+                VoidZone.create(sw, hit.getPos(), from, player);
             }
             return true;
         }

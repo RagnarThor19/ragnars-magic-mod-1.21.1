@@ -32,7 +32,7 @@ public class SonicBoomSpell implements Spell {
 
     // --- tuning ---
     private static final double RANGE = 25.0;
-    private static final float DAMAGE = 20.0f;
+    private static final float DAMAGE = 30.0f;
     private static final double HIT_RADIUS = 0.5;       // how far from the line an entity's hitbox still counts
     private static final int CHARGE_TIME = 34;          // same wind-up as the warden (SonicBoomTask.SOUND_DELAY)
     private static final double KNOCKBACK_HORIZONTAL = 2.5; // warden values

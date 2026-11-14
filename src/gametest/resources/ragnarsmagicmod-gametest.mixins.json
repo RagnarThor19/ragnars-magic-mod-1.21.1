@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.ragnar.ragnarsmagicmod.gametest.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ParticleCountMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

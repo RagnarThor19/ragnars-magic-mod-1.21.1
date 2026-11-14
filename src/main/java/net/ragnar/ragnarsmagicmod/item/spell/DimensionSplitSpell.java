@@ -49,9 +49,6 @@ public class DimensionSplitSpell implements Spell {
     private static final float SLASH_DAMAGE = 6.0f;        // every slash that passes through you
     private static final float SEVER_DIRECT_DAMAGE = 100.0f; // the spark's own target
     private static final float SEVER_AREA_DAMAGE = 40.0f;  // everything else caught in it (falls off to half)
-    private static final double CARVE_RADIUS = 9.0;
-    private static final double CRATER_RADIUS = 2.6;
-    private static final float MAX_CARVE_HARDNESS = 50.0f; // obsidian and up survive
 
     private static final DustParticleEffect SPARK = new DustParticleEffect(new Vector3f(1.0f, 0.15f, 0.12f), 0.5f);
     private static final DustParticleEffect BLOOD = new DustParticleEffect(new Vector3f(0.85f, 0.02f, 0.02f), 1.6f);
@@ -353,7 +350,7 @@ public class DimensionSplitSpell implements Spell {
             world.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, ec.x, ec.y, ec.z, 8, 0.3, 0.4, 0.3, 0.2);
         }
 
-        if (s.terrain) carve(s);
+        // The land itself is never cut: only what stood in the way of the slashes
     }
 
     private static void hurt(ServerWorld world, LivingEntity e, PlayerEntity owner, float amount) {
@@ -362,42 +359,5 @@ public class DimensionSplitSpell implements Spell {
                 ? world.getDamageSources().indirectMagic(owner, owner)
                 : world.getDamageSources().magic();
         e.damage(source, amount);
-    }
-
-    /** Cuts the slash shapes into the ground, plus a crater where the spark struck. */
-    private static void carve(Split s) {
-        ServerWorld world = s.world;
-        Set<BlockPos> cut = new LinkedHashSet<>();
-
-        BlockPos.iterateOutwards(BlockPos.ofFloored(s.center), (int) Math.ceil(CRATER_RADIUS), (int) Math.ceil(CRATER_RADIUS), (int) Math.ceil(CRATER_RADIUS))
-                .forEach(p -> {
-                    if (Vec3d.ofCenter(p).squaredDistanceTo(s.center) <= CRATER_RADIUS * CRATER_RADIUS) cut.add(p.toImmutable());
-                });
-
-        for (SplitPattern.Slash slash : s.slashes) {
-            int steps = (int) Math.ceil(slash.length() / 0.4);
-            for (int i = 0; i <= steps; i++) {
-                double t = i / (double) steps;
-                double hw = Math.max(0.5, slash.halfWidthAt(t) * 1.6);
-                Vec3d p = slash.point(t);
-                for (double o = -hw; o <= hw; o += 0.4) {
-                    Vec3d q = p.add(slash.v().multiply(o));
-                    if (q.squaredDistanceTo(s.center) <= CARVE_RADIUS * CARVE_RADIUS) cut.add(BlockPos.ofFloored(q));
-                }
-            }
-        }
-
-        int effects = 0;
-        for (BlockPos pos : cut) {
-            BlockState state = world.getBlockState(pos);
-            if (state.isAir() || !state.getFluidState().isEmpty() || state.hasBlockEntity()) continue;
-            float hardness = state.getHardness(world, pos);
-            if (hardness < 0 || hardness >= MAX_CARVE_HARDNESS) continue;
-            if (effects < 80 && world.getRandom().nextInt(3) == 0) {
-                world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(state));
-                effects++;
-            }
-            world.setBlockState(pos, net.minecraft.block.Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-        }
     }
 }

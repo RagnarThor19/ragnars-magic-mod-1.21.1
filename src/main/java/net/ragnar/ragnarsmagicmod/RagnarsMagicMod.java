@@ -141,7 +141,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.WITHER_SKULL, new net.ragnar.ragnarsmagicmod.item.spell.WitherSkullSpell());
         Spells.register(SpellId.ZAP, new net.ragnar.ragnarsmagicmod.item.spell.ZapSpell());
         Spells.register(SpellId.LIGHTNING, new net.ragnar.ragnarsmagicmod.item.spell.LightningSpell());
-        Spells.register(SpellId.LIGHTNING_CASCADE, new net.ragnar.ragnarsmagicmod.item.spell.LightningCascadeSpell());
+        net.ragnar.ragnarsmagicmod.thunderstrike.Thunderstrike.register(); // Tome of Thunderstrike (was Lightning Cascade; same item)
         Spells.register(SpellId.ENERGY_ORB, new net.ragnar.ragnarsmagicmod.item.spell.EnergyOrbSpell());
         Spells.register(SpellId.SONIC_BOOM, new net.ragnar.ragnarsmagicmod.item.spell.SonicBoomSpell());
         Spells.register(SpellId.REJUVENATION, new net.ragnar.ragnarsmagicmod.item.spell.RejuvenationSpell());
@@ -149,7 +149,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.AEGIS, new net.ragnar.ragnarsmagicmod.item.spell.AegisSpell());
         Spells.register(SpellId.INSIGHT, new net.ragnar.ragnarsmagicmod.item.spell.InsightSpell());
         Spells.register(SpellId.TRACKING, new net.ragnar.ragnarsmagicmod.item.spell.TrackingSpell());
-        Spells.register(SpellId.SUN, new net.ragnar.ragnarsmagicmod.item.spell.SunSpell());
+        net.ragnar.ragnarsmagicmod.sun.Sun.register(); // Tome of the Sun
         Spells.register(SpellId.MINING, new net.ragnar.ragnarsmagicmod.item.spell.MiningSpell());
         Spells.register(SpellId.DRAGON_BREATH, new net.ragnar.ragnarsmagicmod.item.spell.DragonBreathSpell());
         Spells.register(SpellId.GRAVITY, new net.ragnar.ragnarsmagicmod.item.spell.GravitySpell());
@@ -167,6 +167,7 @@ public class RagnarsMagicMod implements ModInitializer {
         Spells.register(SpellId.IMPALING, new net.ragnar.ragnarsmagicmod.item.spell.ImpalingSpell());
         Spells.register(SpellId.INVISIBILITY, new net.ragnar.ragnarsmagicmod.item.spell.InvisibilitySpell());
         Spells.register(SpellId.VOID, new net.ragnar.ragnarsmagicmod.item.spell.VoidSpell());
+        net.ragnar.ragnarsmagicmod.util.VoidZone.register(); // the void rift clients draw from
         Spells.register(SpellId.FREEZING, new net.ragnar.ragnarsmagicmod.item.spell.FreezingSpell());
         Spells.register(SpellId.RAINING_ARROWS, new net.ragnar.ragnarsmagicmod.item.spell.RainingArrowsSpell());
         Spells.register(SpellId.RANDOMNESS, new net.ragnar.ragnarsmagicmod.item.spell.RandomnessSpell());

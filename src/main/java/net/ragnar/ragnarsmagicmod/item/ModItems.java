@@ -67,7 +67,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.METEOR,
                     80 // XP cost (big boom should cost more)
-            ).setCooldown(200)
+            ).setCooldown(20 * 100) // 100 seconds
     );
 
     public static final Item TOME_FALLING_STALACTITE = registerItem("tome_falling_stalactite",
@@ -155,9 +155,9 @@ public class ModItems {
             new net.ragnar.ragnarsmagicmod.item.custom.TomeItem(
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
-                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE,
-                    50 // XP cost
-            ).setCooldown(140)
+                    net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING_CASCADE, // the Tome of Thunderstrike (see thunderstrike.Thunderstrike)
+                    net.ragnar.ragnarsmagicmod.thunderstrike.Thunderstrike.XP_COST
+            ).setCooldown(net.ragnar.ragnarsmagicmod.thunderstrike.Thunderstrike.COOLDOWN)
     );
 
     public static final net.minecraft.item.Item TOME_ENERGY = registerItem("tome_energy",
@@ -174,7 +174,7 @@ public class ModItems {
                     new net.minecraft.item.Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.EPIC), // Master
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.MASTER,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.SONIC_BOOM,
-                    40 // XP cost (Master-tier)
+                    30 // XP cost (Master-tier)
             ).setCooldown(120)
     );
 
@@ -291,7 +291,7 @@ public class ModItems {
                     new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE), // Advanced
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.RECALLING,
-                    40 // XP cost
+                    10 // XP cost, paid on the recall (setting the mark is free)
             ).setCooldown(40)
     );
 

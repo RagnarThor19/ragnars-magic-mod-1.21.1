@@ -54,6 +54,9 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.boulders.client.BouldersClient.init(); // Tome of Boulders
         net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.init(); // Tome of the Dragon
         net.ragnar.ragnarsmagicmod.moon.client.MoonClient.init(); // Tome of the Moon
+        net.ragnar.ragnarsmagicmod.sun.client.SunClient.init(); // Tome of the Sun
+        net.ragnar.ragnarsmagicmod.client.RecallMarkerClient.init(); // the Tome of Recalling's mark
+        net.ragnar.ragnarsmagicmod.client.VoidClient.init(); // the Tome of the Void's rift
         net.ragnar.ragnarsmagicmod.mightypush.client.MightyPushClient.init(); // Tome of Mighty Pushing
         net.ragnar.ragnarsmagicmod.lightningpath.client.LightningPathClient.init(); // Tome of the Lightning Path
         net.ragnar.ragnarsmagicmod.bubbles.client.BubblesClient.init(); // Tome of Bubbles
@@ -67,6 +70,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.basalt.client.BasaltClient.init(); // Tome of Basalt
         net.ragnar.ragnarsmagicmod.lavafish.client.LavaFishClient.init(); // the lava fish
         net.ragnar.ragnarsmagicmod.spinattack.client.SpinAttackClient.init(); // Tome of Spin Attack
+        net.ragnar.ragnarsmagicmod.thunderstrike.client.ThunderstrikeClient.init(); // Tome of Thunderstrike
         net.ragnar.ragnarsmagicmod.leaping.client.LeapingClient.init(); // Tome of Leaping
         net.ragnar.ragnarsmagicmod.climbing.client.ClimbingClient.init(); // Tome of Climbing
         net.ragnar.ragnarsmagicmod.gliding.client.GlidingClient.init(); // Tome of Gliding

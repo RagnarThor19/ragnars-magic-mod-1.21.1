@@ -111,6 +111,15 @@ loom {
 			runDir "build/gametest"
 			source sourceSets.gametest
 		}
+		// Particle network load of every tome (a measurement, not a test): results in build/gametest logs, "[PBENCH]"
+		particleBench {
+			server()
+			name "Particle Benchmark"
+			vmArg "-Dfabric-api.gametest"
+			vmArg "-Dragnarsmagicmod.particlebench=true"
+			runDir "build/gametest"
+			source sourceSets.gametest
+		}
 		// Joins build/clientsmoke/saves/SmokeWorld, uses the Tome of Building for real and saves screenshots
 		clientSmoke {
 			client()
@@ -238,6 +247,42 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tome of Tornados photo shoot: screenshots into build/clientsmoke/screenshots
+		// Tome of Recalling mark photo shoot: screenshots into build/clientsmoke/screenshots
+		recallSmoke {
+			client()
+			name "Recall Smoke Test"
+			vmArg "-Dragnarsmagicmod.recallsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of the Void photo shoot: screenshots into build/clientsmoke/screenshots
+		voidSmoke {
+			client()
+			name "Void Smoke Test"
+			vmArg "-Dragnarsmagicmod.voidsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of the Sun photo shoot: screenshots into build/clientsmoke/screenshots
+		sunSmoke {
+			client()
+			name "Sun Smoke Test"
+			vmArg "-Dragnarsmagicmod.sunsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Thunderstrike photo shoot: screenshots into build/clientsmoke/screenshots
+		thunderSmoke {
+			client()
+			name "Thunderstrike Smoke Test"
+			vmArg "-Dragnarsmagicmod.thundersmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Terraforming photo shoot: screenshots into build/clientsmoke/screenshots
 		terraformSmoke {
 			client()
