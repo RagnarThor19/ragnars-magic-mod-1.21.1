@@ -93,7 +93,20 @@ public class BoulderEntity extends Entity implements Deflectable {
         tumble = new Tumble(world.random.nextLong());
     }
 
-    BoulderEntity(ServerWorld world, PlayerEntity owner) {
+    /** For a caster that isn't a player (the Wandering Wizard): who it's thrown at, and its share of the damage. */
+    @Nullable private LivingEntity aimAt;
+    private float damageScale = 1f;
+
+    /** A caster that isn't a player (the Wandering Wizard) hoists one and throws it at {@code target}. */
+    public static BoulderEntity castFrom(ServerWorld world, LivingEntity caster, LivingEntity target, float damageScale) {
+        BoulderEntity b = new BoulderEntity(world, caster);
+        b.aimAt = target;
+        b.damageScale = damageScale;
+        world.spawnEntity(b);
+        return b;
+    }
+
+    BoulderEntity(ServerWorld world, LivingEntity owner) {
         this(Boulders.BOULDER, world);
         ownerId = owner.getUuid();
         setPosition(holdPoint(world, owner));
@@ -120,6 +133,8 @@ public class BoulderEntity extends Entity implements Deflectable {
     @Override
     public void deflect(PlayerEntity deflector, Vec3d dir, double speed) {
         ownerId = deflector.getUuid();
+        aimAt = null;
+        damageScale = 1f;
         ploughed.clear();
         stageAge = 0;
         setVelocity(dir.multiply(Math.max(speed, LAUNCH_SPEED)));
@@ -167,7 +182,7 @@ public class BoulderEntity extends Entity implements Deflectable {
             return;
         }
         ServerWorld sw = (ServerWorld) getWorld();
-        PlayerEntity owner = ownerId != null ? sw.getPlayerByUuid(ownerId) : null;
+        LivingEntity owner = ownerId != null && sw.getEntity(ownerId) instanceof LivingEntity le ? le : null;
         stageAge++;
         if (age > MAX_AGE) {
             shatter(sw, owner);
@@ -181,7 +196,7 @@ public class BoulderEntity extends Entity implements Deflectable {
     }
 
     /** Hoisted overhead, following the caster's aim, until it's fully formed and goes. */
-    private void form(ServerWorld sw, @Nullable PlayerEntity owner) {
+    private void form(ServerWorld sw, @Nullable LivingEntity owner) {
         if (owner == null || !owner.isAlive()) {
             shatter(sw, null);
             return;
@@ -194,7 +209,7 @@ public class BoulderEntity extends Entity implements Deflectable {
         if (stageAge >= FORM_TICKS) launch(sw, owner);
     }
 
-    private void launch(ServerWorld sw, PlayerEntity owner) {
+    private void launch(ServerWorld sw, LivingEntity owner) {
         // Hoisted into a wall or ceiling: it can't get out, so it comes down right there
         if (!sw.isSpaceEmpty(this, getBoundingBox().contract(0.05))) {
             setStage(FLYING);
@@ -212,7 +227,7 @@ public class BoulderEntity extends Entity implements Deflectable {
         if (owner instanceof ServerPlayerEntity sp) shake(sp, 0.25f, 6);
     }
 
-    private void physics(ServerWorld sw, @Nullable PlayerEntity owner) {
+    private void physics(ServerWorld sw, @Nullable LivingEntity owner) {
         boolean rolling = stage() == ROLLING;
         Vec3d v = getVelocity();
         if (rolling && isOnGround()) v = new Vec3d(v.x * ROLL_FRICTION, v.y, v.z * ROLL_FRICTION);
@@ -266,7 +281,7 @@ public class BoulderEntity extends Entity implements Deflectable {
     }
 
     /** Everything it ran over this tick: ploughed through in flight, bowled over while rolling. */
-    private void crush(ServerWorld sw, @Nullable PlayerEntity owner, Box swept, Vec3d moved) {
+    private void crush(ServerWorld sw, @Nullable LivingEntity owner, Box swept, Vec3d moved) {
         Vec3d dir = moved.multiply(1, 0, 1);
         if (dir.lengthSquared() < 1e-6) return;
         dir = dir.normalize();
@@ -296,7 +311,7 @@ public class BoulderEntity extends Entity implements Deflectable {
     // ---------------------------------------------------------------------
 
     /** Comes down: a shockwave through the ground that hurts and hurls everything near, hardest in the middle. */
-    private void slam(ServerWorld sw, @Nullable PlayerEntity owner, float strength) {
+    private void slam(ServerWorld sw, @Nullable LivingEntity owner, float strength) {
         Vec3d c = getPos();
         double radius = SLAM_RADIUS * (0.7 + 0.3 * strength);
         Vec3d from = c.add(0, 0.6, 0);
@@ -334,7 +349,7 @@ public class BoulderEntity extends Entity implements Deflectable {
     }
 
     /** A smaller landing while it's rolling, coming down off a drop. */
-    private void thud(ServerWorld sw, @Nullable PlayerEntity owner) {
+    private void thud(ServerWorld sw, @Nullable LivingEntity owner) {
         Vec3d c = getPos();
         for (LivingEntity e : sw.getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(1.5, 0.5, 1.5), e -> canHurt(e, owner))) {
             Vec3d out = e.getPos().subtract(c).multiply(1, 0, 1);
@@ -348,7 +363,7 @@ public class BoulderEntity extends Entity implements Deflectable {
     }
 
     /** Breaks apart into rubble, knocking back whatever's right beside it. */
-    private void shatter(ServerWorld sw, @Nullable PlayerEntity owner) {
+    private void shatter(ServerWorld sw, @Nullable LivingEntity owner) {
         Vec3d c = center();
         if (stage() != FORMING) {
             for (LivingEntity e : sw.getEntitiesByClass(LivingEntity.class, new Box(c, c).expand(SHATTER_RADIUS + 1), e -> canHurt(e, owner))) {
@@ -379,10 +394,10 @@ public class BoulderEntity extends Entity implements Deflectable {
     // Hurting things
     // ---------------------------------------------------------------------
 
-    private void hurt(ServerWorld sw, LivingEntity e, float amount, @Nullable PlayerEntity owner) {
+    private void hurt(ServerWorld sw, LivingEntity e, float amount, @Nullable LivingEntity owner) {
         // A ploughing hit, the slam and the rubble can land within a few ticks; none should bounce off hurt immunity
         e.timeUntilRegen = 0;
-        e.damage(sw.getDamageSources().thrown(this, owner), amount); // "was pummeled by"
+        e.damage(sw.getDamageSources().thrown(this, owner), amount * damageScale); // "was pummeled by"
     }
 
     /** Throws {@code e} by {@code push}, most of the way through even heavy knockback resistance. */
@@ -394,7 +409,7 @@ public class BoulderEntity extends Entity implements Deflectable {
         e.velocityDirty = true;
     }
 
-    private boolean canHurt(Entity e, @Nullable PlayerEntity owner) {
+    private boolean canHurt(Entity e, @Nullable LivingEntity owner) {
         if (!(e instanceof LivingEntity le) || !le.isAlive() || le.isSpectator() || e instanceof ArmorStandEntity) return false;
         if (e instanceof PlayerEntity p && p.isCreative()) return false;
         if (ownerId != null) {
@@ -449,7 +464,7 @@ public class BoulderEntity extends Entity implements Deflectable {
      * so it's never in the way of their aim. Pulled in if that's inside a wall. Returns the boulder's (bottom-centre)
      * position.
      */
-    private Vec3d holdPoint(ServerWorld sw, PlayerEntity owner) {
+    private Vec3d holdPoint(ServerWorld sw, LivingEntity owner) {
         Vec3d eye = owner.getEyePos();
         Vec3d flat = Vec3d.fromPolar(0f, owner.getYaw());
         Vec3d want = eye.add(flat.multiply(1.8)).add(0, 1.5, 0);
@@ -465,7 +480,13 @@ public class BoulderEntity extends Entity implements Deflectable {
      * The throw: from where it's held, at whatever the caster's crosshair is on (within {@link #AIM_RANGE}), lofted just
      * enough that it comes down there. Nothing under the crosshair: straight along their aim.
      */
-    private Vec3d aim(ServerWorld sw, PlayerEntity owner) {
+    private Vec3d aim(ServerWorld sw, LivingEntity owner) {
+        if (aimAt != null && aimAt.isAlive()) {
+            // Thrown at a creature: lead it a little, and loft it to come down on it
+            Vec3d to = aimAt.getPos().add(aimAt.getVelocity().multiply(8)).subtract(getPos());
+            double ticks = Math.max(to.length() / LAUNCH_SPEED, 1.0);
+            return to.multiply(1.0 / ticks).add(0, GRAVITY * ticks * 0.5, 0);
+        }
         Vec3d eye = owner.getEyePos();
         Vec3d look = owner.getRotationVec(1f);
         BlockHitResult hit = sw.raycast(new RaycastContext(eye, eye.add(look.multiply(AIM_RANGE)),

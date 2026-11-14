@@ -89,6 +89,8 @@ public final class RisingSpikesSpell implements Spell {
         final Vec3d left;
         final List<Pending> pending = new ArrayList<>();
         final List<Spike> spikes = new ArrayList<>();
+        /** A caster that isn't a player (the Wandering Wizard); null for players. */
+        LivingEntity mobCaster;
 
         Wave(ServerWorld world, UUID owner, Vec3d dir) {
             this.world = world;
@@ -119,20 +121,24 @@ public final class RisingSpikesSpell implements Spell {
     @Override
     public boolean cast(World world, PlayerEntity player, ItemStack staff) {
         if (world.isClient) return false;
-        Vec3d look = player.getRotationVec(1.0f);
+        return start((ServerWorld) world, player, player.getRotationVec(1.0f));
+    }
+
+    /** Sends the wave from {@code caster} (a player or not - the Wandering Wizard casts it too) along {@code look}. */
+    public static boolean start(ServerWorld sw, LivingEntity caster, Vec3d look) {
         Vec3d flat = new Vec3d(look.x, 0, look.z);
         if (flat.lengthSquared() < 1.0e-6) return false;   // looking straight up or down
         ensureRegistered();
-        ServerWorld sw = (ServerWorld) world;
 
         // Cast cue (low rumble + rock)
-        sw.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.PLAYERS, 0.9f, 0.9f);
-        sw.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_EVOKER_PREPARE_SUMMON, SoundCategory.PLAYERS, 0.5f, 0.7f);
-        sw.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_CHARGE, SoundCategory.PLAYERS, 1.0f, 0.7f);
+        sw.playSound(null, caster.getBlockPos(), SoundEvents.BLOCK_STONE_PLACE, SoundCategory.PLAYERS, 0.9f, 0.9f);
+        sw.playSound(null, caster.getBlockPos(), SoundEvents.ENTITY_EVOKER_PREPARE_SUMMON, SoundCategory.PLAYERS, 0.5f, 0.7f);
+        sw.playSound(null, caster.getBlockPos(), SoundEvents.ENTITY_WARDEN_SONIC_CHARGE, SoundCategory.PLAYERS, 1.0f, 0.7f);
 
-        Wave wave = new Wave(sw, player.getUuid(), flat.normalize());
-        // Starts 2 blocks in front of the player
-        Vec3d origin = player.getPos().add(wave.dir.multiply(2.0));
+        Wave wave = new Wave(sw, caster.getUuid(), flat.normalize());
+        if (!(caster instanceof PlayerEntity)) wave.mobCaster = caster;
+        // Starts 2 blocks in front of the caster
+        Vec3d origin = caster.getPos().add(wave.dir.multiply(2.0));
         double startY = origin.y + START_UP;
         for (int step = 1; step <= LENGTH_BLOCKS; step++) {
             Vec3d base = origin.add(wave.dir.multiply(step));
@@ -206,7 +212,9 @@ public final class RisingSpikesSpell implements Spell {
         for (LivingEntity le : world.getEntitiesByClass(LivingEntity.class, box, e -> e.isAlive() && !e.isSpectator())) {
             if (le.getUuid().equals(w.owner)) continue;
             le.setPosition(le.getX(), topY, le.getZ());
-            le.damage(owner != null ? world.getDamageSources().playerAttack(owner) : world.getDamageSources().stalagmite(), DAMAGE);
+            le.damage(owner != null ? world.getDamageSources().playerAttack(owner)
+                    : w.mobCaster != null ? world.getDamageSources().mobAttack(w.mobCaster)
+                    : world.getDamageSources().stalagmite(), DAMAGE);
             le.addVelocity(w.dir.x * FORWARD_PUSH, LIFT, w.dir.z * FORWARD_PUSH);
             le.velocityModified = true;
             world.spawnParticles(ParticleTypes.CRIT, le.getX(), le.getBodyY(0.5), le.getZ(), 10, 0.3, 0.3, 0.3, 0.3);

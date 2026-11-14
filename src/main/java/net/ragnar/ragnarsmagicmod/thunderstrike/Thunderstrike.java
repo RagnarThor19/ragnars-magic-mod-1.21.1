@@ -161,6 +161,8 @@ public final class Thunderstrike {
         final long seed;
         final List<Jump> jumps = new ArrayList<>();
         int age;
+        /** The share of the usual damage this storm does (less when the Wandering Wizard calls it). */
+        float damageScale = 1f;
 
         Storm(ServerWorld world, UUID owner, Vec3d ground, long seed) {
             this.world = world;
@@ -208,7 +210,13 @@ public final class Thunderstrike {
     }
 
     /** Starts a storm over {@code ground}. Public so tests can call it directly. */
-    public static Storm start(ServerWorld world, PlayerEntity caster, Vec3d ground) {
+    public static Storm start(ServerWorld world, LivingEntity caster, Vec3d ground, float damageScale) {
+        Storm s = start(world, caster, ground);
+        s.damageScale = damageScale;
+        return s;
+    }
+
+    public static Storm start(ServerWorld world, LivingEntity caster, Vec3d ground) {
         Storm s = new Storm(world, caster.getUuid(), ground, world.getRandom().nextLong());
         STORMS.add(s);
         send(world, ground, new Warn(ground, s.seed, WARN_TICKS));
@@ -278,7 +286,7 @@ public final class Thunderstrike {
     private static void strike(Storm s) {
         ServerWorld w = s.world;
         Vec3d g = s.ground;
-        PlayerEntity caster = w.getPlayerByUuid(s.owner);
+        LivingEntity caster = casterOf(w, s.owner);
         send(w, g, new Strike(g, s.seed));
         ShakePayload.around(w, g, 48, 1.5f, 18);
         w.spawnParticles(ParticleTypes.FLASH, g.x, g.y + 1, g.z, 2, 0.5, 0.5, 0.5, 0);
@@ -305,7 +313,7 @@ public final class Thunderstrike {
             float f = (float) MathHelper.clamp(d / STRIKE_RADIUS, 0, 1);
             chained.add(e.getUuid());
             e.timeUntilRegen = 0;
-            e.damage(source, MathHelper.lerp(f, CENTER_DAMAGE, EDGE_DAMAGE));
+            e.damage(source, MathHelper.lerp(f, CENTER_DAMAGE, EDGE_DAMAGE) * s.damageScale);
             e.setOnFireFor(5);
             Vec3d out = new Vec3d(e.getX() - g.x, 0, e.getZ() - g.z);
             out = out.lengthSquared() < 1e-4 ? Vec3d.ZERO : out.normalize();
@@ -346,16 +354,21 @@ public final class Thunderstrike {
         Vec3d from = j.from() != null && j.from().isAlive() ? j.from().getPos().add(0, j.from().getHeight() * 0.6, 0) : j.fromPoint();
         Vec3d to = target.getPos().add(0, target.getHeight() * 0.6, 0);
         send(w, to, new Arc(from, to, j.damage() / ARC_DAMAGE));
-        PlayerEntity caster = w.getPlayerByUuid(s.owner);
+        LivingEntity caster = casterOf(w, s.owner);
         target.timeUntilRegen = 0;
-        if (target.damage(lightning(w, caster), j.damage())) {
+        if (target.damage(lightning(w, caster), j.damage() * s.damageScale)) {
             target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 15, 2, false, false, true));
         }
         w.spawnParticles(ParticleTypes.ELECTRIC_SPARK, to.x, to.y, to.z, 18, target.getWidth() * 0.4, target.getHeight() * 0.3, target.getWidth() * 0.4, 0.25);
         w.playSound(null, to.x, to.y, to.z, SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.WEATHER, 1.0f, 1.3f + w.getRandom().nextFloat() * 0.4f);
     }
 
-    private static LivingEntity nearest(ServerWorld w, Vec3d at, double range, Set<UUID> taken, UUID owner, PlayerEntity caster) {
+    /** Whoever called the storm, player or not. */
+    private static LivingEntity casterOf(ServerWorld w, UUID owner) {
+        return w.getEntity(owner) instanceof LivingEntity le ? le : null;
+    }
+
+    private static LivingEntity nearest(ServerWorld w, Vec3d at, double range, Set<UUID> taken, UUID owner, LivingEntity caster) {
         return w.getEntitiesByClass(LivingEntity.class, new Box(at, at).expand(range),
                         e -> e.isAlive() && !e.isSpectator() && !taken.contains(e.getUuid()) && !friendly(e, owner, caster)
                                 && e.squaredDistanceTo(at) <= range * range)
@@ -363,12 +376,12 @@ public final class Thunderstrike {
     }
 
     /** Lightning damage that counts as the caster's (kills, Lifesteal), with the lightning death message. */
-    private static DamageSource lightning(ServerWorld w, PlayerEntity caster) {
+    private static DamageSource lightning(ServerWorld w, LivingEntity caster) {
         var type = w.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(DamageTypes.LIGHTNING_BOLT);
         return new DamageSource(type, null, caster);
     }
 
-    private static boolean friendly(Entity e, UUID owner, PlayerEntity caster) {
+    private static boolean friendly(Entity e, UUID owner, LivingEntity caster) {
         if (e.getUuid().equals(owner) || e instanceof IllusionEntity) return true;
         if (e instanceof TameableEntity pet && owner.equals(pet.getOwnerUuid())) return true;
         return caster != null && e.isTeammate(caster);

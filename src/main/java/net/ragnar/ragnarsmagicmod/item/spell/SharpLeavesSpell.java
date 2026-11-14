@@ -67,8 +67,7 @@ public class SharpLeavesSpell implements Spell {
             @Override
             public void hitEntity(ServerWorld world, PlayerEntity owner, LivingEntity target, Vec3d at, boolean head) {
                 boolean strong = head || crit;
-                target.damage(owner != null ? world.getDamageSources().thrown(owner, owner) : world.getDamageSources().generic(),
-                        strong ? CRIT_DAMAGE : DAMAGE);
+                target.damage(Slicer.damageSource(world, owner), strong ? CRIT_DAMAGE : DAMAGE);
                 if (strong) {
                     world.spawnParticles(ParticleTypes.CRIT, at.x, at.y, at.z, 14, 0.2, 0.2, 0.2, 0.4);
                     if (crit) world.spawnParticles(ParticleTypes.ENCHANTED_HIT, at.x, at.y, at.z, 8, 0.2, 0.2, 0.2, 0.3);
@@ -94,6 +93,11 @@ public class SharpLeavesSpell implements Spell {
                 world.playSound(null, at.x, at.y, at.z, SoundEvents.BLOCK_AZALEA_LEAVES_HIT, SoundCategory.PLAYERS, 1.0f, 1.2f);
             }
         };
+    }
+
+    /** A plain (non-crit) leaf, for casters that aren't players (the Wandering Wizard). */
+    public static Slicer.Style plainLeaf() {
+        return leaf(false);
     }
 
     /** Same conditions as a vanilla critical hit: falling, and not on a ladder, in water, blind or riding. */

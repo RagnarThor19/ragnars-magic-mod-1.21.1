@@ -8,6 +8,7 @@
   "entrypoints": {
     "fabric-gametest": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.WanderingWizardGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.LivingGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.OakGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.AimingGameTests",
@@ -77,6 +78,7 @@
       "net.ragnar.ragnarsmagicmod.gametest.BoulderClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.DragonClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.MoonClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.WizardClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.MightyPushClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.LightningPathClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.BubbleClientSmoke",

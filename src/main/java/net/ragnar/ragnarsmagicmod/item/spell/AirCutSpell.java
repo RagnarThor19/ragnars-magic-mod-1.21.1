@@ -74,7 +74,7 @@ public class AirCutSpell implements Spell {
         @Override
         public void hitEntity(ServerWorld world, PlayerEntity owner, LivingEntity target, Vec3d at, boolean head) {
             float damage = head ? HEAD_DAMAGE : BODY_DAMAGE;
-            target.damage(owner != null ? world.getDamageSources().thrown(owner, owner) : world.getDamageSources().generic(), damage);
+            target.damage(Slicer.damageSource(world, owner), damage);
             world.spawnParticles(ParticleTypes.SWEEP_ATTACK, at.x, at.y, at.z, 2, 0.2, 0.1, 0.2, 0);
             world.spawnParticles(ParticleTypes.CLOUD, at.x, at.y, at.z, 8, 0.2, 0.2, 0.2, 0.08);
             world.spawnParticles(ParticleTypes.SMALL_GUST, at.x, at.y, at.z, 1, 0, 0, 0, 0);
@@ -98,6 +98,11 @@ public class AirCutSpell implements Spell {
             world.playSound(null, at.x, at.y, at.z, SoundEvents.ENTITY_BREEZE_DEFLECT, SoundCategory.PLAYERS, 0.6f, 1.6f);
         }
     };
+
+    /** The cut itself, for casters that aren't players (the Wandering Wizard). */
+    public static Slicer.Style style() {
+        return AIR_CUT;
+    }
 
     /**
      * Sliver {@code i} of the crescent: a thin bar lying along the curve, which runs across the flight path with

@@ -75,6 +75,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.living.Living.register(); // Tome of Living (passive)
         net.ragnar.ragnarsmagicmod.aiming.Aiming.register(); // Tome of Aiming (passive)
         net.ragnar.ragnarsmagicmod.lavafish.LavaFish.register(); // the lava fish (caught with the Tome of Fishing)
+        net.ragnar.ragnarsmagicmod.wizard.WanderingWizard.register(); // the Wandering Wizard
         net.ragnar.ragnarsmagicmod.fishing.Fishing.register(); // Tome of Fishing (passive)
         net.ragnar.ragnarsmagicmod.longarms.LongArms.register(); // Tome of Long Arms (passive)
         net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes.register(); // the passive tomes' section of the Tools tab (after every other tome)

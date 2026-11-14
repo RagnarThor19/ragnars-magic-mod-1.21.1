@@ -52,6 +52,8 @@ public final class Slicer {
         Vec3d pos;
         double travelled = 0;
         int age = 0;
+        /** A caster that isn't a player (the Wandering Wizard), so its cuts are still its own; null for players. */
+        LivingEntity mobCaster;
 
         Cut(ServerWorld world, UUID owner, Style style, Vec3d pos, Vec3d dir, List<DisplayEntity> visual) {
             this.world = world;
@@ -72,6 +74,7 @@ public final class Slicer {
         @Override
         public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
             owner = deflector.getUuid();
+            mobCaster = null;
             this.dir = dir;
             pos = at;
             travelled = 0;
@@ -109,6 +112,27 @@ public final class Slicer {
         ACTIVE.add(new Cut(world, player.getUuid(), style, start, dir, visual));
     }
 
+    /** Fires a cut from a caster that isn't a player (the Wandering Wizard), along {@code dir}. */
+    public static void fire(ServerWorld world, LivingEntity caster, Vec3d dir, Style style) {
+        ensureRegistered();
+        dir = dir.normalize();
+        Vec3d start = caster.getEyePos().add(dir.multiply(0.6));
+        List<DisplayEntity> visual = style.spawnVisual(world, start, dir);
+        Cut cut = new Cut(world, caster.getUuid(), style, start, dir, visual);
+        cut.mobCaster = caster;
+        ACTIVE.add(cut);
+    }
+
+    /** Set only while a cut fired by a non-player caster is landing its hit. */
+    private static LivingEntity hitter;
+
+    /** The damage a cut deals: the player's own, or, for a non-player caster, that caster's. */
+    public static net.minecraft.entity.damage.DamageSource damageSource(ServerWorld world, PlayerEntity owner) {
+        if (owner != null) return world.getDamageSources().thrown(owner, owner);
+        if (hitter != null) return world.getDamageSources().mobAttack(hitter);
+        return world.getDamageSources().generic();
+    }
+
     /** Returns false once the cut has hit something or run out of range. */
     private static boolean tick(Cut c) {
         ServerWorld world = c.world;
@@ -141,7 +165,12 @@ public final class Slicer {
             s.flight(world, c.visual, from, hitAt, c.dir, c.age);
             // Head height: from a little under the eyes up to the top of the hitbox
             boolean head = hitAt.y >= target.getEyeY() - 0.3;
-            s.hitEntity(world, world.getPlayerByUuid(c.owner), target, hitAt, head);
+            hitter = c.mobCaster;
+            try {
+                s.hitEntity(world, world.getPlayerByUuid(c.owner), target, hitAt, head);
+            } finally {
+                hitter = null;
+            }
             return false;
         }
         s.flight(world, c.visual, from, end, c.dir, c.age);

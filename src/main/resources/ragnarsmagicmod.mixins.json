@@ -28,7 +28,8 @@
 		"phantom.PhantomNetworkHandlerMixin",
 		"gambling.GamblingPlayerManagerMixin",
 		"sleep.SleepMobMixin",
-		"sleep.SleepCreeperMixin"
+		"sleep.SleepCreeperMixin",
+		"wizard.WizardDamageMixin"
 	],
 	"client": [
 		"client.DrawContextMixin",

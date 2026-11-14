@@ -220,6 +220,15 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tome of the Moon photo shoot: screenshots into build/clientsmoke/screenshots
+		// Wandering Wizard photo shoot: screenshots into build/clientsmoke/screenshots
+		wizardSmoke {
+			client()
+			name "Wizard Smoke Test"
+			vmArg "-Dragnarsmagicmod.wizardsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		moonSmoke {
 			client()
 			name "Moon Smoke Test"

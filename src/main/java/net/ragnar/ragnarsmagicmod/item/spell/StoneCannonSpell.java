@@ -91,6 +91,9 @@ public class StoneCannonSpell implements Spell {
         double travelled = 0;
         int age = 0;
         int stuck = 0;
+        /** A caster that isn't a player (the Wandering Wizard), the creature it aims at, and its damage share. */
+        LivingEntity mobCaster, mobTarget;
+        float damageScale = 1f;
 
         Shot(ServerWorld world, UUID owner, Vec3d pos, Vec3d dir) {
             this.world = world;
@@ -109,6 +112,9 @@ public class StoneCannonSpell implements Spell {
         @Override
         public void deflect(PlayerEntity deflector, Vec3d at, Vec3d dir, double speed, LivingEntity aimedAt) {
             owner = deflector.getUuid();
+            mobCaster = null;
+            mobTarget = null;
+            damageScale = 1f;
             this.dir = dir;
             pos = at;
             travelled = 0;
@@ -148,7 +154,31 @@ public class StoneCannonSpell implements Spell {
         for (Shot s : ACTIVE) if (s.owner.equals(player.getUuid()) && s.phase == Phase.CHARGING) return false;
 
         Vec3d pos = holdPoint(player);
-        Shot shot = new Shot(sw, player.getUuid(), pos, aimFrom(sw, player, pos));
+        begin(sw, new Shot(sw, player.getUuid(), pos, aimFrom(sw, player, pos)));
+        return true;
+    }
+
+    /**
+     * A caster that isn't a player (the Wandering Wizard) charges a cannon at {@code target}; its hits do
+     * {@code damageScale} of the usual damage.
+     */
+    public static void fireFrom(ServerWorld sw, LivingEntity caster, LivingEntity target, float damageScale) {
+        ensureRegistered();
+        Vec3d pos = holdPoint(caster);
+        Shot shot = new Shot(sw, caster.getUuid(), pos, towards(pos, target));
+        shot.mobCaster = caster;
+        shot.mobTarget = target;
+        shot.damageScale = damageScale;
+        begin(sw, shot);
+    }
+
+    private static Vec3d towards(Vec3d from, LivingEntity target) {
+        Vec3d d = target.getBoundingBox().getCenter().subtract(from);
+        return d.lengthSquared() > 1.0e-4 ? d.normalize() : new Vec3d(0, 0, 1);
+    }
+
+    private static void begin(ServerWorld sw, Shot shot) {
+        Vec3d pos = shot.pos;
         for (int i = 0; i < PARTS.length; i++) {
             DisplayEntity.BlockDisplayEntity d = EntityType.BLOCK_DISPLAY.create(sw);
             if (d == null) continue;
@@ -163,7 +193,6 @@ public class StoneCannonSpell implements Spell {
         }
         ACTIVE.add(shot);
         sw.playSound(null, pos.x, pos.y, pos.z, SoundEvents.BLOCK_POINTED_DRIPSTONE_PLACE, SoundCategory.PLAYERS, 1.0f, 0.8f);
-        return true;
     }
 
     // ---------------------------------------------------------------------
@@ -173,7 +202,7 @@ public class StoneCannonSpell implements Spell {
     /** Returns false once the shot is finished. */
     private static boolean tick(Shot s) {
         ServerWorld world = s.world;
-        PlayerEntity owner = world.getPlayerByUuid(s.owner);
+        LivingEntity owner = s.mobCaster != null ? s.mobCaster : world.getPlayerByUuid(s.owner);
         s.age++;
 
         switch (s.phase) {
@@ -183,7 +212,7 @@ public class StoneCannonSpell implements Spell {
                 // Spins up with an ease-in so the last half second really screams
                 s.spin += MAX_SPIN * (0.1f + 0.9f * t * t);
                 s.pos = holdPoint(owner);
-                s.dir = aimFrom(world, owner, s.pos);
+                s.dir = s.mobTarget != null ? towards(s.pos, s.mobTarget) : aimFrom(world, owner, s.pos);
                 float size = 0.35f + 0.65f * Math.min(1f, t * 1.4f);
                 pose(s, size);
 
@@ -218,10 +247,10 @@ public class StoneCannonSpell implements Spell {
         }
     }
 
-    private static void fire(Shot s, PlayerEntity owner) {
+    private static void fire(Shot s, LivingEntity owner) {
         ServerWorld world = s.world;
         // The shot itself leaves from the eye, straight along the crosshair, so what you aim at is what you hit
-        s.dir = owner.getRotationVector().normalize();
+        s.dir = s.mobTarget != null ? towards(owner.getEyePos(), s.mobTarget) : owner.getRotationVector().normalize();
         s.pos = owner.getEyePos().add(s.dir.multiply(0.8));
         s.phase = Phase.FLYING;
         for (var d : s.parts) if (d != null) d.refreshPositionAndAngles(s.pos.x, s.pos.y, s.pos.z, 0f, 0f);
@@ -234,7 +263,7 @@ public class StoneCannonSpell implements Spell {
     }
 
     /** Returns false once the spike has shattered or run out of range. */
-    private static boolean fly(Shot s, PlayerEntity owner) {
+    private static boolean fly(Shot s, LivingEntity owner) {
         ServerWorld world = s.world;
         s.spin += MAX_SPIN;
         Vec3d from = s.pos;
@@ -260,7 +289,7 @@ public class StoneCannonSpell implements Spell {
             else if (box.expand(GRAZE_FAR).raycast(from, end).isPresent()) damage = GRAZE_FAR_DAMAGE;
             else continue;
             s.hit.add(e.getUuid());
-            strike(world, owner, e, s.dir, damage);
+            strike(world, owner, e, s.dir, damage, s.damageScale);
         }
 
         s.pos = end;
@@ -287,9 +316,10 @@ public class StoneCannonSpell implements Spell {
         return s.travelled < RANGE - 1.0e-6;
     }
 
-    private static void strike(ServerWorld world, PlayerEntity owner, LivingEntity e, Vec3d dir, float damage) {
+    private static void strike(ServerWorld world, LivingEntity owner, LivingEntity e, Vec3d dir, float damage, float scale) {
         // A stone projectile: armour applies
-        e.damage(owner != null ? world.getDamageSources().thrown(owner, owner) : world.getDamageSources().generic(), damage);
+        e.damage(owner instanceof PlayerEntity p ? world.getDamageSources().thrown(p, p)
+                : owner != null ? world.getDamageSources().mobAttack(owner) : world.getDamageSources().generic(), damage * scale);
         double push = damage >= DIRECT_DAMAGE ? 0.6 : 0.15;
         e.addVelocity(dir.x * push, 0.1, dir.z * push);
         e.velocityModified = true;
@@ -309,7 +339,7 @@ public class StoneCannonSpell implements Spell {
     // Posing the spike
     // ---------------------------------------------------------------------
 
-    private static Vec3d holdPoint(PlayerEntity player) {
+    private static Vec3d holdPoint(LivingEntity player) {
         double yaw = Math.toRadians(player.getYaw());
         Vec3d forward = player.getRotationVector();
         Vec3d right = new Vec3d(-Math.cos(yaw), 0, -Math.sin(yaw));
@@ -317,7 +347,7 @@ public class StoneCannonSpell implements Spell {
     }
 
     /** From the hold point toward whatever the crosshair is on, so the spike visibly aims where it will go. */
-    private static Vec3d aimFrom(ServerWorld world, PlayerEntity player, Vec3d from) {
+    private static Vec3d aimFrom(ServerWorld world, LivingEntity player, Vec3d from) {
         Vec3d eye = player.getEyePos();
         Vec3d look = player.getRotationVector();
         BlockHitResult hit = world.raycast(new RaycastContext(eye, eye.add(look.multiply(RANGE)),

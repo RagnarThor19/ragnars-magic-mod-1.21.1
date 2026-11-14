@@ -93,6 +93,9 @@ public class ImpalingSpell implements Spell {
         final BlockState ground;
         final List<Segment> segments = new ArrayList<>();
         int age = 0;
+        /** A caster that isn't a player (the Wandering Wizard), and the share of the damage its spike does. */
+        LivingEntity mobCaster;
+        float damageScale = 1f;
 
         Eruption(ServerWorld world, UUID owner, Vec3d base, BlockState ground) {
             this.world = world;
@@ -135,6 +138,23 @@ public class ImpalingSpell implements Spell {
 
         BlockState ground = sw.getBlockState(BlockPos.ofFloored(base).down());
         ACTIVE.add(new Eruption(sw, player.getUuid(), base, ground));
+        sw.playSound(null, base.x, base.y, base.z, SoundEvents.BLOCK_DEEPSLATE_BREAK, SoundCategory.PLAYERS, 1.5f, 0.5f);
+        sw.playSound(null, base.x, base.y, base.z, SoundEvents.ENTITY_VEX_AMBIENT, SoundCategory.PLAYERS, 1.5f, 0.5f);
+        return true;
+    }
+
+    /**
+     * A caster that isn't a player (the Wandering Wizard) raises the spike under {@code target}; it does
+     * {@code damageScale} of the usual damage. False if there's no ground there.
+     */
+    public static boolean eruptUnder(ServerWorld sw, LivingEntity caster, LivingEntity target, float damageScale) {
+        ensureRegistered();
+        Vec3d base = findGround(sw, target.getPos().add(0, 0.5, 0));
+        if (base == null) return false;
+        Eruption e = new Eruption(sw, caster.getUuid(), base, sw.getBlockState(BlockPos.ofFloored(base).down()));
+        e.mobCaster = caster;
+        e.damageScale = damageScale;
+        ACTIVE.add(e);
         sw.playSound(null, base.x, base.y, base.z, SoundEvents.BLOCK_DEEPSLATE_BREAK, SoundCategory.PLAYERS, 1.5f, 0.5f);
         sw.playSound(null, base.x, base.y, base.z, SoundEvents.ENTITY_VEX_AMBIENT, SoundCategory.PLAYERS, 1.5f, 0.5f);
         return true;
@@ -296,7 +316,7 @@ public class ImpalingSpell implements Spell {
     private static void strike(Eruption e) {
         ServerWorld world = e.world;
         Vec3d b = e.base;
-        PlayerEntity owner = world.getPlayerByUuid(e.owner);
+        LivingEntity owner = e.mobCaster != null ? e.mobCaster : world.getPlayerByUuid(e.owner);
         var box = new net.minecraft.util.math.Box(b.x - OUTER_RADIUS, b.y - 1, b.z - OUTER_RADIUS,
                 b.x + OUTER_RADIUS, b.y + MAIN_HEIGHT, b.z + OUTER_RADIUS);
 
@@ -311,10 +331,10 @@ public class ImpalingSpell implements Spell {
 
             if (dist <= CORE_RADIUS) {
                 // Right on top of it: impaled and thrown skyward
-                le.damage(source, CORE_DAMAGE);
+                le.damage(source, CORE_DAMAGE * e.damageScale);
                 le.setVelocity(outX * 0.2, CORE_LAUNCH, outZ * 0.2);
             } else if (dist <= OUTER_RADIUS && le.getY() < b.y + 3.5) {
-                le.damage(source, OUTER_DAMAGE);
+                le.damage(source, OUTER_DAMAGE * e.damageScale);
                 double push = MathHelper.lerp((dist - CORE_RADIUS) / (OUTER_RADIUS - CORE_RADIUS), 1.1, 0.6);
                 le.setVelocity(outX * push, 0.6, outZ * push);
             } else {
