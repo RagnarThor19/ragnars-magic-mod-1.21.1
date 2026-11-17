@@ -25,6 +25,8 @@ public class MobEntityMixin {
         else if (VinesSpell.isHeld((MobEntity) (Object) this)) ci.cancel();
         // Frozen solid by the Tome of Ice Beam
         else if (IceBeamSpell.isFrozen((MobEntity) (Object) this)) ci.cancel();
+        // Frozen solid by the Tome of Frostbite
+        else if (net.ragnar.ragnarsmagicmod.frostbite.Frostbite.isFrozen((MobEntity) (Object) this)) ci.cancel();
     }
 
     @Inject(method = "checkDespawn", at = @At("HEAD"), cancellable = true)

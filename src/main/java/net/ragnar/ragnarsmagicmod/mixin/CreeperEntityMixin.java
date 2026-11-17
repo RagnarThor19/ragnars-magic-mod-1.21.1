@@ -15,7 +15,8 @@ public class CreeperEntityMixin {
     @Inject(method = "explode", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$smothered(CallbackInfo ci) {
         CreeperEntity creeper = (CreeperEntity) (Object) this;
-        if (VinesSpell.isHeld(creeper) || IceBeamSpell.isFrozen(creeper)) ci.cancel();
+        if (VinesSpell.isHeld(creeper) || IceBeamSpell.isFrozen(creeper)
+                || net.ragnar.ragnarsmagicmod.frostbite.Frostbite.isFrozen(creeper)) ci.cancel();
     }
 
     /** Tome of Grace: creepers back away from players carrying it, as they do from cats. */

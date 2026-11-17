@@ -401,6 +401,15 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tomes of Ground Pound, Sidestep, Desperation and Reflection: plays them for real, logs the numbers, screenshots
+		// Tomes of Frostbite and Venom: freezes and poisons a row of mobs, screenshots it, counts the real rolls
+		frostVenomSmoke {
+			client()
+			name "Frostbite and Venom Smoke Test"
+			vmArg "-Dragnarsmagicmod.frostvenomsmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		combatSmoke {
 			client()
 			name "Combat Passives Smoke Test"

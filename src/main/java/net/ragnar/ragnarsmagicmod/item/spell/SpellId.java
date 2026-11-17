@@ -151,5 +151,7 @@ public enum SpellId {
     FISHING,
     SPIN_ATTACK,
     LONG_ARMS,
+    FROSTBITE,
+    VENOM,
     TERRAFORMING
 }
