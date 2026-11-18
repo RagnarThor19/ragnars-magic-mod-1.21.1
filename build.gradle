@@ -356,6 +356,15 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tome of Gambling photo shoot: screenshots into build/clientsmoke/screenshots
+		// Tome of Blocks photo shoot: screenshots into build/clientsmoke/screenshots
+		blocksSmoke {
+			client()
+			name "Blocks Smoke Test"
+			vmArg "-Dragnarsmagicmod.blockssmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		gamblingSmoke {
 			client()
 			name "Gambling Smoke Test"
