@@ -62,7 +62,7 @@ public class BoulderEntity extends Entity implements Deflectable {
     private static final double GRAVITY = 0.05;
     private static final double ROLL_FRICTION = 0.94;
 
-    public static final float HIT_DAMAGE = 12f;
+    public static final float HIT_DAMAGE = 15f;
     public static final double HIT_FLING = 2.4;
     public static final float SLAM_DAMAGE = 9f, SLAM_DAMAGE_EDGE = 3f;
     public static final double SLAM_RADIUS = 5.0;

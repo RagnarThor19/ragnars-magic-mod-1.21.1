@@ -148,7 +148,7 @@ public class ModItems {
                     net.ragnar.ragnarsmagicmod.item.spell.TomeTier.ADVANCED,
                     net.ragnar.ragnarsmagicmod.item.spell.SpellId.LIGHTNING,
                     14 // XP cost
-            ).setCooldown(60)
+            ).setCooldown(20 * 18) // 18 seconds
     );
 
     public static final net.minecraft.item.Item TOME_LIGHTNING_CASCADE = registerItem("tome_lightning_cascade",

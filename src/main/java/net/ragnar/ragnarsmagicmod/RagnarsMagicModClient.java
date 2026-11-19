@@ -53,6 +53,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.upsidedown.client.UpsideDownClient.init(); // Tome of Upside Down
         net.ragnar.ragnarsmagicmod.boulders.client.BouldersClient.init(); // Tome of Boulders
         net.ragnar.ragnarsmagicmod.blocktome.client.BlockTomeClient.init(); // Tome of Blocks
+        net.ragnar.ragnarsmagicmod.mimicry.client.MimicryClient.init(); // Tome of Mimicry
         net.ragnar.ragnarsmagicmod.dragon.client.DragonClient.init(); // Tome of the Dragon
         net.ragnar.ragnarsmagicmod.moon.client.MoonClient.init(); // Tome of the Moon
         net.ragnar.ragnarsmagicmod.sun.client.SunClient.init(); // Tome of the Sun
@@ -82,6 +83,7 @@ public class RagnarsMagicModClient implements ClientModInitializer {
         net.ragnar.ragnarsmagicmod.desperation.client.DesperationClient.init(); // Tome of Desperation
         net.ragnar.ragnarsmagicmod.punching.client.PunchingClient.init(); // Tome of Punching
         net.ragnar.ragnarsmagicmod.geysir.client.GeysirClient.init(); // Tome of Geysir
+        net.ragnar.ragnarsmagicmod.water.client.WaterClient.init(); // Tome of Water
         net.ragnar.ragnarsmagicmod.blackhole.client.BlackHoleClient.init(); // Tome of Black Holes
         net.ragnar.ragnarsmagicmod.astral.client.AstralClient.init(); // Tome of Astral Projection
         net.ragnar.ragnarsmagicmod.gambling.client.GamblingClient.init(); // Tome of Gambling

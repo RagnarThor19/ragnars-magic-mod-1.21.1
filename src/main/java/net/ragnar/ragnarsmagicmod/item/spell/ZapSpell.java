@@ -25,7 +25,7 @@ import net.ragnar.ragnarsmagicmod.network.ZapPayload;
  */
 public final class ZapSpell implements Spell {
     private static final double RANGE = 32.0;
-    private static final float DAMAGE = 7.5f;       // three zaps kill a 20 HP mob, even through light armor
+    private static final float DAMAGE = 9.0f;
     private static final double KNOCK = 0.45;
     private static final double KNOCK_UP = 0.15;
 

@@ -44,7 +44,7 @@ public class SwordsSpell implements Spell {
     private static final int SWORD_COUNT = 5;
     private static final double RANGE = 50.0;
     private static final double AIM_CONE_DEGREES = 8.0;
-    private static final float DAMAGE = 40.0f;
+    private static final float DAMAGE = 25.0f;
     private static final double SPEED = 2.0;
     private static final double MAX_TURN_DEGREES = 4.0;   // homing per tick; strafing hard can shake it
     private static final int FLIGHT_TICKS = 40;

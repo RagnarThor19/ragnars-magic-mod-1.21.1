@@ -13,13 +13,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * The body of a player possessing a mob, turned into a Tome of the Fairy fairy, or under the Tome of Invisibility, is
- * completely hidden: no armor, held items, name or shadow.
+ * completely hidden: no armor, held items, name or shadow. So is a player disguised by the Tome of Mimicry (to
+ * themselves too: in third person they see only the block).
  */
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
     @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
     private <E extends Entity> void ragnarsmagicmod$hideEmptyBody(E entity, Frustum frustum, double x, double y, double z,
                                                                  CallbackInfoReturnable<Boolean> cir) {
-        if (PossessionClient.isHidden(entity) || FairyClient.isHidden(entity) || InvisibilityClient.isHidden(entity)) cir.setReturnValue(false);
+        if (PossessionClient.isHidden(entity) || FairyClient.isHidden(entity) || InvisibilityClient.isHidden(entity)
+                || net.ragnar.ragnarsmagicmod.mimicry.client.MimicryClient.isHidden(entity)) cir.setReturnValue(false);
     }
 }

@@ -48,7 +48,7 @@ public class GlacierSpell implements Spell {
     private static final double SPEED = 1.5;
     private static final double BURST_DISTANCE = 18.0;
     private static final int CUBE_RADIUS = 2;             // a 5x5x5 block of ice
-    private static final float DAMAGE = 8.0f;
+    private static final float DAMAGE = 12.0f;
     private static final int ENCASE_TICKS = 20 * 5;       // how long the ice stands and holds its victims
     private static final int CHILL_TICKS = 20 * 8;        // freeze damage keeps ticking this long after impact
     private static final int CHILL_INTERVAL = 20;

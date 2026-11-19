@@ -35,7 +35,8 @@ public class LivingEntityMixin {
 
     @Inject(method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
     private void ragnarsmagicmod$ignoreEmptyBody(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
-        if (ControllingSpell.isPossessing(target) || IllusionSpell.isGhost(target)) cir.setReturnValue(false);
+        if (ControllingSpell.isPossessing(target) || IllusionSpell.isGhost(target)
+                || net.ragnar.ragnarsmagicmod.mimicry.Mimicry.isDisguised(target)) cir.setReturnValue(false);
     }
 
     /** Nothing hurts you mid-rewind (your health is being wound back anyway) - except the void and /kill. */

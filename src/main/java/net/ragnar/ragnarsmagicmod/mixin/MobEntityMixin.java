@@ -39,5 +39,7 @@ public class MobEntityMixin {
         if (target != null && (ControllingSpell.isPossessing(target) || IllusionSpell.isGhost(target))) ci.cancel();
         // Tome of Grace: creepers and phantoms never pick its carrier
         else if (Grace.ignores((MobEntity) (Object) this, target)) ci.cancel();
+        // Tome of Mimicry: it's just a block
+        else if (target != null && net.ragnar.ragnarsmagicmod.mimicry.Mimicry.isDisguised(target)) ci.cancel();
     }
 }

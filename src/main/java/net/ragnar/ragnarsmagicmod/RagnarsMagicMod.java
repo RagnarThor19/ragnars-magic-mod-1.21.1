@@ -42,6 +42,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.mightypush.MightyPush.register(); // Tome of Mighty Pushing
         net.ragnar.ragnarsmagicmod.lightningpath.LightningPath.register(); // Tome of the Lightning Path
         net.ragnar.ragnarsmagicmod.bubbles.Bubbles.register(); // Tome of Bubbles
+        net.ragnar.ragnarsmagicmod.mimicry.Mimicry.register(); // Tome of Mimicry (after Bubbles: it sits next to it in the tab)
         net.ragnar.ragnarsmagicmod.earthquake.Earthquake.register(); // Tome of Earthquake
         net.ragnar.ragnarsmagicmod.lunging.Lunging.register(); // Tome of Lunging
         net.ragnar.ragnarsmagicmod.phantom.Phantom.register(); // Tome of the Phantom
@@ -56,6 +57,8 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.oak.Oak.register(); // Tome of Oak
         net.ragnar.ragnarsmagicmod.terraform.Terraform.register(); // Tome of Terraforming
         net.ragnar.ragnarsmagicmod.astral.AstralProjection.register(); // Tome of Astral Projection
+        net.ragnar.ragnarsmagicmod.water.Water.register(); // Tome of Water (after Astral Projection: both go after Geysir in the tab)
+        net.ragnar.ragnarsmagicmod.riptide.Riptide.register(); // Tome of Riptide (after Water: it follows it in the tab)
         net.ragnar.ragnarsmagicmod.gambling.Gambling.register(); // Tome of Gambling
         net.ragnar.ragnarsmagicmod.spinattack.SpinAttack.register(); // Tome of Spin Attack (after Gambling: it follows it in the Tools tab)
         net.ragnar.ragnarsmagicmod.nightvision.NightVision.register(); // Tome of Night Vision (passive)

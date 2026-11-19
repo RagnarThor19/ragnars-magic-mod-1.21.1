@@ -30,8 +30,8 @@ import org.jetbrains.annotations.Nullable;
  * close by for a little. Thrown low and fast at the ground it skips once, like a stone across a pond, before it breaks.
  */
 public class RockEntity extends ThrownItemEntity {
-    public static final float HIT_DAMAGE = 7.0f;
-    public static final float SPLASH_DAMAGE = 3.0f;
+    public static final float HIT_DAMAGE = 8.0f;
+    public static final float SPLASH_DAMAGE = 4.0f;
     public static final double SPLASH_RADIUS = 2.0;
     private static final double SKIP_SPEED = 0.6;   // needs to be going at least this fast sideways to skip
     private static final int MAX_SKIPS = 1;

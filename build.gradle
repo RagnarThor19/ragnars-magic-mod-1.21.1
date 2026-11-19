@@ -356,6 +356,33 @@ loom {
 			source sourceSets.gametest
 		}
 		// Tome of Gambling photo shoot: screenshots into build/clientsmoke/screenshots
+		// Tome of Riptide photo shoot: screenshots into build/clientsmoke/screenshots
+		riptideSmoke {
+			client()
+			name "Riptide Smoke Test"
+			vmArg "-Dragnarsmagicmod.riptidesmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Water photo shoot: screenshots into build/clientsmoke/screenshots
+		waterSmoke {
+			client()
+			name "Water Smoke Test"
+			vmArg "-Dragnarsmagicmod.watersmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
+		// Tome of Mimicry photo shoot: screenshots into build/clientsmoke/screenshots
+		mimicrySmoke {
+			client()
+			name "Mimicry Smoke Test"
+			vmArg "-Dragnarsmagicmod.mimicrysmoke=true"
+			programArgs "--quickPlaySingleplayer", "SmokeWorld"
+			runDir "build/clientsmoke"
+			source sourceSets.gametest
+		}
 		// Tome of Blocks photo shoot: screenshots into build/clientsmoke/screenshots
 		blocksSmoke {
 			client()

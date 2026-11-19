@@ -64,7 +64,10 @@
       "net.ragnar.ragnarsmagicmod.gametest.GeysirGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.BlackHoleGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.GamblingGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.BlockTomeGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.BlockTomeGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.MimicryGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.WaterGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.RiptideGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",
@@ -111,7 +114,10 @@
       "net.ragnar.ragnarsmagicmod.gametest.BlackHoleClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.AstralClientSmoke",
       "net.ragnar.ragnarsmagicmod.gametest.GamblingClientSmoke",
-      "net.ragnar.ragnarsmagicmod.gametest.BlockTomeClientSmoke"
+      "net.ragnar.ragnarsmagicmod.gametest.BlockTomeClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.MimicryClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.WaterClientSmoke",
+      "net.ragnar.ragnarsmagicmod.gametest.RiptideClientSmoke"
     ]
   },
   "depends": {

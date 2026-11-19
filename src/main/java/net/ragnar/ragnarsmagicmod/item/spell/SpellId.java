@@ -154,5 +154,8 @@ public enum SpellId {
     FROSTBITE,
     VENOM,
     TERRAFORMING,
-    BLOCKS
+    BLOCKS,
+    MIMICRY,
+    WATER,
+    RIPTIDE
 }

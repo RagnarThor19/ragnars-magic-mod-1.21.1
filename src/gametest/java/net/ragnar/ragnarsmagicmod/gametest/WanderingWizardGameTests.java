@@ -145,7 +145,7 @@ public class WanderingWizardGameTests implements FabricGameTest {
         ctx.waitAndRun(150, () -> {
             float lost = before - z.getHealth();
             ctx.assertTrue(lost > 0f, "the zombie got zapped");
-            ctx.assertTrue(lost <= 2 * 7.5f * WanderingWizardEntity.SPELL_DAMAGE_SCALE + 0.01f, "soft zaps, lost " + lost);
+            ctx.assertTrue(lost <= 2 * 9f * WanderingWizardEntity.SPELL_DAMAGE_SCALE + 0.01f, "soft zaps, lost " + lost);
             ctx.complete();
         });
     }

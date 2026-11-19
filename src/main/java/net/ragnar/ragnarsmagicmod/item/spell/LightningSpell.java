@@ -26,7 +26,7 @@ public class LightningSpell implements Spell {
     private static final double RANGE = 64.0;
     private static final double AIM_CONE = 3.0;       // a little help landing it on a moving target
     private static final double STRIKE_RADIUS = 1.5;
-    private static final float DAMAGE = 8.0f;
+    private static final float DAMAGE = 20.0f;
     private static final int BURN_SECONDS = 4;
 
     @Override
