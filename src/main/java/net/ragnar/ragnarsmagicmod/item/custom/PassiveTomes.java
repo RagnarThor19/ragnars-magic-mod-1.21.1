@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * Passive tomes (TomeTier.PASSIVE): Speed, Jumping, Lunging, Night Vision, Leaping, Climbing, Gliding,
  * Swimming, Fire Resistance, Grace, Lifesteal, the Gourmet, Knockback, Ground Pound,
- * Sidestep, Desperation, Reflection, Haste, Living, Aiming, Fishing, Long Arms, Frostbite and Venom. They aren't cast; each one just
+ * Sidestep, Desperation, Reflection, Haste, Living, Aiming, Fishing, Long Arms, Frostbite, Venom and TPA. They aren't cast; each one just
  * works while it's anywhere in your inventory (hotbar, backpack, off hand or armour slots) or on any staff you carry
  * (any staff takes them, whatever its tier). Rarer than advanced
  * tomes: they turn up wherever advanced tomes do, at {@code ModLootTableModifiers.PASSIVE_SHARE} of the chance.
@@ -72,6 +72,7 @@ public final class PassiveTomes {
                         net.ragnar.ragnarsmagicmod.fishing.Fishing.TOME_OF_FISHING,
                         net.ragnar.ragnarsmagicmod.longarms.LongArms.TOME_OF_LONG_ARMS,
                         net.ragnar.ragnarsmagicmod.frostbite.Frostbite.TOME_OF_FROSTBITE,
-                        net.ragnar.ragnarsmagicmod.venom.Venom.TOME_OF_VENOM));
+                        net.ragnar.ragnarsmagicmod.venom.Venom.TOME_OF_VENOM,
+                        net.ragnar.ragnarsmagicmod.tpa.Tpa.TOME_OF_TPA));
     }
 }

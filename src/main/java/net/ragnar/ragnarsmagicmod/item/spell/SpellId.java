@@ -153,6 +153,7 @@ public enum SpellId {
     LONG_ARMS,
     FROSTBITE,
     VENOM,
+    TPA,
     TERRAFORMING,
     BLOCKS,
     MIMICRY,

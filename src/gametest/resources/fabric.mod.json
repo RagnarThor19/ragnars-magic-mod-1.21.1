@@ -67,7 +67,8 @@
       "net.ragnar.ragnarsmagicmod.gametest.BlockTomeGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.MimicryGameTests",
       "net.ragnar.ragnarsmagicmod.gametest.WaterGameTests",
-      "net.ragnar.ragnarsmagicmod.gametest.RiptideGameTests"
+      "net.ragnar.ragnarsmagicmod.gametest.RiptideGameTests",
+      "net.ragnar.ragnarsmagicmod.gametest.TpaGameTests"
     ],
     "client": [
       "net.ragnar.ragnarsmagicmod.gametest.BuildingClientSmoke",

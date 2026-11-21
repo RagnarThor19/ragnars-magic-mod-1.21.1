@@ -84,6 +84,7 @@ public class RagnarsMagicMod implements ModInitializer {
         net.ragnar.ragnarsmagicmod.longarms.LongArms.register(); // Tome of Long Arms (passive)
         net.ragnar.ragnarsmagicmod.frostbite.Frostbite.register(); // Tome of Frostbite (passive)
         net.ragnar.ragnarsmagicmod.venom.Venom.register(); // Tome of Venom (passive)
+        net.ragnar.ragnarsmagicmod.tpa.Tpa.register(); // Tome of TPA (passive, unique: librarians sell it)
         net.ragnar.ragnarsmagicmod.item.custom.PassiveTomes.register(); // the passive tomes' section of the Tools tab (after every other tome)
         net.ragnar.ragnarsmagicmod.network.SelectSpellPayload.register();
         net.ragnar.ragnarsmagicmod.network.TelekinesisPayloads.register();
